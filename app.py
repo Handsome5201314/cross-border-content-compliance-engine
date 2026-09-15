@@ -1011,6 +1011,8 @@ if result:
                     st.image(img["path"], caption="示例生成图", use_container_width=True)
                 else:
                     if _need_refund:
+                        # 图像失败退还：task_id=None（图像未绑定任务），无法按任务去重，
+                        # 保持单次行为；生图按钮单次触发，UI 侧保证不会重复执行。
                         credits_service.refund(_img_user["user_id"], None, pricing.PER_IMAGE)
                     st.error(f"失败（如实标注）: {img['error']}")
         except Exception as e:  # noqa: BLE001

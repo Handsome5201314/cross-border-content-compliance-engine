@@ -57,3 +57,11 @@ class CreditDAO:
         sql += " ORDER BY ledger_id DESC LIMIT ?"
         params.append(limit)
         return Database.get().query_all(sql, tuple(params))
+
+    @classmethod
+    def has_refund_for_task(cls, user_id: int, task_id: int) -> bool:
+        """幂等守卫：同 user_id + task_id 是否已存在 'refund' 流水（防重复退款双花）。"""
+        row = Database.get().query_one(
+            "SELECT 1 FROM credit_ledger WHERE user_id = ? AND task_id = ? AND type = 'refund' LIMIT 1",
+            (user_id, task_id))
+        return row is not None

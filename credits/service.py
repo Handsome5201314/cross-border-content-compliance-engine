@@ -58,12 +58,24 @@ def pre_deduct(user_id: int, amount: int, *, task_id: int | None = None) -> int:
         return _atomic_change(user_id, -amount, "consume", task_id=task_id)
 
 
-def refund(user_id: int, task_id: int, amount: int) -> int:
-    """取消 / 失败全额退还预扣积分。返回新余额。"""
+def refund(user_id: int, task_id: int, amount: int) -> tuple[int, bool]:
+    """取消 / 失败 / 图像失败退还预扣积分。
+
+    返回 ``(新余额, 是否实际退款)``：区分「退款成功」与「幂等跳过」，便于调用方审计，不静默吞。
+
+    幂等守卫：同一 ``task_id`` 已存在 ``type='refund'`` 流水则跳过后续退款，
+    杜绝重复 finalize / 重复调用导致的重复退款双花（与 credits_lock 叠加，原子且并发安全）。
+
+    ``task_id=None``（图像生成流）无法按任务去重，保持单次原行为；调用方须保证该路径单次执行。
+    """
     if amount <= 0:
-        return get_balance(user_id)
+        return get_balance(user_id), False
     with credits_lock:
-        return _atomic_change(user_id, +amount, "refund", task_id=task_id)
+        # 幂等守卫：同任务已退款则跳过（防双花）。查询与写入均在 credits_lock 内，串行无竞态。
+        if task_id is not None and credits_dao.CreditDAO.has_refund_for_task(user_id, task_id):
+            return get_balance(user_id), False
+        new_balance = _atomic_change(user_id, +amount, "refund", task_id=task_id)
+        return new_balance, True
 
 
 def recharge(admin_id: int, username: str, amount: int, note: str) -> int:
