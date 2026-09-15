@@ -2,11 +2,24 @@
 
 > 本地仓库**已就绪**，只剩 push 和授权两步必须你手动。
 
-## 当前状态
-- commit：`8ffddee`
-- 入库文件：204 个，`.git` 约 23 MB
-- 凭证检查：**已通过**。`.gitignore` 已拦住 `.env` / `*.key` / `*secret*` / `*token*`，提交前扫描确认无凭证入暂存区。
-- 已排除：视频（35.9MB）、`.trellis`、`__pycache__`、各类日志
+## 当前状态（2026-09-15 09:55 更新）
+- commit：**`451c938`**（root-commit，仓库于 09-15 早上重建）
+- 入库文件：**163 个**，`.git` 约 **27.5 MB**
+- 分支：`master`
+- 凭证检查：**已通过**。`.gitignore` 拦住 `.env` / `*.key` / `*secret*` / `*token*`；本次提交前已确认无凭证入暂存区
+- 已排除：视频（`*.mp4`）、提交包（`*.zip`）、`.trellis`、`__pycache__`、日志、内部看板文档、临时素材目录
+
+> ⚠️ **历史说明**：09-15 上午执行 `git gc` 时对象库被破坏，仓库已重建，**此前的 4 个 commit 历史丢失**。
+> 工作区文件全部完好（已逐个核对 163 个入库文件），代码与提交物无任何丢失，仅提交历史变为 1 条 root commit。
+> 对评审无影响。**后续不要再对本仓库执行 `git gc` / `git prune`。**
+
+**推送前自检**（输出应为空）：
+```bat
+git -C E:\AI新青年\output\hackathon_round2 ls-files | findstr /I ".env secret .key token"
+```
+```bat
+git -C E:\AI新青年\output\hackathon_round2 count-objects -vH
+```
 
 ---
 
