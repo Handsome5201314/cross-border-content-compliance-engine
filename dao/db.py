@@ -117,6 +117,12 @@ CREATE TABLE IF NOT EXISTS audit_log (
 );
 CREATE INDEX IF NOT EXISTS idx_audit_operator ON audit_log(operator_id);
 CREATE INDEX IF NOT EXISTS idx_audit_target ON audit_log(target_user_id);
+
+CREATE TABLE IF NOT EXISTS session_revocation (
+    jti         TEXT PRIMARY KEY,
+    expires_at  INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_revocation_expires ON session_revocation(expires_at);
 """
 
 

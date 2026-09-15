@@ -15,8 +15,12 @@ import json
 import logging
 import os
 import secrets
+import time
+import uuid
 
 from itsdangerous import BadSignature, TimestampSigner
+
+from dao import db as _db
 
 logger = logging.getLogger("cce.session")
 
@@ -53,14 +57,15 @@ def insecure_secret() -> bool:
 
 
 def issue_session(user_id: int, role: str) -> str:
-    """签发签名 Cookie 值。"""
-    payload = json.dumps({"uid": int(user_id), "role": str(role)},
-                         separators=(",", ":"), ensure_ascii=True)
+    """签发签名 Cookie 值（含 jti，用于服务端吊销）。"""
+    payload = json.dumps(
+        {"uid": int(user_id), "role": str(role), "jti": uuid.uuid4().hex},
+        separators=(",", ":"), ensure_ascii=True)
     return _get_signer().sign(payload.encode("utf-8")).decode("ascii")
 
 
 def verify_session(token: str) -> dict | None:
-    """校验签名 Cookie；过期 / 篡改 / 格式错误一律返回 None（不泄露原因细节）。"""
+    """校验签名 Cookie；过期 / 篡改 / 格式错误 / 已吊销一律返回 None（不泄露原因细节）。"""
     if not token:
         return None
     try:
@@ -69,9 +74,60 @@ def verify_session(token: str) -> dict | None:
         uid, role = int(data["uid"]), str(data.get("role", ""))
         if role not in ("user", "admin"):
             return None
-        return {"uid": uid, "role": role}
+        jti = data.get("jti")
+        if jti and is_revoked(jti):
+            # 该会话已被登出/吊销：签名仍有效但服务端已作废（§会话吊销）
+            return None
+        return {"uid": uid, "role": role, "jti": jti}
     except (BadSignature, KeyError, ValueError, TypeError, UnicodeError):
         return None
+
+
+# ---------------------------------------------------------------- 服务端会话吊销（jti 表）
+def _ensure_revocation_table() -> None:
+    """惰性建表（与 dao.db._SCHEMA 中的 DDL 幂等互补，覆盖 reset 后重连场景）。"""
+    db = _db.Database.get()
+    db.execute(
+        "CREATE TABLE IF NOT EXISTS session_revocation ("
+        "jti TEXT PRIMARY KEY, expires_at INTEGER NOT NULL)")
+    db.execute(
+        "CREATE INDEX IF NOT EXISTS idx_revocation_expires "
+        "ON session_revocation(expires_at)")
+
+
+def revoke_session(jti: str) -> None:
+    """吊销某个会话 jti（登出 / 改密时调用）。吊销记录按 Cookie TTL 过期清理。"""
+    if not jti:
+        return
+    _ensure_revocation_table()
+    db = _db.Database.get()
+    now = int(time.time())
+    with db.transaction():
+        # 清理已过期吊销记录（TTL 边界），避免表无限增长
+        db.execute("DELETE FROM session_revocation WHERE expires_at < ?", (now,))
+        db.execute(
+            "INSERT OR REPLACE INTO session_revocation (jti, expires_at) VALUES (?, ?)",
+            (jti, now + SESSION_TTL_S))
+
+
+def is_revoked(jti: str) -> bool:
+    """该 jti 是否已被吊销。"""
+    if not jti:
+        return False
+    _ensure_revocation_table()
+    db = _db.Database.get()
+    row = db.query_one("SELECT jti FROM session_revocation WHERE jti = ?", (jti,))
+    return row is not None
+
+
+def purge_expired_revocation() -> int:
+    """清理过期的吊销记录（运维用）；返回清理条数。"""
+    _ensure_revocation_table()
+    db = _db.Database.get()
+    now = int(time.time())
+    with db.transaction():
+        cur = db.execute("DELETE FROM session_revocation WHERE expires_at < ?", (now,))
+        return cur.rowcount or 0
 
 
 def cookie_max_age() -> int:

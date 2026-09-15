@@ -77,6 +77,10 @@ def login(body: AuthIn, response: Response):
 
 @router.post("/logout")
 def logout(response: Response, user: dict = Depends(get_current_user)):
+    # 服务端吊销当前会话 jti：即使旧 Cookie 被截获，7 天 TTL 内也无法再复用（§会话吊销）
+    jti = user.get("jti")
+    if jti:
+        cookie_session.revoke_session(jti)
     response.delete_cookie(cookie_session.COOKIE_NAME, path="/")
     return {}
 

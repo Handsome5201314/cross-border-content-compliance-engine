@@ -25,6 +25,8 @@ def _load_user(request: Request) -> dict:
         audit_dao.AuditDAO.append(user["user_id"], "login_blocked", user["user_id"],
                                   detail={"reason": "disabled_with_valid_cookie"})
         raise HTTPException(status_code=401, detail="该账号已被禁用，请联系管理员")
+    # 透传会话 jti 供登出吊销使用（见 api/routers/auth.py logout）
+    user["jti"] = payload.get("jti")
     return user
 
 
