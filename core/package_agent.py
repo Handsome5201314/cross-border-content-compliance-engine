@@ -14,6 +14,17 @@ from jsonschema.exceptions import ValidationError
 TEXT = {"type": "string", "minLength": 1}
 
 
+def validation_reason(error):
+    """Do not expose instance values/keys from jsonschema errors in warnings or logs."""
+    if isinstance(error, ValidationError):
+        keyword = error.validator
+        if keyword in {"type", "required", "enum", "const", "additionalProperties", "minItems",
+                       "maxItems", "minLength", "maxLength", "minimum", "maximum", "pattern"}:
+            return f"JSON Schema 校验失败（{keyword}），请对照完整 schema 修复"
+        return "JSON Schema 校验失败，请对照完整 schema 修复"
+    return "内容或审查契约校验失败，请复查完整要求"
+
+
 def obj(**properties):
     return {"type": "object", "properties": properties,
             "required": list(properties), "additionalProperties": False}
@@ -191,7 +202,7 @@ class PackageAgent(BaseAgent):
         try:
             validate_review(review, rows)
         except (ValueError, ValidationError) as error:
-            reason = error.message if isinstance(error, ValidationError) else str(error)
+            reason = validation_reason(error)
             review, _ = self._chat_json(system, json.dumps({**request, "previous_review": review,
                 "validation_error": reason,
                 "repair_instruction": "补齐全量完整审查 JSON：mandatory_finding_ids 每项都必须有 findings，"
@@ -234,7 +245,7 @@ class PackageAgent(BaseAgent):
         try:
             self.validate_content(content, product, language)
         except (ValueError, ValidationError) as error:
-            reason = error.message if isinstance(error, ValidationError) else str(error)
+            reason = validation_reason(error)
             generation_warnings.append(f"生成结构首次校验失败，已请求一次显式修复：{reason}")
             content, _ = self._chat_json(system, json.dumps({**request, "previous_content": content,
                 "validation_error": reason,

@@ -24,6 +24,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from core import load_yaml_config                                 # noqa: E402
 from core.config_check import validate_all_configs                # noqa: E402
 from core.exporter import to_markdown, to_export_json             # noqa: E402
+from uuid import uuid4
+from core.usage import update_result_usage
+from core.gateway_policy import validate_ui_gateway
 from core.llm_client import LLMClient, mask_key, IMAGE_MODEL_CANDIDATES  # noqa: E402
 from core.pipeline import Pipeline, STATUS_LABELS                 # noqa: E402
 from core.privacy_gate import PrivacyViolation, validate_product  # noqa: E402
@@ -231,8 +234,21 @@ def _get_client(base_url: str = None, api_key: str = None):
 
     优先级：显式传入的自定义凭证 > 平台默认（环境变量 secrets > 本地 .env）。
     """
+    if base_url is None and api_key is None and st.session_state.get("u_force"):
+        base_url = st.session_state.get("u_base")
+        api_key = st.session_state.get("u_key")
+        if not (base_url or "").strip() or not (api_key or "").strip():
+            raise RuntimeError("已选择自定义凭证，请同时填写网关和凭证")
     sig = ((base_url or "").strip(), (api_key or "").strip())
+    if sig[0] or sig[1]:
+        try:
+            validate_ui_gateway(sig[0])
+        except ValueError:
+            raise RuntimeError("自定义网关不在管理员允许列表中，或 URL 格式不合法") from None
     if st.session_state.get("_client_sig") != sig or "client" not in st.session_state:
+        previous = st.session_state.get("client")
+        if previous is not None:
+            previous.client.close()
         st.session_state["client"] = LLMClient(
             base_url=(base_url or "").strip() or None,
             api_key=(api_key or "").strip() or None,
@@ -333,7 +349,7 @@ with st.sidebar:
                                  help="勾选后必须同时填写 Key 与网关地址才会生效")
         # 校验并给出即时反馈
         if use_custom and not (user_key.strip() and user_base.strip()):
-            st.warning("已勾选自定义凭证，但 Key 或网关地址为空——将回退到平台默认配置。")
+            st.warning("已勾选自定义凭证，请同时填写 Key 和允许的 HTTPS 网关；填写完整前禁止调用。")
 
     st.caption("生成会调用云端大模型（引擎本身不是本地部署）；输入已过字段白名单与本地隐私门禁。")
 
@@ -348,7 +364,16 @@ mode = st.radio("选择模式", ["small", "precomputed"],
 
 if mode == "precomputed":
     if PRECOMPUTED_PATH.exists():
-        loaded = json.loads(PRECOMPUTED_PATH.read_text(encoding="utf-8"))
+        reload_precomputed = st.button("重新加载预生成文件（替换本会话结果）")
+        if result is None or st.session_state.get("_result_source") != "precomputed" or reload_precomputed:
+            try:
+                result = json.loads(PRECOMPUTED_PATH.read_text(encoding="utf-8"))
+            except (OSError, ValueError):
+                st.error("预生成文件暂不可读或格式损坏，请重新生成或稍后重试。")
+                st.stop()
+            st.session_state["result"] = result
+            st.session_state["_result_source"] = "precomputed"
+        loaded = result
         meta = loaded.get("meta", {})
         st.success(f"已加载离线预生成全量产物：生成时间 {meta.get('generated_at')}｜"
                    f"{len(meta.get('platforms', []))} 平台 × {len(meta.get('languages', []))} 语种｜"
@@ -424,6 +449,7 @@ if run_btn:
                             f"≈¥{u['cost_estimate_cny']}）——可交付 {result['counts']['delivered']}/"
                             f"{result['counts']['total']}", state="complete", expanded=False)
         st.session_state["result"] = result
+        st.session_state["_result_source"] = "small"
     except Exception as e:  # noqa: BLE001
         status.update(label="❌ 生成失败", state="error", expanded=True)
         st.error(f"{type(e).__name__}: {e}")
@@ -494,13 +520,15 @@ else:
 
 # ================================================================ 结果与统计
 if result:
+    if not result.get("usage", {}).get("usage_complete", False):
+        st.warning("用量存在未知或历史未计量部分；当前金额只含已知文本估算，不可用于积分结算。")
     render_result(result)
 
     # 图像生成（显式开启，默认不生，P0-4）
     st.header("⑤ 图像生成（显式开启，默认不生图）")
     if st.button("🎨 用首条可交付文案生成 1 张示例图（30-120s）"):
         try:
-            client = _get_client()
+            client = _get_client().new_task()
             delivered = [r for r in result["results"] if r["status"] == "delivered"]
             if not delivered:
                 st.warning("没有可交付文案，跳过生图")
@@ -509,8 +537,9 @@ if result:
                     "A pediatric resident doctor wearing a small smart badge device in a hospital ward"
                 with st.spinner("生成中…"):
                     from core import ensure_output_dir
-                    img = client.generate_image(prompt, ensure_output_dir() / "sample_image.png",
+                    img = client.generate_image(prompt, ensure_output_dir() / f"image_{uuid4().hex}.png",
                                                 model=m_image)
+                update_result_usage(result, client)
                 if img["ok"]:
                     st.success(f"成功：{img['model']} → {img['path']}")
                     st.image(img["path"], caption="示例生成图", use_container_width=True)

@@ -5,3 +5,4 @@ pyyaml>=6.0
 openai>=2.0
 streamlit>=1.63,<2
 jsonschema>=4.26,<5
+pillow>=11,<13

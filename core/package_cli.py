@@ -11,12 +11,16 @@ from .llm_client import LLMClient
 from .config_check import validate_all_configs
 from .live_agent import LiveAgent
 from .market_rules import build_market_report
-from .package_agent import render_preview
+from .package_agent import render_preview, validation_reason
 from .privacy_gate import validate_product
 from .site_agent import SiteAgent
+from .output_io import atomic_write_text
 
 
 def run_batch(product, module, languages, client):
+    if isinstance(client, LLMClient):
+        client = client.new_task()
+        client.set_deadline(time.monotonic() + 900)
     product = validate_product(product)
     config_errors = validate_all_configs()
     if config_errors:
@@ -30,8 +34,9 @@ def run_batch(product, module, languages, client):
         try:
             return agent.run(product, language)
         except Exception as error:
+            detail = str(error) if type(error) is RuntimeError else validation_reason(error)
             return {"platform": module, "module": module, "language": language,
-                    "status": "failed", "error": f"{type(error).__name__}: {str(error)[:1500]}",
+                    "status": "failed", "error": f"{type(error).__name__}: {detail}",
                     "content": None, "rtl": load_yaml_config("languages")[language]["rtl"],
                     "warnings": [], "compliance": {"rounds": []}, "markets": product["target_markets"]}
 
@@ -53,6 +58,7 @@ def run_batch(product, module, languages, client):
             "counts": {"total": len(results), **{status: sum(item["status"] == status for item in results)
                        for status in ["delivered", "review_blocked", "failed", "skipped_deadline"]}},
             "usage": client.usage_summary(), "usage_records": list(client.usage_records),
+            "attempt_records": client.attempts() if isinstance(client, LLMClient) else [],
             "market_report": market_report,
             "engine_notices": notices}
 
@@ -73,13 +79,11 @@ def main(module):
         print(f"启动失败: {type(error).__name__}: {error}", file=sys.stderr)
         return 2
     output.parent.mkdir(parents=True, exist_ok=True)
-    temp = output.with_suffix(".json.tmp")
-    temp.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
-    temp.replace(output)
+    atomic_write_text(output, json.dumps(result, ensure_ascii=False, indent=2))
     for item in result["results"]:
         preview = output.with_name(f"{output.stem}_{item['language']}.html")
         if item["status"] == "delivered":
-            preview.write_text(render_preview(item), encoding="utf-8")
+            atomic_write_text(preview, render_preview(item))
         elif preview.exists():
             preview.unlink()
         print(f"{module}/{item['language']}: {item['status']} {item['error'] or ''}")

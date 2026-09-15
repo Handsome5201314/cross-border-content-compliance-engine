@@ -1,26 +1,19 @@
 # -*- coding: utf-8 -*-
-"""统一模型路由客户端。
-
-对应评审返工项：
-- P0-2：所有出站消息先过本地隐私门禁（privacy_gate），命中患者标识即拒绝发送，
-  绝不用云端模型脱敏；
-- P0-4：重试只有一层且按错误分类——鉴权/无效模型/参数等永久错误立即失败，
-  超时/限流/5xx 仅重试 1 次（合计最多 2 次请求）；SDK 内置重试关闭（max_retries=0），
-  不再出现"外层 3 次 × SDK 2 次"的放大；
-- P2-13：每次调用带 tag（组合 ID / 阶段名），用量按 tag 归因，不对全局计数做差。
-
-其余职责保持：凭证只从项目根 .env 读；token 用量与成本统计（线程安全）；
-qwen3.x 关闭思考模式（网关不识别参数时自动去掉重发一次，不计入重试）。
-"""
-import base64
+"""Bounded provider attempts and task-scoped diagnostics; never a billing ledger."""
+import copy
+import math
 import re
 import threading
 import time
+import uuid
 
-from openai import OpenAI
+from openai import OpenAI, DefaultHttpxClient
 
-from . import ENV_PATH, load_env
+from . import load_env
 from .privacy_gate import assert_text_clean
+from .image_io import decode_image, download_image
+from .output_io import atomic_write
+from .gateway_policy import gateway_origin
 
 # ---------------- 默认模型路由（可被上层覆盖） ----------------
 MODEL_ROLES = {
@@ -33,7 +26,7 @@ MODEL_ROLES = {
     "image": "qwen-image-2.0", # 生图（仅 --with-image / UI 显式按钮时调用）
 }
 
-# 图像模型候选（仅显式生图时使用；第一个失败自动降级尝试下一个）
+# 图像模型选项（仅显式生图时使用；不自动跨模型重发）
 IMAGE_MODEL_CANDIDATES = ["qwen-image-2.0", "wan2.7-image", "qwen-image-2.0-pro", "wan2.7-image-pro"]
 
 # ---------------- 成本估算表（元/百万 token，混合输入输出计价的估算值） ----------------
@@ -54,185 +47,245 @@ DEFAULT_PRICE_CNY_PER_MTOK = 4.0
 
 _QWEN_THINKING_MODEL_RE = re.compile(r"^qwen3\.\d")
 
-# 永久错误：重试没有意义，立即失败（P0-4）
-_PERMANENT_STATUS = {401, 403, 404}
-_PERMANENT_MARKERS = (
-    "invalid_api_key", "invalid api key", "incorrect api key",
-    "authentication", "unauthorized", "permission denied",
-    "model_not_found", "model not found", "does not exist",
-    "insufficient_quota", "quota exceeded",
-    "invalid_request_error", "invalid request",
-)
+class CallStopped(RuntimeError):
+    """No new external call may start after cancellation or deadline."""
 
 
-def _is_permanent(err: Exception) -> bool:
-    """判断是否永久性错误（鉴权/无效模型/配额/参数非法等，重试无意义）。"""
-    status = getattr(err, "status_code", None)
-    if status in _PERMANENT_STATUS:
-        return True
-    text = str(err).lower()
-    return any(k in text for k in _PERMANENT_MARKERS)
+def _validate_model(model):
+    if not isinstance(model, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}", model):
+        raise ValueError("模型名必须是 1–128 位 ASCII 模型标识符")
+    assert_text_clean(model, context="模型标识符")
+
+
+def _param_rejected(err, parameter="enable_thinking"):
+    # Only an explicit parameter rejection can authorize a compatibility retry.
+    return (getattr(err, "status_code", None) == 400
+            and parameter in str(err).lower()
+            and any(word in str(err).lower() for word in
+                    ("unknown", "unsupported", "not supported", "invalid", "unrecognized", "extra_forbidden")))
+
+
+def _usage_values(usage):
+    usage = usage if isinstance(usage, dict) else {}
+    values = {key: usage.get(key) for key in
+              ("prompt_tokens", "completion_tokens", "total_tokens")}
+    if (any(type(v) is not int or v < 0 for v in values.values())
+            or values["total_tokens"] != values["prompt_tokens"] + values["completion_tokens"]):
+        raise RuntimeError("模型用量缺失或不合法，费用待核对")
+    return values
 
 
 class LLMClient:
-    """线程安全的统一模型调用客户端（并行阶段会被多线程共享）。"""
-
-    def __init__(self, base_url: str = None, api_key: str = None,
-                 timeout: float = 90.0):
-        env = load_env()
-        self.base_url = base_url or env.get("HACKATHON_BASE_URL", "")
-        self.api_key = api_key or env.get("HACKATHON_API_KEY", "")
+    def __init__(self, base_url=None, api_key=None, timeout=90.0, *, allow_env_file=True):
+        # Never pair a user supplied URL with the platform's file/env credential.
+        if (base_url is None) != (api_key is None):
+            raise RuntimeError("自定义网关和凭证必须同时提供")
+        env = load_env(allow_file=allow_env_file) if base_url is None else {}
+        self.base_url = (env.get("HACKATHON_BASE_URL", "") if base_url is None else base_url).strip()
+        self.api_key = (env.get("HACKATHON_API_KEY", "") if api_key is None else api_key).strip()
         if not self.api_key or not self.base_url:
-            raise RuntimeError(
-                f"[FATAL] .env 缺少 HACKATHON_API_KEY / HACKATHON_BASE_URL（期望路径: {ENV_PATH}）"
-            )
+            raise RuntimeError("缺少 HACKATHON_API_KEY / HACKATHON_BASE_URL")
+        try:
+            gateway_origin(self.base_url)
+        except ValueError:
+            raise RuntimeError("模型网关 URL 不合法，必须是无内嵌凭证的 HTTPS 地址") from None
+        if not math.isfinite(timeout) or timeout <= 0:
+            raise ValueError("timeout must be finite and positive")
         self.timeout = timeout
-        # SDK 内置重试关闭：重试策略完全由本类控制（P0-4）
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url,
-                             timeout=timeout, max_retries=0)
+                             timeout=timeout, max_retries=0,
+                             http_client=DefaultHttpxClient(follow_redirects=False))
+        self._init_task()
+
+    def _init_task(self):
+        self.task_id = uuid.uuid4().hex
         self._lock = threading.Lock()
-        self.usage_records = []   # {model, prompt_tokens, completion_tokens, total_tokens, latency_s, label, tag}
-        self._t_start = time.time()
+        self.usage_records = []
+        self.attempt_records = []
+        self._t_start = time.monotonic()
+        self._deadline = None
+        self._cancelled = threading.Event()
 
-    # ---------------- 核心调用 ----------------
-    def chat(self, model: str, messages: list, json_mode: bool = False,
-             temperature: float = 0.7, max_tokens: int = None,
-             label: str = "", tag: str = "") -> tuple:
-        """单次对话调用。返回 (content, usage_record)。
+    def new_task(self):
+        """Separate counters/control state; reuse the thread-safe SDK transport only."""
+        task = copy.copy(self)
+        task._init_task()
+        return task
 
-        - 出站隐私门禁：任何消息内容命中患者标识 → 本地抛 PrivacyViolation，不发送（P0-2）；
-        - 重试：仅一层且分类——永久错误立即失败；瞬时错误（超时/限流/5xx/连接）重试 1 次。
-        """
-        # P0-2 隐私门禁（最后一道防线，所有调用路径统一覆盖）
+    def set_deadline(self, deadline):
+        if not math.isfinite(deadline):
+            raise ValueError("deadline must be finite")
+        self._deadline = deadline
+
+    def cancel(self):
+        self._cancelled.set()
+
+    def _check_call(self):
+        if self._cancelled.is_set() or (self._deadline is not None and time.monotonic() >= self._deadline):
+            raise CallStopped("任务已取消或到达截止时间；在途费用仍需核对")
+
+    def _request_timeout(self):
+        self._check_call()
+        return min(self.timeout, max(0.001, self._deadline - time.monotonic())) if self._deadline else self.timeout
+
+    def _begin(self, model, label, tag, kind):
+        self._check_call()
+        event = {"task_id": self.task_id, "attempt_id": uuid.uuid4().hex, "model": model,
+                 "label": label or model, "tag": tag or label or model, "kind": kind,
+                 "status": "in_flight", "usage_status": "unknown"}
+        with self._lock:
+            self.attempt_records.append(event)
+        return event
+
+    def _finish(self, event, **fields):
+        with self._lock:
+            event.update(fields)
+
+    def attempts(self):
+        with self._lock:
+            return [dict(r) for r in self.attempt_records]
+
+    def chat(self, model, messages, json_mode=False, temperature=0.7,
+             max_tokens=None, label="", tag=""):
+        _validate_model(model)
+        if type(temperature) not in (int, float) or not math.isfinite(temperature) or not 0 <= temperature <= 2:
+            raise ValueError("temperature 必须为 0 到 2 的有限数值")
+        # The current engine is text-only. Reject alternate representations instead of bypassing the gate.
+        if not isinstance(messages, list) or not messages:
+            raise ValueError("messages must be a nonempty text message list")
         for msg in messages:
-            content = (msg or {}).get("content", "") or ""
-            if isinstance(content, str):
-                assert_text_clean(content, context=f"出站消息[{label or model}]")
-
-        max_attempts = 2
-        last_err = None
-        for attempt in range(1, max_attempts + 1):
-            t0 = time.time()
+            if (not isinstance(msg, dict) or set(msg) - {"role", "content"}
+                    or msg.get("role") not in {"system", "user", "assistant", "developer"}
+                    or not isinstance(msg.get("content"), str)):
+                raise ValueError("only role/content text messages are supported")
+            assert_text_clean(msg["content"], context="出站消息")
+        limit = 8192 if max_tokens is None else max_tokens
+        if type(limit) is not int or not 1 <= limit <= 32768:
+            raise ValueError("max_tokens must be an integer from 1 to 32768")
+        kwargs = dict(model=model, messages=messages, temperature=temperature, max_tokens=limit)
+        if json_mode:
+            kwargs["response_format"] = {"type": "json_object"}
+        use_extra = bool(_QWEN_THINKING_MODEL_RE.match(model))
+        for attempt in range(2):
+            timeout = self._request_timeout()
+            event = self._begin(model, label, tag, "chat")
+            started = time.monotonic()
             try:
-                kwargs = dict(model=model, messages=messages, temperature=temperature)
-                if json_mode:
-                    kwargs["response_format"] = {"type": "json_object"}
-                if max_tokens:
-                    kwargs["max_tokens"] = max_tokens
+                raw = self._create({**kwargs, "timeout": timeout}, use_extra)
+            except Exception as error:
+                status = getattr(error, "status_code", None)
+                rejected = status in {400, 401, 403, 404, 422, 429}
+                self._finish(event, status="failed", http_status=status,
+                             usage_status="rejected" if rejected else "unknown",
+                             latency_s=round(time.monotonic() - started, 2))
+                if attempt == 0 and use_extra and _param_rejected(error):
+                    use_extra = False
+                    continue
+                # Ambiguous timeouts/5xx are not automatically replayed: they may have incurred cost.
+                if attempt == 0 and status == 429:
+                    self._cancelled.wait(1.0)
+                    continue
+                raise RuntimeError(f"模型调用失败；HTTP={status or 'unknown'}；attempt={event['attempt_id']}；用量={event['usage_status']}") from None
+            try:
+                # Inspect JSON before the SDK coerces strings/bools into integer token fields.
+                values = _usage_values(raw.http_response.json().get("usage"))
+            except (RuntimeError, ValueError, AttributeError):
+                self._finish(event, status="response_received", usage_status="unknown")
+                raise RuntimeError(f"模型用量缺失或不合法，费用待核对；attempt={event['attempt_id']}") from None
+            record = {**values, "task_id": self.task_id, "attempt_id": event["attempt_id"],
+                      "model": model, "label": label or model, "tag": tag or label or model,
+                      "latency_s": round(time.monotonic() - started, 2)}
+            with self._lock:
+                self.usage_records.append(record)
+                event.update(status="response_received", usage_status="known", **values)
+            # Preserve known consumption even if the response is unusable.
+            try:
+                resp = raw.parse()
+            except Exception:
+                raise RuntimeError("模型响应格式不合法；已记录用量") from None
+            if not resp.choices or not isinstance(resp.choices[0].message.content, str):
+                raise RuntimeError("模型响应缺少文本；已记录用量")
+            return resp.choices[0].message.content, record
 
-                use_extra = bool(_QWEN_THINKING_MODEL_RE.match(model))
-                try:
-                    resp = self._create(kwargs, use_extra)
-                except Exception as e_inner:
-                    # 网关不认 enable_thinking 参数时去掉重发一次（参数兼容回退，不计入重试）
-                    if use_extra and _param_rejected(e_inner):
-                        resp = self._create(kwargs, False)
-                    else:
-                        raise
-
-                content = resp.choices[0].message.content or ""
-                usage = getattr(resp, "usage", None)
-                record = {
-                    "model": model,
-                    "prompt_tokens": getattr(usage, "prompt_tokens", 0) if usage else 0,
-                    "completion_tokens": getattr(usage, "completion_tokens", 0) if usage else 0,
-                    "total_tokens": getattr(usage, "total_tokens", 0) if usage else 0,
-                    "latency_s": round(time.time() - t0, 2),
-                    "label": label or model,
-                    "tag": tag or label or model,
-                }
-                with self._lock:
-                    self.usage_records.append(record)
-                return content, record
-            except Exception as e:  # noqa: BLE001
-                last_err = e
-                permanent = _is_permanent(e)
-                if permanent or attempt >= max_attempts:
-                    kind = "永久性错误（不重试）" if permanent else f"已重试 {max_attempts - 1} 次"
-                    raise RuntimeError(f"模型调用失败（{kind}）: {model}: {last_err}") from e
-                time.sleep(2.0)  # 瞬时错误退避后仅重试 1 次
-        raise RuntimeError(f"模型调用失败: {model}: {last_err}")
-
-    def _create(self, kwargs: dict, use_extra: bool):
+    def _create(self, kwargs, use_extra):
         if use_extra:
-            kwargs = dict(kwargs)
-            kwargs["extra_body"] = {"enable_thinking": False}
-        return self.client.chat.completions.create(**kwargs)
+            kwargs = {**kwargs, "extra_body": {"enable_thinking": False}}
+        return self.client.chat.completions.with_raw_response.create(**kwargs)
 
-    # ---------------- 用量与成本 ----------------
-    def records_by_tag(self, tag: str) -> list:
-        """按 tag 取用量记录（P2-13：组合级归因用，不做全局差值）。"""
+    def records_by_tag(self, tag):
         with self._lock:
-            return [r for r in self.usage_records if r.get("tag") == tag]
+            return [dict(r) for r in self.usage_records if r.get("tag") == tag]
 
-    def usage_summary(self) -> dict:
-        """累计用量汇总：总 token、分模型、分 tag、成本估算、耗时。"""
+    def usage_summary(self):
         with self._lock:
-            records = list(self.usage_records)
-        by_model = {}
-        by_tag = {}
-        for r in records:
-            m = by_model.setdefault(r["model"], {"calls": 0, "total_tokens": 0,
-                                                 "prompt_tokens": 0, "completion_tokens": 0})
+            records = [dict(r) for r in self.usage_records]
+            attempts = [dict(r) for r in self.attempt_records]
+        by_model, by_tag = {}, {}
+        for record in records:
+            m = by_model.setdefault(record["model"], {"calls": 0, "total_tokens": 0,
+                                                      "prompt_tokens": 0, "completion_tokens": 0})
             m["calls"] += 1
-            m["total_tokens"] += r["total_tokens"]
-            m["prompt_tokens"] += r["prompt_tokens"]
-            m["completion_tokens"] += r["completion_tokens"]
-            t = by_tag.setdefault(r.get("tag") or r["label"], {"calls": 0, "total_tokens": 0})
+            for key in ("total_tokens", "prompt_tokens", "completion_tokens"):
+                m[key] += record[key]
+            t = by_tag.setdefault(record["tag"], {"calls": 0, "total_tokens": 0})
             t["calls"] += 1
-            t["total_tokens"] += r["total_tokens"]
-        cost = 0.0
-        for model, m in by_model.items():
-            price = PRICE_CNY_PER_MTOK.get(model, DEFAULT_PRICE_CNY_PER_MTOK)
-            cost += m["total_tokens"] / 1_000_000 * price
+            t["total_tokens"] += record["total_tokens"]
+        unknown = sum(a["usage_status"] == "unknown" for a in attempts)
         return {
-            "total_calls": len(records),
-            "total_tokens": sum(r["total_tokens"] for r in records),
-            "prompt_tokens": sum(r["prompt_tokens"] for r in records),
-            "completion_tokens": sum(r["completion_tokens"] for r in records),
-            "by_model": by_model,
-            "by_tag": by_tag,
-            "cost_estimate_cny": round(cost, 4),
-            "wall_time_s": round(time.time() - self._t_start, 1),
-            "price_note": "单价为可调估算值（元/百万token，混合输入输出），非实际成本，见 llm_client.PRICE_CNY_PER_MTOK",
+            "task_id": self.task_id,
+            "total_calls": len(records),  # compatibility: successfully metered chat responses
+            "attempted_calls": len(attempts), "unknown_usage_calls": unknown,
+            "usage_complete": unknown == 0, "billing_ready": False,
+            **{key: sum(r[key] for r in records) for key in
+               ("total_tokens", "prompt_tokens", "completion_tokens")},
+            "by_model": by_model, "by_tag": by_tag,
+            "cost_estimate_cny": round(sum(m["total_tokens"] / 1_000_000 *
+                PRICE_CNY_PER_MTOK.get(model, DEFAULT_PRICE_CNY_PER_MTOK)
+                for model, m in by_model.items()), 4),
+            "wall_time_s": round(time.monotonic() - self._t_start, 1),
+            "price_note": ("仅已知文本 token 的混合单价估算，非账单；未知用量/图片费用未计入。"
+                           + ("存在待核对费用。" if unknown else "")),
         }
 
-    # ---------------- 生图（仅显式开启时调用；失败如实上报） ----------------
-    def generate_image(self, prompt: str, out_path, model: str = None,
-                       size: str = "1024*1024") -> dict:
-        """图像模型真实生成一张图。依次尝试候选模型；返回 {ok, model, path, error}，失败不抛异常。"""
+    def generate_image(self, prompt, out_path, model=None, size="1024*1024"):
         assert_text_clean(prompt, context="生图 Prompt")
-        candidates = [model] if model else list(IMAGE_MODEL_CANDIDATES)
-        last_err = None
-        for m in candidates:
-            for sz in (size, size.replace("*", "x"), size.replace("*", "-")):
-                try:
-                    resp = self.client.images.generate(model=m, prompt=prompt, n=1, size=sz)
-                    item = resp.data[0]
-                    if getattr(item, "b64_json", None):
-                        out_path.parent.mkdir(parents=True, exist_ok=True)
-                        out_path.write_bytes(base64.b64decode(item.b64_json))
-                        return {"ok": True, "model": m, "path": str(out_path), "error": None}
-                    if getattr(item, "url", None):
-                        import urllib.request
-                        out_path.parent.mkdir(parents=True, exist_ok=True)
-                        with urllib.request.urlopen(item.url, timeout=60) as r, open(out_path, "wb") as f:
-                            f.write(r.read())
-                        return {"ok": True, "model": m, "path": str(out_path), "error": None}
-                    last_err = f"{m}: 响应中无 b64_json 也无 url"
-                except Exception as e:  # noqa: BLE001
-                    last_err = f"{m}: {type(e).__name__}: {str(e)[:200]}"
-        return {"ok": False, "model": None, "path": None, "error": last_err}
+        model = IMAGE_MODEL_CANDIDATES[0] if model is None else model
+        _validate_model(model)
+        if not isinstance(size, str) or not re.fullmatch(r"[1-9][0-9]{1,3}[*x-][1-9][0-9]{1,3}", size):
+            raise ValueError("图片尺寸必须是数字宽高")
+        sizes = list(dict.fromkeys([size, size.replace("*", "x")]))
+        event = None
+        for index, candidate_size in enumerate(sizes):
+            try:
+                timeout = self._request_timeout()
+                event = self._begin(model, "image", "image", "image")
+                resp = self.client.images.generate(model=model, prompt=prompt, n=1,
+                                                   size=candidate_size, timeout=timeout)
+            except CallStopped:
+                return {"ok": False, "model": model, "path": None, "error": "任务已停止"}
+            except Exception as error:
+                status = getattr(error, "status_code", None)
+                self._finish(event, status="failed", http_status=status,
+                             usage_status="rejected" if status in {400, 401, 403, 404, 422, 429} else "unknown")
+                if index == 0 and _param_rejected(error, "size"):
+                    continue
+                return {"ok": False, "model": model, "path": None,
+                        "error": f"图像请求失败；HTTP={status or 'unknown'}；attempt={event['attempt_id']}"}
+            # A returned image may already be billed. Download/validation/publish failure NEVER regenerates it.
+            self._finish(event, status="response_received", usage_status="unknown")
+            try:
+                self._check_call()
+                item = resp.data[0]
+                data = decode_image(item.b64_json) if getattr(item, "b64_json", None) else download_image(item.url)
+                atomic_write(out_path, data)
+                self._finish(event, artifact_status="published")
+                return {"ok": True, "model": model, "path": str(out_path), "error": None}
+            except Exception:
+                self._finish(event, artifact_status="failed")
+                return {"ok": False, "model": model, "path": None,
+                        "error": f"图片下载、校验或写入失败；生成可能已收费，不自动重新生成；attempt={event['attempt_id']}"}
+        return {"ok": False, "model": model, "path": None, "error": "图片参数不受支持"}
 
 
-def _param_rejected(err: Exception) -> bool:
-    """判断异常是否为'不识别 extra 参数'类错误（用于决定是否去掉 enable_thinking 重发）。"""
-    text = str(err).lower()
-    keys = ("enable_thinking", "extra_body", "invalid parameter", "unknown parameter",
-            "extra_forbidden", "not supported")
-    return any(k in text for k in keys)
-
-
-def mask_key(key: str) -> str:
-    """Key 脱敏显示：只显示前 10 位 + 长度。日志/打印统一走这里。"""
-    return f"{key[:10]}...（已脱敏，长度 {len(key)}）"
+def mask_key(key):
+    return "已配置（不显示凭证）" if key else "未配置"

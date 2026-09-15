@@ -36,7 +36,7 @@ _CREDENTIAL_KEYS = (
 )
 
 
-def load_env(env_path: Path = None) -> dict:
+def load_env(env_path: Path = None, *, allow_file: bool = True) -> dict:
     """凭证解析：**环境变量优先，.env 兜底**。
 
     优先级（高 → 低）：
@@ -45,21 +45,18 @@ def load_env(env_path: Path = None) -> dict:
 
     这样同一份代码在本地与云端都能运行，且密钥永不进入版本库。
     """
-    path = env_path or ENV_PATH
-    data = {}
-    if path.exists():
+    path = Path(env_path) if env_path is not None else ENV_PATH
+    # Presence, including an explicitly empty value, overrides a file credential.
+    data = {k: os.environ[k].strip() for k in _CREDENTIAL_KEYS if k in os.environ}
+    if allow_file and len(data) < len(_CREDENTIAL_KEYS) and path.exists():
         for line in path.read_text(encoding="utf-8").splitlines():
             line = line.strip()
             if not line or line.startswith("#") or "=" not in line:
                 continue
             k, v = line.split("=", 1)
-            data[k.strip()] = v.strip()
-
-    # 环境变量覆盖（含 .env 里没有、但由平台注入的键）
-    for k in _CREDENTIAL_KEYS:
-        v = os.environ.get(k)
-        if v and v.strip():
-            data[k] = v.strip()
+            k = k.strip()
+            if k in _CREDENTIAL_KEYS and k not in os.environ:
+                data[k] = v.strip()
     return data
 
 

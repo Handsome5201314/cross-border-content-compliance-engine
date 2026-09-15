@@ -34,6 +34,7 @@ WATCHDOG.md
 _asm*.py
 _*_log.txt
 _*.py
+!_verify_all.py
 !__init__.py
 !**/__init__.py
 _*.log

@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from core import load_yaml_config                                # noqa: E402
 from core.config_check import validate_all_configs               # noqa: E402
 from core.llm_client import LLMClient                            # noqa: E402
+from core.output_io import atomic_write_text                     # noqa: E402
 from core.pipeline import Pipeline                               # noqa: E402
 from core.privacy_gate import PrivacyViolation, validate_product # noqa: E402
 
@@ -75,7 +76,7 @@ def main():
         "wall_seconds": round(time.time() - t0, 1),
     }
 
-    OUT_PATH.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_text(OUT_PATH, json.dumps(result, ensure_ascii=False, indent=2))
     counts = result.get("counts", {})
     print("\n" + "=" * 64)
     print(f"预生成完成：可交付 {counts.get('delivered', 0)} / 审核未通过 {counts.get('review_blocked', 0)}"

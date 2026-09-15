@@ -13,7 +13,7 @@
 - [P2-13] token 按组合 ID 归因（聚合各 Agent 返回的 usage records，不对全局计数做差）。
 """
 import time
-import traceback
+import math
 from concurrent.futures import ThreadPoolExecutor, as_completed, CancelledError
 from datetime import datetime
 
@@ -24,6 +24,8 @@ from .agents import (AssetPromptAgent, ComplianceAgent, LocalizationAgent,
 from .config_check import assert_configs_ok
 from .market_rules import markets_for_language, merge_market_rules, build_market_report, covered_markets
 from .privacy_gate import validate_product
+from .llm_client import LLMClient, CallStopped
+from .usage import update_result_usage
 from .value_calc import compute_value
 
 ENGINE_VERSION = "copy-engine-v3.0"
@@ -61,6 +63,12 @@ class Pipeline:
         self.platforms = list(platforms)
         if not self.platforms or not self.languages:
             raise ValueError("平台与语种不能为空")
+        if len(set(self.platforms)) != len(self.platforms) or len(set(self.languages)) != len(self.languages):
+            raise ValueError("平台与语种不能重复")
+        if type(max_workers) is not int or not 1 <= max_workers <= 8:
+            raise ValueError("max_workers 必须为 1 到 8 的整数")
+        if not math.isfinite(float(batch_deadline_s)) or float(batch_deadline_s) <= 0:
+            raise ValueError("deadline 必须是有限正数")
 
         if compliance_level not in compliance_cfg["levels"]:
             raise ValueError(f"未知合规等级: {compliance_level}")
@@ -97,6 +105,10 @@ class Pipeline:
                     raise ValueError(f"合规等级 {compliance_level} 要求语种 {lang} 的免责声明非空，但配置为空")
                 self.disclaimers[lang] = text
 
+        if isinstance(client, LLMClient):
+            client = client.new_task()
+            client.set_deadline(time.monotonic() + self.batch_deadline_s)
+        self._has_run = False
         self.agent_sell = SellingPointAgent(client, models)
         self.agent_platform = PlatformAdaptationAgent(client, models)
         self.agent_l10n = LocalizationAgent(client, models)
@@ -106,9 +118,17 @@ class Pipeline:
 
     # ---------------------------------------------------------------- 主流程
     def run(self, progress_cb=None, item_cb=None) -> dict:
+        if isinstance(self.client, LLMClient):
+            if self._has_run:
+                self.client = self.client.new_task()
+                for agent in (self.agent_sell, self.agent_platform, self.agent_l10n,
+                              self.agent_compliance, self.agent_asset):
+                    agent.client = self.client
+            self.client.set_deadline(time.monotonic() + self.batch_deadline_s)
+        self._has_run = True
         cb = progress_cb or (lambda *a, **k: None)
         icb = item_cb or (lambda *a, **k: None)
-        t0 = time.time()
+        t0 = time.monotonic()
 
         result = {
             "meta": {
@@ -182,7 +202,7 @@ class Pipeline:
         with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
             futs = {}
             for p, l in combos:
-                if time.time() >= deadline:
+                if time.monotonic() >= deadline:
                     item = self._skipped_item(p, l, "提交前已超整批 deadline")
                     result["results"].append(item)
                     icb(p, l, item)
@@ -194,7 +214,7 @@ class Pipeline:
                 p, l = futs[fut]
                 done += 1
                 # 整批 deadline：取消尚未开始的任务并如实标记
-                if time.time() >= deadline:
+                if time.monotonic() >= deadline:
                     for other in futs:
                         other.cancel()
                 try:
@@ -216,7 +236,7 @@ class Pipeline:
     # ---------------------------------------------------------------- 收尾统计（单条重跑后可重算）
     def finalize(self, result: dict) -> dict:
         """重算 usage / 市场报告 / 价值账（单条重跑替换 item 后调用同一份逻辑）。"""
-        result["usage"] = self.client.usage_summary()
+        update_result_usage(result, self.client)
         results = result["results"]
         delivered = [r for r in results if r["status"] == "delivered"]
         blocked = [r for r in results if r["status"] == "review_blocked"]
@@ -258,6 +278,14 @@ class Pipeline:
         usage_records = []
 
         def _sum_usage():
+            # Include responses consumed before schema validation or a later stage fails.
+            if isinstance(self.client, LLMClient):
+                records = self.client.records_by_tag(combo_id)
+                item["stats"]["tokens"] = sum(r["total_tokens"] for r in records)
+                attempts = [a for a in self.client.attempts() if a["tag"] == combo_id]
+                item["stats"]["calls"] = len(attempts)
+                item["stats"]["unknown_usage_calls"] = sum(a["usage_status"] == "unknown" for a in attempts)
+                return
             item["stats"]["tokens"] = sum(r["total_tokens"] for r in usage_records)
             item["stats"]["calls"] = len(usage_records)
 
@@ -340,16 +368,18 @@ class Pipeline:
             except Exception as e:  # noqa: BLE001 素材失败不撤销交付
                 item["asset_error"] = f"{type(e).__name__}: {str(e)[:200]}"
             return item
+        except CallStopped as e:
+            item["status"] = "skipped_deadline"
+            item["error"] = str(e)
+            return item
         except SchemaError as e:
             # P0-3：Agent 响应不合规 → 本地化阶段=生成失败；合规阶段之后=审核未通过方向
             item["status"] = "review_blocked" if item["stage_reached"] in ("compliance", "delivery_gate") else "failed"
             item["error"] = f"SchemaError: {e}"
-            item["traceback_tail"] = traceback.format_exc()[-400:]
             return item
         except Exception as e:  # noqa: BLE001 单条失败不拖垮整批
             item["status"] = "failed"
             item["error"] = f"{type(e).__name__}: {e}"
-            item["traceback_tail"] = traceback.format_exc()[-400:]
             return item
         finally:
             item["stats"]["latency_s"] = round(time.time() - t0, 1)

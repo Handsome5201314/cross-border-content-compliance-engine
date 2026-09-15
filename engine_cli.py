@@ -27,6 +27,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from core import load_yaml_config                      # noqa: E402
 from core.config_check import validate_all_configs     # noqa: E402
+from core.output_io import atomic_write_text
+from core.usage import update_result_usage
+from uuid import uuid4
 from core.llm_client import LLMClient, mask_key        # noqa: E402
 from core.pipeline import Pipeline, STATUS_LABELS      # noqa: E402
 from core.privacy_gate import PrivacyViolation, validate_product  # noqa: E402
@@ -184,7 +187,7 @@ def main():
         from core import ensure_output_dir
         out_dir = ensure_output_dir()
         image_result = {"attempted": True, **client.generate_image(
-            smoke_prompt, out_dir / "sample_image.png")}
+            smoke_prompt, out_dir / f"image_{uuid4().hex}.png")}
         if image_result["ok"]:
             print(f"[生图] 成功: {image_result['model']} -> {image_result['path']}")
         else:
@@ -204,12 +207,15 @@ def main():
     except (ValueError, RuntimeError) as e:  # noqa: BLE001 配置/门禁错误如实暴露
         sys.exit(f"[FATAL] {e}")
     result["image"] = image_result
+    if image_result["attempted"]:
+        update_result_usage(result, client)
+        pipeline.finalize(result)
 
     # ---------- 落盘 ----------
     out_path = Path(args.out)
     if not out_path.is_absolute():
         out_path = root / out_path
-    out_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_text(out_path, json.dumps(result, ensure_ascii=False, indent=2))
 
     _print_result_summary(result, out_path)
     print(f"\n墙钟总耗时（含生图与重试）: {time.time() - t0:.1f}s")
@@ -256,7 +262,7 @@ def _rerun_failed(args, root: Path) -> int:
     out_path = Path(args.out)
     if not out_path.is_absolute():
         out_path = root / out_path
-    out_path.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
+    atomic_write_text(out_path, json.dumps(result, ensure_ascii=False, indent=2))
     _print_result_summary(result, out_path)
     return 0
 

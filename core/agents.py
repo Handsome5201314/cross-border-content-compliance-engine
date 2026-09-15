@@ -206,22 +206,22 @@ def validate_compliance_response(d: dict) -> None:
     if not isinstance(d, dict):
         raise SchemaError("合规审查输出不是 JSON 对象")
     if d.get("risk_level") not in RISK_ENUM:
-        raise SchemaError(f"合规 risk_level 非法或缺失: {d.get('risk_level')!r}（合法: {RISK_ENUM}）")
+        raise SchemaError(f"合规 risk_level 非法或缺失（合法: {RISK_ENUM}）")
     verdicts = d.get("signal_verdicts")
     if not isinstance(verdicts, list):
         raise SchemaError("signal_verdicts 缺失或不是数组（即使无信号也须空数组）")
     for v in verdicts:
         if not isinstance(v, dict) or v.get("verdict") not in ("violation", "benign") \
                 or not str(v.get("term", "")).strip() or not str(v.get("reason", "")).strip():
-            raise SchemaError(f"signal_verdicts 项非法（须含 term/verdict∈violation|benign/reason）: {v!r}")
+            raise SchemaError("signal_verdicts 项非法（须含 term/verdict∈violation|benign/reason）")
     findings = d.get("llm_findings")
     if not isinstance(findings, list):
         raise SchemaError("llm_findings 缺失或不是数组（即使无发现也须空数组）")
     for f in findings:
         if not isinstance(f, dict) or not str(f.get("term", "")).strip():
-            raise SchemaError(f"llm_findings 项非法（须含非空 term）: {f!r}")
+            raise SchemaError("llm_findings 项非法（须含非空 term）")
         if f.get("severity") not in SEVERITY_ENUM:
-            raise SchemaError(f"llm_findings.severity 非法: {f.get('severity')!r}")
+            raise SchemaError("llm_findings.severity 非法")
     for field in ("safe_titles", "safe_descriptions"):
         if not _is_str_list(d.get(field)):
             raise SchemaError(f"安全版 {field} 缺失/为空（审核失败方向，禁止回退原文）")
@@ -313,7 +313,7 @@ class BaseAgent:
             usage.append(rec2)
             data = extract_json(content2)
         if data is None:
-            raise SchemaError(f"[{self.name}] 模型未能返回合法 JSON（原始输出前300字: {content[:300]}）")
+            raise SchemaError(f"[{self.name}] 模型未能返回合法 JSON；已记录调用用量，原始响应不写入错误信息")
         return data, usage
 
 
