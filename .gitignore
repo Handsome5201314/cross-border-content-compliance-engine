@@ -30,6 +30,13 @@ _recprofile/
 NIGHTWATCH.lock
 WATCHDOG.md
 
+# ===== 运行时数据库与用户隔离数据（本地 SQLite 落盘，绝不入库）=====
+data/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite3
+
 # ===== 临时/调试脚本 =====
 _asm*.py
 _*_log.txt
