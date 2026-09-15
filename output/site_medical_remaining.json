@@ -13,7 +13,7 @@
   },
   "product": {
     "schema_version": "3.0",
-    "product_name": "301 儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）",
+    "product_name": "某三甲医院儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）",
     "product_name_en": "Pediatric Resident AI Assistant (Software) + Smart Badge (Hardware)",
     "brand": "团队自研（医院合作项目）",
     "form": "软硬一体：全本地部署的儿科住院医师 AI 助手软件 + 佩戴式智能胸卡（在研）",

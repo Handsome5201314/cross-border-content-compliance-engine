@@ -48,7 +48,7 @@ STATUS_ICON = {"delivered": "🟢", "review_blocked": "🟠", "failed": "🔴", 
 RISK_COLOR = {"high": "🔴", "medium": "🟠", "low": "🟡", "pass": "🟢"}
 
 st.title("🚀 跨境卖家 AI 多平台文案智造引擎 v3")
-st.caption("真实产品：301 儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）出海 · 5 Agent 流水线 · 双合规门禁")
+st.caption("真实产品：某三甲医院儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）出海 · 5 Agent 流水线 · 双合规门禁")
 
 # P0-2：本地产品 vs 云端引擎的显式区分（不得让人误以为引擎也不上云）
 notices = COMPLIANCE_CFG.get("engine_notices", {})

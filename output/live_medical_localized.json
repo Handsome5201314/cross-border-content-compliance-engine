@@ -12,7 +12,7 @@
   },
   "product": {
     "schema_version": "3.0",
-    "product_name": "301 儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）",
+    "product_name": "某三甲医院儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）",
     "product_name_en": "Pediatric Resident AI Assistant (Software) + Smart Badge (Hardware)",
     "brand": "团队自研（医院合作项目）",
     "form": "软硬一体：全本地部署的儿科住院医师 AI 助手软件 + 佩戴式智能胸卡（在研）",
@@ -2309,7 +2309,7 @@
       "status": "delivered",
       "error": null,
       "content": {
-        "title": "Asisten AI Residen Pediatrik 301 + Lencana Pintar: Solusi Dokumentasi Klinis Lokal",
+        "title": "Asisten AI Residen Pediatrik + Lencana Pintar: Solusi Dokumentasi Klinis Lokal",
         "capabilities": [
           {
             "id": "SW-1",
@@ -2387,7 +2387,7 @@
               "Pengantar solusi perangkat lunak dan keras terintegrasi.",
               "Fokus pada dokumentasi klinis lokal dan efisiensi kerja."
             ],
-            "spoken": "Selamat pagi, **Bapak dan Ibu** sekalian. [pause] Terima kasih telah bergabung. Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik 301, sebuah solusi **terintegrasi** untuk meningkatkan efisiensi dokumentasi klinis di rumah sakit Anda. [pause] Solusi ini dirancang khusus untuk mendukung tim medis pediatrik dengan teknologi yang berjalan sepenuhnya **di lokal**.",
+            "spoken": "Selamat pagi, **Bapak dan Ibu** sekalian. [pause] Terima kasih telah bergabung. Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik, sebuah solusi **terintegrasi** untuk meningkatkan efisiensi dokumentasi klinis di rumah sakit Anda. [pause] Solusi ini dirancang khusus untuk mendukung tim medis pediatrik dengan teknologi yang berjalan sepenuhnya **di lokal**.",
             "action": "Penyiar tersenyum hangat, menatap kamera, dan menampilkan slide judul produk dengan logo rumah sakit proyek."
           },
           {
@@ -2538,7 +2538,7 @@
                 ],
                 "start": 0,
                 "end": 82,
-                "text": "Asisten AI Residen Pediatrik 301 + Lencana Pintar: Solusi Dokumentasi Klinis Lokal",
+                "text": "Asisten AI Residen Pediatrik + Lencana Pintar: Solusi Dokumentasi Klinis Lokal",
                 "signals": []
               },
               {
@@ -2853,7 +2853,7 @@
                 ],
                 "start": 79,
                 "end": 244,
-                "text": " Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik 301, sebuah solusi **terintegrasi** untuk meningkatkan efisiensi dokumentasi klinis di rumah sakit Anda.",
+                "text": " Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik, sebuah solusi **terintegrasi** untuk meningkatkan efisiensi dokumentasi klinis di rumah sakit Anda.",
                 "signals": []
               },
               {
@@ -4513,7 +4513,7 @@
                 ],
                 "start": 0,
                 "end": 82,
-                "text": "Asisten AI Residen Pediatrik 301 + Lencana Pintar: Solusi Dokumentasi Klinis Lokal",
+                "text": "Asisten AI Residen Pediatrik + Lencana Pintar: Solusi Dokumentasi Klinis Lokal",
                 "signals": []
               },
               {
@@ -4828,7 +4828,7 @@
                 ],
                 "start": 79,
                 "end": 244,
-                "text": " Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik 301, sebuah solusi **terintegrasi** untuk meningkatkan efisiensi dokumentasi klinis di rumah sakit Anda.",
+                "text": " Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik, sebuah solusi **terintegrasi** untuk meningkatkan efisiensi dokumentasi klinis di rumah sakit Anda.",
                 "signals": []
               },
               {

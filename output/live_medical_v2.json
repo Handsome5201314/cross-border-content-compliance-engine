@@ -12,7 +12,7 @@
   },
   "product": {
     "schema_version": "3.0",
-    "product_name": "301 儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）",
+    "product_name": "某三甲医院儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）",
     "product_name_en": "Pediatric Resident AI Assistant (Software) + Smart Badge (Hardware)",
     "brand": "团队自研（医院合作项目）",
     "form": "软硬一体：全本地部署的儿科住院医师 AI 助手软件 + 佩戴式智能胸卡（在研）",
@@ -2223,7 +2223,7 @@
       "status": "delivered",
       "error": null,
       "content": {
-        "title": "Asisten AI Residen Pediatrik 301: Efisiensi Klinis dengan Data Lokal",
+        "title": "Asisten AI Residen Pediatrik: Efisiensi Klinis dengan Data Lokal",
         "capabilities": [
           {
             "id": "SW-1",
@@ -2301,7 +2301,7 @@
               "Pengantar solusi AI lokal untuk residen pediatrik.",
               "Penekanan pada efisiensi tanpa mengorbankan keamanan data."
             ],
-            "spoken": "Selamat pagi, **Bapak dan Ibu** sekalian. [pause] Terima kasih telah bergabung. Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik 301. [pause] Solusi ini dirancang khusus untuk mengurangi beban administratif, sehingga Bapak/Ibu dapat fokus pada **perawatan pasien**. [pause] Semua proses berjalan secara lokal di rumah sakit Anda.",
+            "spoken": "Selamat pagi, **Bapak dan Ibu** sekalian. [pause] Terima kasih telah bergabung. Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik. [pause] Solusi ini dirancang khusus untuk mengurangi beban administratif, sehingga Bapak/Ibu dapat fokus pada **perawatan pasien**. [pause] Semua proses berjalan secara lokal di rumah sakit Anda.",
             "action": "Pembicara berdiri tegak, tersenyum hangat, dan melakukan kontak mata dengan kamera/audiens."
           },
           {
@@ -2446,7 +2446,7 @@
                 ],
                 "start": 0,
                 "end": 68,
-                "text": "Asisten AI Residen Pediatrik 301: Efisiensi Klinis dengan Data Lokal",
+                "text": "Asisten AI Residen Pediatrik: Efisiensi Klinis dengan Data Lokal",
                 "signals": []
               },
               {
@@ -2761,7 +2761,7 @@
                 ],
                 "start": 79,
                 "end": 144,
-                "text": " Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik 301.",
+                "text": " Hari ini, kami mempersembahkan Asisten AI Residen Pediatrik.",
                 "signals": []
               },
               {
