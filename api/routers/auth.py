@@ -9,9 +9,10 @@
 """
 import json
 import logging
+import os
 from pathlib import Path
 
-from fastapi import APIRouter, Depends, HTTPException, Response
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 
 from admin import service as admin_service
 from api.deps import get_current_user
@@ -35,16 +36,20 @@ def _user_payload(user: dict) -> dict:
             "role": user["role"], "credits": int(user["credits"])}
 
 
-def _set_session_cookie(response: Response, user: dict) -> None:
+def _set_session_cookie(request: Request, response: Response, user: dict) -> None:
     token = cookie_session.issue_session(user["user_id"], user["role"])
+    # 跨站 iframe（ModelScope 页面内嵌 ms.show）需要 SameSite=None+Secure，否则浏览器不回传 Cookie；
+    # 本地 http 开发保留 Lax（Chrome 拒绝 http 下的 Secure Cookie）
+    secure = request.url.scheme == "https" or os.environ.get("SESSION_SECURE", "").strip().lower() in ("1", "true", "yes")
     response.set_cookie(
         cookie_session.COOKIE_NAME, token,
         max_age=cookie_session.cookie_max_age(), path="/",
-        httponly=True, samesite="lax", secure=cookie_session.cookie_secure())
+        httponly=True, samesite="none" if secure else "lax", secure=secure,
+    )
 
 
 @router.post("/register", status_code=201)
-def register(body: AuthIn, response: Response):
+def register(body: AuthIn, request: Request, response: Response):
     username = body.username.strip()
     if not username or not body.password:
         raise HTTPException(status_code=422, detail="用户名和密码不能为空")
@@ -53,14 +58,14 @@ def register(body: AuthIn, response: Response):
     uid = users_dao.UserDAO.create(username, hash_password(body.password), role="user")
     credits_service.grant_signup(uid)
     user = users_dao.UserDAO.get_by_id(uid)
-    _set_session_cookie(response, user)
+    _set_session_cookie(request, response, user)
     payload = _user_payload(user)
     payload["session_insecure"] = cookie_session.insecure_secret()
     return payload
 
 
 @router.post("/login")
-def login(body: AuthIn, response: Response):
+def login(body: AuthIn, request: Request, response: Response):
     user = users_dao.UserDAO.get_by_username(body.username.strip())
     if user is None or not verify_password(body.password, user["password_hash"]):
         raise HTTPException(status_code=401, detail="用户名或密码错误")
@@ -69,19 +74,24 @@ def login(body: AuthIn, response: Response):
         audit_dao.AuditDAO.append(user["user_id"], "login_blocked", user["user_id"],
                                   detail={"reason": "disabled"})
         raise HTTPException(status_code=401, detail="该账号已被禁用，请联系管理员")
-    _set_session_cookie(response, user)
+    _set_session_cookie(request, response, user)
     payload = _user_payload(user)
     payload["session_insecure"] = cookie_session.insecure_secret()
     return payload
 
 
 @router.post("/logout")
-def logout(response: Response, user: dict = Depends(get_current_user)):
+def logout(request: Request, response: Response, user: dict = Depends(get_current_user)):
     # 服务端吊销当前会话 jti：即使旧 Cookie 被截获，7 天 TTL 内也无法再复用（§会话吊销）
     jti = user.get("jti")
     if jti:
         cookie_session.revoke_session(jti)
-    response.delete_cookie(cookie_session.COOKIE_NAME, path="/")
+    # delete_cookie 需与 set_cookie 的 samesite/secure 属性一致才能让浏览器真正删除
+    secure = request.url.scheme == "https" or os.environ.get("SESSION_SECURE", "").strip().lower() in ("1", "true", "yes")
+    response.delete_cookie(
+        cookie_session.COOKIE_NAME, path="/",
+        httponly=True, samesite="none" if secure else "lax", secure=secure,
+    )
     return {}
 
 
