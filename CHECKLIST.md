@@ -10,7 +10,7 @@
 |---|---|---|---|
 | 1 | **复赛作品说明（PDF）** | ✅ **已导出**（8 页，299.6 KB，已核验内容） | `破界AI_跨境内容合规引擎_复赛作品.pdf` |
 | 2 | **产品演示视频** | ✅ 已生成（178s），**待上传拿链接** | `final\破界AI_跨境内容合规引擎_演示视频.mp4` |
-| 3 | **代码仓库** | ⚠️ **本地已 commit，待推 GitCode + 授权** | 见 `GITCODE_PUSH_STEPS.md` |
+| 3 | **代码仓库** | ✅ **已推 GitHub（公开，可直接访问）** | `https://github.com/Handsome5201314/cross-border-content-compliance-engine` |
 | 4 | **可运行 Demo** | ✅ Streamlit 本地可跑 | `streamlit run app.py` |
 | 5 | **兜底 zip**（若链接走不通） | ✅ 已重建（含最新 PDF + 720p 视频） | `破界AI_跨境内容合规引擎_提交包.zip` |
 
@@ -48,9 +48,10 @@
 ## 三、上传前必须先确认的三件事
 
 1. **B站登录态**：09-09 Chrome 升级后曾失效，需确认已重新登录
-2. **代码仓库**：`https://github.com/Handsome5201314/cross-border-ai-marketing-copy`
-   - 若提交 GitCode 私有仓库，**需授权评审账号 `air__Heaven`**（否则评委看不到）
-   - 若不授权，就填 GitHub 公开地址
+2. **代码仓库**：✅ 已推送并验证
+   - **复赛仓库（推荐填这个）**：`https://github.com/Handsome5201314/cross-border-content-compliance-engine` —— **公开仓库，评委可直接访问，无需授权**
+   - 初赛仓库（备查）：`https://github.com/Handsome5201314/cross-border-ai-marketing-copy`
+   - 如需改用 GitCode 私有仓库，才需授权评审账号 `air__Heaven`（见 `GITCODE_PUSH_STEPS.md`）
 3. **视频标题/简介**：见 `UPLOAD_COPY.md`
    - ⚠️ **AI 披露要区分**：片头/转场是 AI 生成，**主体演示是系统真实输出**——
      措辞建议：「片头与转场画面由 AI 生成（MiniMax H3）；主体演示内容来自系统真实输出，数据可在交付文件中核验。」
