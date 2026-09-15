@@ -281,8 +281,10 @@ streamlit run app.py
 - ☑ 产品功能与使用说明（本模板第四部分）
 - ☑ 可运行的产品 Demo / 核心功能原型：`start_demo.bat` 一键启动 Streamlit；`DEMO_GUIDE.md` 三分钟演示路径；`samples/precomputed_full.json`（42 条真实产物，18 交付 / 6 审核未过 / 18 失败，失败项如实保留、不伪装）
 - ☑ 产品演示视频（已出片）：`final/破界AI_跨境内容合规引擎_复赛演示.mp4`（150 秒 / 1920×1080 / 中文字幕烧录 / 无配音）；公开链接待上传（B站登录态失效，需手动上传后回填）
-- ☑ **代码仓库地址（GitHub 公开，评审无需授权）**：`https://github.com/Handsome5201314/cross-border-content-compliance-engine`
-- ☑ 测试账号或体验地址：**无需账号**（仓库公开可直接访问；Demo 本地一键启动）
+- ☑ **GitCode 代码仓库地址**：`https://gitcode.com/Handsome5201314/cross-border-content-compliance-engine`
+  （公开仓库，无需登录即可浏览代码与交付文件）
+- ☑ **GitHub 镜像仓库**（备用链接）：`https://github.com/Handsome5201314/cross-border-content-compliance-engine`
+- ☑ 测试账号或体验地址：**无需账号**（仓库公开可直接访问；Demo 本地一键启动 `start_demo.bat`）
 
 ---
 

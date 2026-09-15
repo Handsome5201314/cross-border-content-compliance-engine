@@ -10,7 +10,7 @@
 |---|---|---|---|
 | 1 | **复赛作品说明（PDF）** | ✅ **已导出**（8 页，299.6 KB，已核验内容） | `破界AI_跨境内容合规引擎_复赛作品.pdf` |
 | 2 | **产品演示视频** | ✅ 已生成（178s），**待上传拿链接** | `final\破界AI_跨境内容合规引擎_演示视频.mp4` |
-| 3 | **代码仓库** | ✅ **已推 GitHub（公开，可直接访问）** | `https://github.com/Handsome5201314/cross-border-content-compliance-engine` |
+| 3 | **代码仓库** | ✅ **GitHub + GitCode 双仓库已同步（均公开可匿名访问）** | GitCode：`https://gitcode.com/Handsome5201314/cross-border-content-compliance-engine`<br>GitHub：`https://github.com/Handsome5201314/cross-border-content-compliance-engine` |
 | 4 | **可运行 Demo** | ✅ Streamlit 本地可跑 | `streamlit run app.py` |
 | 5 | **兜底 zip**（若链接走不通） | ✅ 已重建（含最新 PDF + 720p 视频） | `破界AI_跨境内容合规引擎_提交包.zip` |
 
@@ -20,15 +20,19 @@
 
 ---
 
-## 二、视频：两个版本，二选一
+## 二、视频：用「有声版」
 
-| 版本 | 文件 | 时长 | 说明 |
-|---|---|---|---|
-| **推荐** | `破界AI_跨境内容合规引擎_演示视频.mp4` | **178s** | AI 场景图 + 文字叠加，电影感 |
-| 上传压缩版 | `同目录 _720p.mp4` | 178s / 14.8 MB | 同内容，720p，上传更快 |
-| 你自己剪的 | `破界AI_跨境内容合规引擎_复赛演示.mp4` | 150s | 基于旧版文字卡，另有 `_720p` |
+| 版本 | 文件 | 时长 | 音轨 | 说明 |
+|---|---|---|---|---|
+| **✅ 推荐** | `破界AI_跨境内容合规引擎_演示视频_有声版.mp4` | 178s | **有**（aac 48k 立体声） | AI 场景图 + 文字叠加，**带 H3 原生环境音/配乐** |
+| 上传压缩版 | `同目录 _有声版_720p.mp4` | 178s / 15.4 MB | 有 | 上传更快 |
+| 无声版 | `破界AI_跨境内容合规引擎_演示视频.mp4` | 178s | ❌ 无 | 早期版本，已被有声版取代 |
+| 你自己剪的 | `破界AI_跨境内容合规引擎_复赛演示.mp4` | 150s | ❌ 无 | 基于旧版文字卡 |
 
-**建议**：用 **178s 那版**（视觉好一个量级）。若已上传 150s 版，可保留，或替换后重新提交。
+**建议用有声版**。音频来源说明：片头/场景段的音轨是 **MiniMax H3 生成视频时原生带出的**（画面+环境音+配乐联合生成）；
+证据段（截图/对照卡）为静音补齐，保证音视频流一致。
+
+> 若希望有**人声讲解**，可以再补一层 TTS 配音（口播稿见 `demo_video_storyboard.md`）。当前版本已解决"完全没声音"的问题。
 
 **新结构（178s）**：
 ```
@@ -48,10 +52,13 @@
 ## 三、上传前必须先确认的三件事
 
 1. **B站登录态**：09-09 Chrome 升级后曾失效，需确认已重新登录
-2. **代码仓库**：✅ 已推送并验证
-   - **复赛仓库（推荐填这个）**：`https://github.com/Handsome5201314/cross-border-content-compliance-engine` —— **公开仓库，评委可直接访问，无需授权**
+2. **代码仓库**：✅ **双仓库已同步，均已验证匿名可访问**
+   - **GitCode（填这个，比赛指定平台）**：`https://gitcode.com/Handsome5201314/cross-border-content-compliance-engine`
+   - GitHub（备用）：`https://github.com/Handsome5201314/cross-border-content-compliance-engine`
+   - ✅ 已实测：两个仓库匿名 HTTP 200 + 可匿名 `git fetch`，远程 HEAD 均为 `6111a61`，内容一致
+   - ⚠️ **仍建议在 GitCode 显式授权评审账号 `air__Heaven`**（设置 → 成员管理 → 添加成员 → 只读）——
+     虽然当前公开可访问，但比赛通知明确要求这一步，做了更稳妥
    - 初赛仓库（备查）：`https://github.com/Handsome5201314/cross-border-ai-marketing-copy`
-   - 如需改用 GitCode 私有仓库，才需授权评审账号 `air__Heaven`（见 `GITCODE_PUSH_STEPS.md`）
 3. **视频标题/简介**：见 `UPLOAD_COPY.md`
    - ⚠️ **AI 披露要区分**：片头/转场是 AI 生成，**主体演示是系统真实输出**——
      措辞建议：「片头与转场画面由 AI 生成（MiniMax H3）；主体演示内容来自系统真实输出，数据可在交付文件中核验。」
