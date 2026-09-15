@@ -90,6 +90,12 @@ def recover_orphan_tasks() -> None:
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    # 启动即打印数据库落点，一眼判断持久化是否生效（/mnt/workspace=持久，/app/data=每次部署重置）
+    from dao.db import _resolve_db_path
+    _dbp = _resolve_db_path()
+    _persistent = str(_dbp).startswith("/mnt/workspace")
+    logger.warning("DB 落点: %s （%s）", _dbp,
+                   "持久化 OK" if _persistent else "!!! 容器临时路径，部署即重置")
     Database.get().init_schema()
     seed_admin()
     recover_orphan_tasks()

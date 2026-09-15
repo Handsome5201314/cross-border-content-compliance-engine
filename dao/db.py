@@ -40,8 +40,15 @@ def _resolve_db_path() -> Path:
     env = os.environ.get("APP_DATA_DIR")
     if env:
         return Path(env) / "app.db"
-    if _PROD_DIR.exists():
-        return _PROD_DIR / "app.db"
+    # 平台只挂载 /mnt/workspace 本体，data/ 子目录需主动创建；
+    # 之前探测 /mnt/workspace/data 永远 False → 回退容器临时路径 → 每次部署数据重置（V3 事故）
+    ws = Path("/mnt/workspace")
+    if ws.is_dir():
+        try:
+            (ws / "data").mkdir(parents=True, exist_ok=True)
+            return ws / "data" / "app.db"
+        except OSError:
+            pass
     return _LOCAL_DIR / "app.db"
 
 
