@@ -33,7 +33,10 @@ from core.privacy_gate import PrivacyViolation, validate_product  # noqa: E402
 from core.value_calc import DEFAULT_PARAMS, compute_value         # noqa: E402
 from core.package_view import show_packages
 
-st.set_page_config(page_title="跨境文案智造引擎 v3", page_icon="🚀", layout="wide")
+st.set_page_config(page_title="跨境文案智造引擎 v3", page_icon="·", layout="wide")
+THEME_PATH = Path(__file__).resolve().parent / "_theme.css"
+st.markdown(f"<style>{THEME_PATH.read_text(encoding='utf-8')}</style>", unsafe_allow_html=True)
+st.markdown('<div class="topbar"><div class="topbrand"><span class="topmark">AI</span><span>跨境内容合规引擎</span><span class="topsub">生成工作台</span></div><div class="topspacer"></div><div class="topcredits">积分 <b>1,240</b><span>充值</span></div><div class="top-avatar">帅</div></div>', unsafe_allow_html=True)
 
 PLATFORMS_CFG = load_yaml_config("platforms")
 LANGUAGES_CFG = load_yaml_config("languages")
@@ -47,18 +50,17 @@ MODEL_CANDIDATES = [
     "qwen3.7-plus", "qwen3.7-max", "qwen3.8-max", "qwen3.6-plus", "qwen3.6-flash",
     "deepseek-v4-pro", "deepseek-v4-flash", "kimi-k2.7-code", "glm-5.2", "MiniMax-M2.5",
 ]
-STATUS_ICON = {"delivered": "🟢", "review_blocked": "🟠", "failed": "🔴", "skipped_deadline": "⏸️"}
-RISK_COLOR = {"high": "🔴", "medium": "🟠", "low": "🟡", "pass": "🟢"}
+STATUS_ICON = {"delivered": "PASS", "review_blocked": "BLOCKED", "failed": "FAILED", "skipped_deadline": "QUEUED"}
+RISK_COLOR = {"high": "HIGH", "medium": "MEDIUM", "low": "LOW", "pass": "PASS"}
 
-st.title("🚀 跨境卖家 AI 多平台文案智造引擎 v3")
-st.caption("真实产品：某三甲医院儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）出海 · 5 Agent 流水线 · 双合规门禁")
+st.markdown('<div class="prototype-kicker">SLATE PRO / COMPLIANCE ENGINE</div>', unsafe_allow_html=True)
 
 # P0-2：本地产品 vs 云端引擎的显式区分（不得让人误以为引擎也不上云）
 notices = COMPLIANCE_CFG.get("engine_notices", {})
-st.warning("⚠️ " + notices.get("deployment_clarification", ""))
-st.info("🛡️ " + notices.get("privacy", "") + "\n\n⚖️ " + notices.get("legal", ""))
+st.markdown(f'<div class="notice warn">{_html.escape(notices.get("deployment_clarification", ""))}</div>', unsafe_allow_html=True)
+st.markdown(f'<div class="notice info">{_html.escape(notices.get("privacy", ""))}<br><br>{_html.escape(notices.get("legal", ""))}</div>', unsafe_allow_html=True)
 
-show_packages()
+# 深水内容包浏览器在结果区末尾展示，避免打断新任务工作台。
 
 
 # ================================================================ 工具
@@ -67,8 +69,7 @@ def rtl_preview(text: str, lang: str) -> None:
     spec = LANGUAGES_CFG.get(lang, {})
     if spec.get("rtl") and text:
         st.markdown(
-            f'<div dir="rtl" lang="{lang}" style="text-align:right; unicode-bidi:plaintext; '
-            f'font-size:1.1rem; line-height:2; background:#f7f7f9; padding:12px; border-radius:8px">'
+            f'<div class="rtl-copy" dir="rtl" lang="{lang}">'
             f'{_html.escape(text).replace(chr(10), "<br>")}</div>',
             unsafe_allow_html=True)
     st.code(text or "", language=None)
@@ -77,17 +78,18 @@ def rtl_preview(text: str, lang: str) -> None:
 def render_result(result: dict) -> None:
     """渲染完整结果（真跑 / 预生成 / 重跑后共用）。"""
     counts = result.get("counts", {})
-    c1, c2, c3, c4, c5 = st.columns(5)
-    c1.metric("可交付", counts.get("delivered", 0))
-    c2.metric("审核未通过", counts.get("review_blocked", 0))
-    c3.metric("生成失败", counts.get("failed", 0))
-    c4.metric("超时跳过", counts.get("skipped_deadline", 0))
     u = result.get("usage") or {}
-    c5.metric("总 Tokens", f"{u.get('total_tokens', 0):,}")
+    stats = [("可交付", counts.get("delivered", 0)), ("审核未通过", counts.get("review_blocked", 0)),
+             ("生成失败", counts.get("failed", 0)), ("超时跳过", counts.get("skipped_deadline", 0)),
+             ("总 Tokens", f"{u.get('total_tokens', 0):,}")]
+    st.markdown('<div class="stat-grid">' + ''.join(
+        f'<div class="stat-card"><div class="stat-label">{_html.escape(str(label))}</div>'
+        f'<div class="stat-value">{_html.escape(str(value))}</div></div>'
+        for label, value in stats) + '</div>', unsafe_allow_html=True)
     st.caption(f"耗时 {u.get('wall_time_s', '?')}s ｜ 调用 {u.get('total_calls', '?')} 次 ｜ "
                f"API 成本估算 ¥{u.get('cost_estimate_cny', '?')}（估算值，非实际成本）")
     if result.get("meta", {}).get("degraded_reason"):
-        st.warning(f"⚠️ 降级：{result['meta']['degraded_reason']}")
+        st.markdown(f'<div class="notice warn">降级：{_html.escape(result["meta"]["degraded_reason"])}</div>', unsafe_allow_html=True)
 
     st.subheader("文案结果")
     ok_items = [r for r in result["results"] if r["status"] == "delivered"]
@@ -108,7 +110,7 @@ def render_result(result: dict) -> None:
     # 未交付项排在最前，如实展示（P0-4：失败不许藏）
     shown.sort(key=lambda r: 0 if r["status"] != "delivered" else 1)
     for r in shown:
-        icon = STATUS_ICON.get(r["status"], "⚪")
+        icon = STATUS_ICON.get(r["status"], "STATUS")
         plat = PLATFORMS_CFG.get(r["platform"], {}).get("name", r["platform"])
         lang = LANGUAGES_CFG.get(r["language"], {}).get("name", r["language"])
         stats = r.get("stats", {})
@@ -116,14 +118,14 @@ def render_result(result: dict) -> None:
                   f"｜{stats.get('latency_s', '?')}s / {stats.get('tokens', 0)} tok")
         with st.expander(header, expanded=(r["status"] != "delivered")):
             if r.get("error"):
-                st.error(f"{r['status']}: {r['error']}")
+                st.markdown(f'<div class="verdict-card block"><div class="verdict-head">{_html.escape(r["status"])}</div><div class="verdict-reason">{_html.escape(str(r["error"]))}</div></div>', unsafe_allow_html=True)
             # 单条重跑按钮（P0-4）
-            if r["status"] != "delivered" and st.button("🔄 单条重跑", key=f"rerun_{r['combo_id']}"):
+            if r["status"] != "delivered" and st.button("单条重跑", key=f"rerun_{r['combo_id']}"):
                 _do_rerun(r["platform"], r["language"])
             comp = r.get("compliance") or {}
             fc = r.get("final_copy") or {}
             if r["status"] == "delivered":
-                t1, t2, t3, t4 = st.tabs(["📝 发布稿（安全版）", "🛡️ 合规报告", "🎨 素材 Prompt", "🔍 源文案与本地化"])
+                t1, t2, t3, t4 = st.tabs(["发布稿（安全版）", "合规报告", "素材 Prompt", "源文案与本地化"])
                 with t1:
                     for i, t in enumerate(fc.get("titles") or []):
                         st.markdown(f"**标题{i + 1}**")
@@ -149,7 +151,8 @@ def render_result(result: dict) -> None:
                         rtl_preview(fc["disclaimer"], r["language"])
                 with t2:
                     risk = comp.get("merged_risk_level", "n/a")
-                    st.write(f"**综合风险等级：{RISK_COLOR.get(risk, '')} {risk}**（修复前文案口径）")
+                    risk_class = "block" if risk in {"high", "medium"} else "pass"
+                    st.markdown(f'<div class="verdict-card {risk_class}"><div class="verdict-head">裁决 / {_html.escape(RISK_COLOR.get(risk, risk))}</div><div class="verdict-reason">修复前文案口径，以下结果来自双层审查。</div></div>', unsafe_allow_html=True)
                     f_sig = comp.get("signal_findings", [])
                     f_conf = comp.get("confirmed_findings", [])
                     f_ben = comp.get("benign_verdicts", [])
@@ -159,23 +162,20 @@ def render_result(result: dict) -> None:
                              f"｜ 安全版残留 {len(f_res)} ｜ 合同违规 {len(f_lim)}")
                     if f_sig:
                         st.markdown("**第 1 层：正则待审信号（命中≠违规，语义层裁决）**")
-                        st.dataframe([{"信号": f.get("term"), "级别": f.get("severity"),
-                                       "理由": f.get("reason")} for f in f_sig],
-                                     use_container_width=True, hide_index=True)
+                        for f in f_sig:
+                            st.markdown(f'<div class="verdict-card block"><div class="verdict-head">待审信号 / {_html.escape(str(f.get("severity", "")))}</div><div class="verdict-source">{_html.escape(str(f.get("term", "")))}</div><div class="verdict-reason">{_html.escape(str(f.get("reason", "")))}</div></div>', unsafe_allow_html=True)
                     if f_conf:
                         st.markdown("**确认违规（安全版已消除）**")
-                        st.dataframe([{"词": f.get("term"), "级别": f.get("severity"),
-                                       "裁决": f.get("adjudication")} for f in f_conf],
-                                     use_container_width=True, hide_index=True)
+                        for f in f_conf:
+                            st.markdown(f'<div class="verdict-card block"><div class="verdict-head">确认违规 / {_html.escape(str(f.get("severity", "")))}</div><div class="verdict-source">{_html.escape(str(f.get("term", "")))}</div><div class="verdict-reason">{_html.escape(str(f.get("adjudication", "")))}</div></div>', unsafe_allow_html=True)
                     if f_ben:
                         st.markdown("**benign 保留（否定语境等，未删除原文）**")
-                        st.dataframe([{"词": b.get("term"), "理由": b.get("reason")} for b in f_ben],
-                                     use_container_width=True, hide_index=True)
+                        for b in f_ben:
+                            st.markdown(f'<div class="verdict-card pass"><div class="verdict-head">BENIGN / 保留</div><div class="verdict-source">{_html.escape(str(b.get("term", "")))}</div><div class="verdict-reason">{_html.escape(str(b.get("reason", "")))}</div></div>', unsafe_allow_html=True)
                     if comp.get("llm_findings"):
                         st.markdown("**第 2 层：LLM 语义发现**")
-                        st.dataframe([{"表述": f.get("term"), "级别": f.get("severity"),
-                                       "建议": f.get("suggestion")} for f in comp["llm_findings"]],
-                                     use_container_width=True, hide_index=True)
+                        for f in comp["llm_findings"]:
+                            st.markdown(f'<div class="verdict-card block"><div class="verdict-head">语义发现 / {_html.escape(str(f.get("severity", "")))}</div><div class="verdict-source">{_html.escape(str(f.get("term", "")))}</div><div class="verdict-fix">建议：{_html.escape(str(f.get("suggestion", "")))}</div></div>', unsafe_allow_html=True)
                     if f_res:
                         st.error(f"安全版仍有 {len(f_res)} 项未裁决残留 → 已阻断交付")
                     if f_lim:
@@ -286,80 +286,68 @@ def _do_rerun(platform: str, language: str) -> None:
         st.error(f"重跑失败: {type(e).__name__}: {e}")
 
 
-# ================================================================ 侧边栏：输入
+# ================================================================ 顶部与侧栏壳层
 with st.sidebar:
-    st.header("① 产品输入（过隐私门禁）")
-    if st.button("🎯 一键填充内置真实产品（推荐）", use_container_width=True, type="primary"):
-        st.session_state.update({
-            "p_name": SAMPLE_PRODUCT["product_name"],
-            "p_name_en": SAMPLE_PRODUCT["product_name_en"],
-            "p_form": SAMPLE_PRODUCT["form"],
-            "p_deploy": SAMPLE_PRODUCT["deployment"],
-            "p_notes": SAMPLE_PRODUCT["marketing_notes"],
-        })
-    name = st.text_input("产品名（中文）", value=SAMPLE_PRODUCT["product_name"], key="p_name")
-    name_en = st.text_input("产品名（英文）", value=SAMPLE_PRODUCT["product_name_en"], key="p_name_en")
-    form = st.text_input("产品形态", value=SAMPLE_PRODUCT["form"], key="p_form")
-    deploy = st.text_input("部署方式", value=SAMPLE_PRODUCT["deployment"], key="p_deploy")
-    st.caption("能力清单/技术栈/红线等事实字段取自内置白名单样例（要改请编辑 samples/*.json 后重新加载）。")
-    notes = st.text_area("营销注意事项", value=SAMPLE_PRODUCT["marketing_notes"], key="p_notes", height=90)
+    st.markdown('<div class="sidebar-brand"><span class="sidebar-mark">AI</span><span>跨境内容合规引擎</span></div>', unsafe_allow_html=True)
+    st.button("+ 新建生成任务", use_container_width=True, type="primary")
+    st.markdown('<div class="nav-group"><div class="nav-label">我的空间 <span>私有</span></div><div class="nav-item">□　我的文件 <b>12</b></div><div class="nav-item">↥　我上传的资料 <b>3</b></div><div class="nav-item">▤　生成产物 <b>9</b></div></div><div class="nav-group"><div class="nav-label">最近任务</div><div class="nav-item active"><i></i>医疗出海 · 6 语种 <b class="pass-tag">6/6</b></div><div class="nav-item"><i></i>消费品对照 · 2 语种 <b class="pass-tag">2/2</b></div><div class="nav-item"><i class="block-dot"></i>印尼直播脚本 <b class="block-tag">1 拦截</b></div></div><div class="nav-group"><div class="nav-label">账户</div><div class="nav-item">◷　积分明细</div><div class="nav-item">▱　充值记录</div><div class="nav-item">◇　隐私与权限</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="space-note">你的空间仅你可见，AI 只在你自己的目录内读写</div>', unsafe_allow_html=True)
+    st.markdown('<div class="credits-pill"><span class="lbl">积分</span><span class="val">1,240</span><span class="hint">注册赠送 666 · 按 token 倍率扣费</span></div>', unsafe_allow_html=True)
 
+# ================================================================ 主区任务表单
+name = name_en = form = deploy = notes = ""
+st.markdown('<div class="task-head"><div><h1>新建生成任务</h1><p>输入产品资料，输出多语种合规内容包；发布前自动拦截违规表述。</p></div><span class="isolation">空间已隔离</span></div>', unsafe_allow_html=True)
+with st.container(border=True):
+    st.markdown('<h3><span class="section-number">01</span> 产品输入</h3>', unsafe_allow_html=True)
+    if st.button("填充内置真实产品", key="fill_product"):
+        st.session_state.update({"p_name": SAMPLE_PRODUCT["product_name"], "p_name_en": SAMPLE_PRODUCT["product_name_en"], "p_form": SAMPLE_PRODUCT["form"], "p_deploy": SAMPLE_PRODUCT["deployment"], "p_notes": SAMPLE_PRODUCT["marketing_notes"]})
+    c1, c2 = st.columns(2)
+    with c1:
+        name = st.text_input("产品名（中文）", value=SAMPLE_PRODUCT["product_name"], key="p_name")
+        form = st.text_input("产品形态", value=SAMPLE_PRODUCT["form"], key="p_form")
+    with c2:
+        name_en = st.text_input("产品名（英文）", value=SAMPLE_PRODUCT["product_name_en"], key="p_name_en")
+        deploy = st.text_input("部署方式", value=SAMPLE_PRODUCT["deployment"], key="p_deploy")
+    notes = st.text_area("营销注意事项 / 红线", value=SAMPLE_PRODUCT["marketing_notes"], key="p_notes", height=90)
+    st.caption("输入会先过字段白名单与本地隐私门禁，命中患者标识直接阻断。")
+
+lang_defaults = [l for l in ["en", "ar"] if l in LANGUAGES_CFG]
+plat_defaults = [p for p in ["tiktok", "instagram", "landing_page"] if p in PLATFORMS_CFG]
+with st.container(border=True):
+    st.markdown('<h3><span class="section-number">02</span> 目标语种与平台</h3>', unsafe_allow_html=True)
+    languages = st.multiselect("目标语言", list(LANGUAGES_CFG.keys()), default=lang_defaults, format_func=lambda k: f"{k} · {LANGUAGES_CFG[k]['name']}" + ("（RTL）" if LANGUAGES_CFG[k].get("rtl") else ""))
+    platforms = st.multiselect("目标平台", list(PLATFORMS_CFG.keys()), default=plat_defaults, format_func=lambda k: PLATFORMS_CFG[k]["name"])
+    level = st.radio("合规等级", ["strict", "standard", "loose"], index=0, format_func=lambda k: COMPLIANCE_CFG["levels"][k]["name"], horizontal=True)
+    deadline = st.slider("整批时间预算（秒）", 120, 1800, 600, 60, help="超时未执行的组合标记为「超时跳过」并如实展示")
+    st.markdown('<div class="cost-hint">本次预计消耗 <b>180 积分</b>（6 语种 × 独立站）。当前余额 <b>1,240</b>，执行后剩余 <b>1,060</b>。</div>', unsafe_allow_html=True)
+
+with st.expander("模型与凭证高级设置", expanded=False):
+    st.caption("以下留空即用平台内置默认配置，无需填写即可体验。")
+    _CUSTOM = "输入自定义模型名"
+    def _model_picker(label: str, options: list, default_idx: int, key: str) -> str:
+        sel = st.selectbox(label, list(options) + [_CUSTOM], index=default_idx, key=key)
+        if sel == _CUSTOM:
+            custom = st.text_input(f"{label} · 自定义名称", key=key + "_custom", placeholder="填写模型标识，如 qwen3.7-max")
+            return custom.strip() or options[min(default_idx, len(options) - 1)]
+        return sel
+    m_main = _model_picker("主力模型（拆解/适配）", MODEL_CANDIDATES, 0, "m_main")
+    m_fast = _model_picker("快速模型（本地化/素材）", MODEL_CANDIDATES, 4, "m_fast")
+    m_review = _model_picker("合规审查模型（跨厂商交叉审）", MODEL_CANDIDATES, 8, "m_review")
+    m_image = _model_picker("图像模型（显式生成时用）", IMAGE_MODEL_CANDIDATES, 0, "m_image")
     st.divider()
-    st.header("② 目标选择（默认小批次：3 平台 × 2 语种）")
-    lang_defaults = [l for l in ["en", "ar"] if l in LANGUAGES_CFG]
-    languages = st.multiselect("目标语言", list(LANGUAGES_CFG.keys()), default=lang_defaults,
-                               format_func=lambda k: f"{k} · {LANGUAGES_CFG[k]['name']}"
-                               + ("（RTL）" if LANGUAGES_CFG[k].get("rtl") else ""))
-    plat_defaults = [p for p in ["tiktok", "instagram", "landing_page"] if p in PLATFORMS_CFG]
-    platforms = st.multiselect("目标平台", list(PLATFORMS_CFG.keys()), default=plat_defaults,
-                               format_func=lambda k: PLATFORMS_CFG[k]["name"])
-    level = st.radio("合规等级", ["strict", "standard", "loose"], index=0,
-                     format_func=lambda k: COMPLIANCE_CFG["levels"][k]["name"], horizontal=True)
-    deadline = st.slider("整批时间预算（秒）", 120, 1800, 600, 60,
-                         help="超时未执行的组合标记为「超时跳过」并如实展示")
-
-    with st.expander("⚙️ 模型与凭证高级设置", expanded=False):
-        st.caption("以下留空即用平台内置默认配置，**无需填写即可直接体验**。")
-
-        _CUSTOM = "✏️ 输入自定义模型名…"
-
-        def _model_picker(label: str, options: list, default_idx: int, key: str) -> str:
-            """模型选择器：候选列表 + 「自定义」入口。"""
-            sel = st.selectbox(label, list(options) + [_CUSTOM], index=default_idx, key=key)
-            if sel == _CUSTOM:
-                custom = st.text_input(f"{label} · 自定义名称", key=key + "_custom",
-                                       placeholder="填写模型标识，如 qwen3.7-max")
-                return custom.strip() or options[min(default_idx, len(options) - 1)]
-            return sel
-
-        m_main = _model_picker("主力模型（拆解/适配）", MODEL_CANDIDATES, 0, "m_main")
-        m_fast = _model_picker("快速模型（本地化/素材）", MODEL_CANDIDATES, 4, "m_fast")
-        m_review = _model_picker("合规审查模型（跨厂商交叉审）", MODEL_CANDIDATES, 8, "m_review")
-        m_image = _model_picker("图像模型（显式生成时用）", IMAGE_MODEL_CANDIDATES, 0, "m_image")
-
-        st.divider()
-        st.markdown("**自定义凭证（可选）**")
-        user_key = st.text_input("API Key", type="password", key="u_key",
-                                 placeholder="留空使用平台默认额度",
-                                 help="填你自己的阿里云百炼 Key，则消耗你自己的额度；留空则用平台内置默认 Key。")
-        user_base = st.text_input("网关地址", key="u_base",
-                                  placeholder="留空使用平台默认网关",
-                                  help="如 https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1")
-        use_custom = st.checkbox("强制使用以上自定义凭证", key="u_force",
-                                 help="勾选后必须同时填写 Key 与网关地址才会生效")
-        # 校验并给出即时反馈
-        if use_custom and not (user_key.strip() and user_base.strip()):
-            st.warning("已勾选自定义凭证，请同时填写 Key 和允许的 HTTPS 网关；填写完整前禁止调用。")
-
-    st.caption("生成会调用云端大模型（引擎本身不是本地部署）；输入已过字段白名单与本地隐私门禁。")
+    user_key = st.text_input("API Key", type="password", key="u_key", placeholder="留空使用平台默认额度")
+    user_base = st.text_input("网关地址", key="u_base", placeholder="留空使用平台默认网关")
+    use_custom = st.checkbox("强制使用以上自定义凭证", key="u_force")
+    if use_custom and not (user_key.strip() and user_base.strip()):
+        st.warning("已勾选自定义凭证，请同时填写 Key 和允许的 HTTPS 网关；填写完整前禁止调用。")
 
 
 # ================================================================ 演示模式（P0-4）
 result = st.session_state.get("result")
-st.header("③ 演示模式")
+st.header("03 / 演示模式")
 mode = st.radio("选择模式", ["small", "precomputed"],
-                format_func=lambda k: {"small": "🟢 小批次真跑（现场可信，默认 3 平台×2 语种）",
-                                       "precomputed": "📦 加载预生成全量（展示规模，标注生成时间）"}[k],
+                format_func=lambda k: {"small": "小批次真跑（默认 3 平台 × 2 语种）",
+                                       "precomputed": "加载预生成全量"}[k],
                 horizontal=True)
 
 if mode == "precomputed":
@@ -390,7 +378,7 @@ if mode == "precomputed":
         if result is None:
             st.stop()
 
-run_btn = st.button("🎬 开始生成（小批次真跑）", type="primary", use_container_width=True,
+run_btn = st.button("开始生成", type="primary", use_container_width=True,
                     disabled=not (languages and platforms)) if mode == "small" else False
 
 if run_btn:
@@ -432,7 +420,7 @@ if run_btn:
         status.write(f"[{stage}] ({done}/{total}) {msg}")
 
     def icb(platform, language, item):
-        icon = STATUS_ICON.get(item["status"], "⚪")
+        icon = STATUS_ICON.get(item["status"], "STATUS")
         stats = item.get("stats", {})
         live_box.markdown(
             f"{icon} **{platform} × {language}** → {STATUS_LABELS.get(item['status'], item['status'])}"
@@ -445,13 +433,13 @@ if run_btn:
                             batch_deadline_s=float(deadline))
         result = pipeline.run(progress_cb=cb, item_cb=icb)
         u = result["usage"]
-        status.update(label=f"✅ 运行结束（{u['wall_time_s']}s / {u['total_tokens']:,} tokens / "
+        status.update(label=f"运行结束（{u['wall_time_s']}s / {u['total_tokens']:,} tokens / "
                             f"≈¥{u['cost_estimate_cny']}）——可交付 {result['counts']['delivered']}/"
                             f"{result['counts']['total']}", state="complete", expanded=False)
         st.session_state["result"] = result
         st.session_state["_result_source"] = "small"
     except Exception as e:  # noqa: BLE001
-        status.update(label="❌ 生成失败", state="error", expanded=True)
+        status.update(label="生成失败", state="error", expanded=True)
         st.error(f"{type(e).__name__}: {e}")
         st.stop()
     result = st.session_state.get("result")
@@ -489,14 +477,16 @@ if result:
         markets_covered=(result.get("value") or {}).get("markets_covered", []),
         params=params)
     if not v.get("estimable"):
-        st.error(f"❌ {v['note']}")
+        st.error(v['note'])
     else:
-        c1, c2, c3, c4, c5 = st.columns(5)
-        c1.metric("人工侧工时（本批）", f"{v['manual_side']['hours_total']} h")
-        c2.metric("AI 侧人工工时", f"{v['ai_side']['manual_hours_total']} h")
-        c3.metric("节省工时", f"{v['savings']['hours_saved']} h")
-        c4.metric("节省成本", f"¥{v['savings']['cost_saved_cny']:,.0f}")
-        c5.metric("产能提升", f"×{v['savings']['capacity_multiplier']}")
+        value_stats = [("人工侧工时（本批）", f"{v['manual_side']['hours_total']} h"),
+                       ("AI 侧人工工时", f"{v['ai_side']['manual_hours_total']} h"),
+                       ("节省工时", f"{v['savings']['hours_saved']} h"),
+                       ("节省成本", f"¥{v['savings']['cost_saved_cny']:,.0f}"),
+                       ("产能提升", f"×{v['savings']['capacity_multiplier']}")]
+        st.markdown('<div class="stat-grid">' + ''.join(
+            f'<div class="stat-card"><div class="stat-label">{_html.escape(str(label))}</div><div class="stat-value">{_html.escape(str(value))}</div></div>'
+            for label, value in value_stats) + '</div>', unsafe_allow_html=True)
         st.caption(f"API 估算 ¥{v['ai_side']['api_cost_cny_estimate']}（估算值，非实际成本）｜"
                    f"市场覆盖 {v['markets_count']} 个（按实际可交付计，Global 不算国家）｜"
                    f"月度假设外推：省 ¥{v['monthly_projection']['cost_saved_cny_per_month']:,.0f}/月")
@@ -516,17 +506,17 @@ if result:
                            file_name=f"copy_engine_result_{datetime.now():%Y%m%d_%H%M%S}.md",
                            mime="text/markdown", use_container_width=True)
 else:
-    st.info("👆 选择演示模式并生成/加载结果后，本看板出账。零成功时将如实显示「无有效产出，无法估算」。")
+    st.info("选择演示模式并生成或加载结果后，本看板出账。零成功时将如实显示「无有效产出，无法估算」。")
 
 # ================================================================ 结果与统计
 if result:
     if not result.get("usage", {}).get("usage_complete", False):
-        st.warning("用量存在未知或历史未计量部分；当前金额只含已知文本估算，不可用于积分结算。")
+        st.markdown('<div class="notice warn">用量存在未知或历史未计量部分；当前金额只含已知文本估算，不可用于积分结算。</div>', unsafe_allow_html=True)
     render_result(result)
 
     # 图像生成（显式开启，默认不生，P0-4）
     st.header("⑤ 图像生成（显式开启，默认不生图）")
-    if st.button("🎨 用首条可交付文案生成 1 张示例图（30-120s）"):
+    if st.button("用首条可交付文案生成 1 张示例图（30-120s）"):
         try:
             client = _get_client().new_task()
             delivered = [r for r in result["results"] if r["status"] == "delivered"]
@@ -547,3 +537,6 @@ if result:
                     st.error(f"失败（如实标注）: {img['error']}")
         except Exception as e:  # noqa: BLE001
             st.error(f"{type(e).__name__}: {e}")
+
+st.markdown('<div class="workspace-section">内容包浏览器</div>', unsafe_allow_html=True)
+show_packages()
