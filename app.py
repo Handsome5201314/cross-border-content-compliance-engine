@@ -13,7 +13,12 @@
 """
 import html as _html
 import json
+import logging
+import os
+import queue
 import sys
+import threading
+import time
 from datetime import datetime
 from pathlib import Path
 
@@ -33,10 +38,217 @@ from core.privacy_gate import PrivacyViolation, validate_product  # noqa: E402
 from core.value_calc import DEFAULT_PARAMS, compute_value         # noqa: E402
 from core.package_view import show_packages
 
+# ===== 产品化升级：认证 / 持久化 / 积分 / 隔离 / 管理（ARCHITECTURE_V2.md）=====
+# 注意：以下模块在 import 阶段绝不连接数据库；DB 懒加载，仅在登录/注册/等受信路径触发。
+from auth.hashing import hash_password, verify_password
+from auth import session as auth_session
+from dao.db import Database
+from dao import users_dao, credits_dao, tasks_dao, audit_dao
+from credits import pricing, service as credits_service
+from tasks import service as tasks_service
+from storage import space as storage_space
+from admin import service as admin_service
+
+
+# ================================================================ 认证 / 数据库 辅助
+def ensure_db() -> None:
+    """确保表结构已建 + 种子管理员已创建。仅在登录/注册/等受信路径调用，演示模式不触碰。"""
+    Database.get().init_schema()
+    ensure_seed_admin()
+
+
+def ensure_seed_admin() -> None:
+    """首次启动自动建种子管理员（环境变量 ADMIN_USERNAME/ADMIN_PASSWORD）。
+
+    未设置环境变量时本地使用默认值 admin/admin 仅限本地，并在管理后台显示告警
+    （ARCHITECTURE_V2.md §11-5 / 任务书硬约束 #7）。
+    """
+    username = os.environ.get("ADMIN_USERNAME")
+    password = os.environ.get("ADMIN_PASSWORD")
+    if not username or not password:
+        username = "admin"
+        password = "admin"
+        st.session_state["_seed_default_admin"] = True
+    else:
+        st.session_state["_seed_default_admin"] = False
+    if not users_dao.UserDAO.exists_username(username):
+        users_dao.UserDAO.create(username, hash_password(password), role="admin")
+
+
+def do_register(username: str, password: str) -> None:
+    """注册：唯一性校验 + bcrypt 存密 + 注册赠送 + 自动登录。"""
+    ensure_db()
+    if not username or not password:
+        st.error("用户名和密码不能为空")
+        return
+    if users_dao.UserDAO.exists_username(username):
+        st.error("该用户名已被注册")
+        return
+    uid = users_dao.UserDAO.create(username, hash_password(password), role="user")
+    credits_service.grant_signup(uid)
+    auth_session.set_current_user(users_dao.UserDAO.get_by_id(uid))
+    st.success(f"注册成功，已赠送 {pricing.SIGNUP_BONUS} 积分并自动登录")
+    st.rerun()
+
+
+def do_login(username: str, password: str) -> None:
+    """登录：bcrypt 校验；错误统一提示；禁用用户拦截并落审计。"""
+    ensure_db()
+    user = users_dao.UserDAO.get_by_username(username)
+    if user is None or not verify_password(password, user["password_hash"]):
+        st.error("用户名或密码错误")
+        return
+    if user["status"] == "disabled":
+        audit_dao.AuditDAO.append(user["user_id"], "login_blocked", user["user_id"],
+                                  detail={"reason": "disabled"})
+        st.error("该账号已被禁用，请联系管理员")
+        return
+    auth_session.set_current_user(user)
+    st.rerun()
+
+
+# ================================================================ 已登录用户视图
+def render_recent_tasks(current: dict) -> None:
+    """最近任务真实列表（R18 / D2）：来自 tasks 表，跨会话持久。"""
+    ensure_db()
+    st.header("最近任务")
+    rows = tasks_service.recent_tasks(current["user_id"], limit=20)
+    if not rows:
+        st.info("暂无任务记录。在「新建生成任务」中完成一次生成后，这里会显示真实历史（跨会话保留）。")
+        if st.button("← 返回工作台", key="back_tasks_empty"):
+            st.session_state["_view"] = "generate"
+            st.rerun()
+        return
+    for t in rows:
+        summary = t.get("result_summary") or {}
+        finished = t.get("finished_at") or t.get("created_at")
+        with st.container(border=True):
+            st.markdown(f"**{_html.escape(t['product_name'] or '未命名产品')}**"
+                       f" · {len(t['languages'])} 语种 × {len(t['platforms'])} 平台")
+            st.caption(f"状态：{t['status']} ｜ 完成时间：{finished} ｜ "
+                       f"消耗积分：{t['credit_cost']} ｜ 退还：{t['credit_refunded']}")
+            st.caption(f"语种：{', '.join(t['languages'])} ｜ 平台：{', '.join(t['platforms'])} ｜ "
+                       f"概览：可交付 {summary.get('delivered', 0)} / 拦截 {summary.get('review_blocked', 0)}"
+                       f" / 失败 {summary.get('failed', 0)} / 跳过 {summary.get('skipped_deadline', 0)}")
+    if st.button("← 返回工作台", key="back_tasks"):
+        st.session_state["_view"] = "generate"
+        st.rerun()
+
+
+def render_my_space(current: dict) -> None:
+    """我的空间真实统计（R03 / R17 / E2）：上传数 / 产物数来自真实目录计数。"""
+    ensure_db()
+    st.header("我的空间")
+    in_dir = storage_space.inputs_dir(current["user_id"])
+    out_dir = storage_space.outputs_dir(current["user_id"])
+    n_in = storage_space.count_files(in_dir)
+    n_out = storage_space.count_files(out_dir)
+    c1, c2, c3 = st.columns(3)
+    c1.metric("上传资料", n_in)
+    c2.metric("生成产物", n_out)
+    c3.metric("当前积分", current["credits"])
+    st.caption("你的上传与生成产物仅存于你自己的隔离目录（按整数用户 ID 拼装，用户名不进入路径）。")
+
+    # E3 上传：经 storage.safe_join（secure_filename + 防穿越）落 inputs_dir，用户名/原文件名不进路径
+    st.subheader("上传资料")
+    _uploads = st.file_uploader(
+        "上传产品资料（图片/文档，仅存于你的隔离目录）", accept_multiple_files=True,
+        key="space_uploader")
+    if _uploads:
+        _saved = 0
+        for _f in _uploads:
+            try:
+                storage_space.save_upload(current["user_id"], _f.name, _f.getvalue())
+                _saved += 1
+            except Exception as e:  # noqa: BLE001
+                st.warning(f"文件「{_html.escape(_f.name)}」保存失败：{_friendly_error(e)}")
+        if _saved:
+            st.success(f"已保存 {_saved} 个文件到你的隔离目录")
+            st.rerun()
+    if st.button("← 返回工作台", key="back_space"):
+        st.session_state["_view"] = "generate"
+        st.rerun()
+
+
+def render_admin(current: dict) -> None:
+    """管理后台（R19 / R20 / G2）：用户管理 + 充值 + 审计。仅管理员可见。"""
+    ensure_db()
+    st.header("管理后台")
+    if st.session_state.get("_seed_default_admin"):
+        st.warning("⚠️ 当前使用默认管理员凭据（admin/admin）。生产环境必须通过环境变量 "
+                   "ADMIN_USERNAME / ADMIN_PASSWORD 注入强口令，否则任何人可登录管理员。")
+
+    # ---- 用户列表 + 禁用/启用 ----
+    st.subheader("用户管理")
+    users = admin_service.list_users()
+    for u in users:
+        col1, col2, col3, col4, col5 = st.columns([2, 2, 1, 1, 1])
+        col1.write(u["username"])
+        col2.write(u["created_at"])
+        col3.write(u["status"])
+        col4.write(u["credits"])
+        if u["user_id"] != current["user_id"]:
+            if u["status"] == "active":
+                if col5.button("禁用", key=f"dis_{u['user_id']}"):
+                    admin_service.disable_user(current["user_id"], u["user_id"], "管理员操作")
+                    st.rerun()
+            else:
+                if col5.button("启用", key=f"ena_{u['user_id']}"):
+                    admin_service.enable_user(current["user_id"], u["user_id"], "管理员操作")
+                    st.rerun()
+
+    # ---- 充值（用户名 + 额 + 备注必填） ----
+    st.subheader("手动充值")
+    with st.form("recharge_form", clear_on_submit=True):
+        r_user = st.text_input("目标用户名", key="r_user")
+        r_amount = st.number_input("充值积分（正整数）", min_value=1, step=1, value=100, key="r_amount")
+        r_note = st.text_input("充值备注（必填）", key="r_note")
+        submitted = st.form_submit_button("确认充值")
+        if submitted:
+            try:
+                admin_service.recharge(current["user_id"], r_user, int(r_amount), r_note)
+                st.success(f"已为 {r_user} 充值 {int(r_amount)} 积分")
+                st.rerun()
+            except ValueError as e:
+                st.error(f"充值失败：{e}")
+
+    # ---- 审计：任务流水 + 积分流水 ----
+    st.subheader("审计 · 积分流水")
+    ledger = credits_dao.CreditDAO.ledger_all(limit=200)
+    if ledger:
+        st.dataframe(
+            [{"时间": r["created_at"], "用户ID": r["user_id"], "变动": r["change"],
+              "类型": r["type"], "余额": r["balance_after"], "操作者": r.get("operator_id"),
+              "备注": r.get("note") or ""} for r in ledger],
+            use_container_width=True, hide_index=True)
+    else:
+        st.info("暂无积分流水")
+
+    st.subheader("审计 · 操作日志")
+    audits = admin_service.audit_list(limit=200)
+    if audits:
+        st.dataframe(
+            [{"时间": a["created_at"], "操作者": a["operator_id"], "动作": a["action"],
+              "目标用户": a.get("target_user_id"), "详情": _html.escape(str(a.get("detail") or ""))}
+             for a in audits],
+            use_container_width=True, hide_index=True)
+    else:
+        st.info("暂无管理操作记录")
+
+    if st.button("← 返回工作台", key="back_admin"):
+        st.session_state["_view"] = "generate"
+        st.rerun()
+
 st.set_page_config(page_title="跨境文案智造引擎 v3", page_icon="·", layout="wide")
 THEME_PATH = Path(__file__).resolve().parent / "_theme.css"
 st.markdown(f"<style>{THEME_PATH.read_text(encoding='utf-8')}</style>", unsafe_allow_html=True)
-st.markdown('<div class="topbar"><div class="topbrand"><span class="topmark">AI</span><span>跨境内容合规引擎</span><span class="topsub">生成工作台</span></div><div class="topspacer"></div><div class="topcredits">积分 <b>1,240</b><span>充值</span></div><div class="top-avatar">帅</div></div>', unsafe_allow_html=True)
+_top_cur = auth_session.get_current_user()
+if _top_cur is None:
+    _top_credits = ('<div class="topcredits">演示模式<span>登录解锁实时生成与积分</span></div>')
+else:
+    _top_credits = (f'<div class="topcredits">积分 <b>{_top_cur["credits"]:,}</b>'
+                   f'<span>实时余额</span></div>')
+st.markdown(f'<div class="topbar"><div class="topbrand"><span class="topmark">AI</span><span>跨境内容合规引擎</span><span class="topsub">生成工作台</span></div><div class="topspacer"></div>{_top_credits}<div class="top-avatar">帅</div></div>', unsafe_allow_html=True)
 
 PLATFORMS_CFG = load_yaml_config("platforms")
 LANGUAGES_CFG = load_yaml_config("languages")
@@ -283,20 +495,75 @@ def _do_rerun(platform: str, language: str) -> None:
         st.session_state["result"] = result
         st.rerun()
     except Exception as e:  # noqa: BLE001
-        st.error(f"重跑失败: {type(e).__name__}: {e}")
+        st.error(_friendly_error(e))
 
 
 # ================================================================ 顶部与侧栏壳层
 with st.sidebar:
     st.markdown('<div class="sidebar-brand"><span class="sidebar-mark">AI</span><span>跨境内容合规引擎</span></div>', unsafe_allow_html=True)
-    st.button("+ 新建生成任务", use_container_width=True, type="primary")
-    st.markdown('<div class="nav-group"><div class="nav-label">我的空间 <span>私有</span></div><div class="nav-item">□　我的文件 <b>12</b></div><div class="nav-item">↥　我上传的资料 <b>3</b></div><div class="nav-item">▤　生成产物 <b>9</b></div></div><div class="nav-group"><div class="nav-label">最近任务</div><div class="nav-item active"><i></i>医疗出海 · 6 语种 <b class="pass-tag">6/6</b></div><div class="nav-item"><i></i>消费品对照 · 2 语种 <b class="pass-tag">2/2</b></div><div class="nav-item"><i class="block-dot"></i>印尼直播脚本 <b class="block-tag">1 拦截</b></div></div><div class="nav-group"><div class="nav-label">账户</div><div class="nav-item">◷　积分明细</div><div class="nav-item">▱　充值记录</div><div class="nav-item">◇　隐私与权限</div></div>', unsafe_allow_html=True)
-    st.markdown('<div class="space-note">你的空间仅你可见，AI 只在你自己的目录内读写</div>', unsafe_allow_html=True)
-    st.markdown('<div class="credits-pill"><span class="lbl">积分</span><span class="val">1,240</span><span class="hint">注册赠送 666 · 按 token 倍率扣费</span></div>', unsafe_allow_html=True)
+    if st.button("+ 新建生成任务", use_container_width=True, type="primary"):
+        st.session_state["_view"] = "generate"
+        st.rerun()
+
+    current = auth_session.get_current_user()
+    if current is None:
+        # 访客：仅演示入口 + 登录/注册引导（R21 / US-G1.AC3：不静默失败，引导登录）
+        st.info("登录后解锁：实时生成 · 积分 · 我的空间 · 任务历史")
+        with st.expander("登录 / 注册", expanded=False):
+            _tab_login, _tab_reg = st.tabs(["登录", "注册"])
+            with _tab_login:
+                _lu = st.text_input("用户名", key="login_user")
+                _lp = st.text_input("密码", type="password", key="login_pass")
+                if st.button("登录", key="login_btn", use_container_width=True):
+                    do_login(_lu, _lp)
+            with _tab_reg:
+                _ru = st.text_input("用户名", key="reg_user")
+                _rp = st.text_input("密码", type="password", key="reg_pass")
+                if st.button("注册并领取积分", key="reg_btn", use_container_width=True):
+                    do_register(_ru, _rp)
+    else:
+        # 已登录：真实积分胶囊 + 导航 + 登出
+        st.markdown(
+            f'<div class="credits-pill"><span class="lbl">积分</span>'
+            f'<span class="val">{current["credits"]:,}</span>'
+            f'<span class="hint">实时余额</span></div>',
+            unsafe_allow_html=True)
+        if st.button("新建生成任务", key="nav_new", use_container_width=True):
+            st.session_state["_view"] = "generate"
+            st.rerun()
+        if st.button("我的空间", key="nav_space", use_container_width=True):
+            st.session_state["_view"] = "space"
+            st.rerun()
+        if st.button("最近任务", key="nav_tasks", use_container_width=True):
+            st.session_state["_view"] = "tasks"
+            st.rerun()
+        if current["role"] == "admin":
+            if st.button("管理后台", key="nav_admin", use_container_width=True):
+                st.session_state["_view"] = "admin"
+                st.rerun()
+        if st.button("登出", key="nav_logout", use_container_width=True):
+            auth_session.logout()
+            st.session_state.pop("_view", None)
+            st.rerun()
+
+# ================================================================ 受信视图分页
+# 已登录用户的可信功能（我的空间 / 最近任务 / 管理后台）以独立页面呈现，先于工作台渲染；
+# 访客或默认工作台视图不进入此分支，保证演示模式零数据库访问。
+_view = st.session_state.get("_view", "generate")
+_current_user = auth_session.get_current_user()
+if _current_user is not None and _view == "space":
+    render_my_space(_current_user)
+    st.stop()
+if _current_user is not None and _view == "tasks":
+    render_recent_tasks(_current_user)
+    st.stop()
+if _current_user is not None and _view == "admin":
+    render_admin(_current_user)
+    st.stop()
 
 # ================================================================ 主区任务表单
 name = name_en = form = deploy = notes = ""
-st.markdown('<div class="task-head"><div><h1>新建生成任务</h1><p>输入产品资料，输出多语种合规内容包；发布前自动拦截违规表述。</p></div><span class="isolation">空间已隔离</span></div>', unsafe_allow_html=True)
+st.markdown('<div class="task-head"><div><h1>新建生成任务</h1><p>输入产品资料，输出多语种合规内容包；发布前自动拦截违规表述。</p></div></div>', unsafe_allow_html=True)
 with st.container(border=True):
     st.markdown('<h3><span class="section-number">01</span> 产品输入</h3>', unsafe_allow_html=True)
     if st.button("填充内置真实产品", key="fill_product"):
@@ -319,7 +586,23 @@ with st.container(border=True):
     platforms = st.multiselect("目标平台", list(PLATFORMS_CFG.keys()), default=plat_defaults, format_func=lambda k: PLATFORMS_CFG[k]["name"])
     level = st.radio("合规等级", ["strict", "standard", "loose"], index=0, format_func=lambda k: COMPLIANCE_CFG["levels"][k]["name"], horizontal=True)
     deadline = st.slider("整批时间预算（秒）", 120, 1800, 600, 60, help="超时未执行的组合标记为「超时跳过」并如实展示")
-    st.markdown('<div class="cost-hint">本次预计消耗 <b>180 积分</b>（6 语种 × 独立站）。当前余额 <b>1,240</b>，执行后剩余 <b>1,060</b>。</div>', unsafe_allow_html=True)
+    # 实时积分估算（R02 / C3）：按语种数 × 单价，真实余额来自会话
+    _n_lang = len(languages)
+    _estimate = _n_lang * pricing.PER_LANGUAGE
+    _cur = auth_session.get_current_user()
+    if _cur is None:
+        st.markdown(
+            f'<div class="cost-hint">预计消耗 <b>{_estimate} 积分</b>'
+            f'（{_n_lang} 语种 × {pricing.PER_LANGUAGE}/语种）。'
+            f'登录后解锁实时生成与积分账户。</div>',
+            unsafe_allow_html=True)
+    else:
+        _after = _cur["credits"] - _estimate
+        st.markdown(
+            f'<div class="cost-hint">本次预计消耗 <b>{_estimate} 积分</b>'
+            f'（{_n_lang} 语种 × {pricing.PER_LANGUAGE}/语种）。'
+            f'当前余额 <b>{_cur["credits"]:,}</b>，执行后剩余 <b>{_after:,}</b>。</div>',
+            unsafe_allow_html=True)
 
 with st.expander("模型与凭证高级设置", expanded=False):
     st.caption("以下留空即用平台内置默认配置，无需填写即可体验。")
@@ -369,6 +652,10 @@ if mode == "precomputed":
                    f"tokens {loaded.get('usage', {}).get('total_tokens', 0):,}｜"
                    f"API 估算 ¥{loaded.get('usage', {}).get('cost_estimate_cny', '?')}")
         st.caption("预生成 = 非现场时段离线真跑并存盘；现场展示缓存产物，需要新鲜结果请用「小批次真跑」或单条重跑。")
+        # R07 预生成免责声明（含 generated_at，明确为离线缓存快照，非实时结果）
+        st.warning("⚠️ 免责声明：当前展示的是离线预生成缓存快照（生成时间 "
+                   f"{meta.get('generated_at') or '未知'}），仅供演示，不代表实时生成结果；"
+                   "发布前请使用实时生成并复核合规口径。")
         st.session_state["result"] = loaded
         result = loaded
     else:
@@ -377,6 +664,187 @@ if mode == "precomputed":
                    "（预计数分钟到十几分钟；完成后再回到本页加载。）")
         if result is None:
             st.stop()
+
+
+# ================================================================ 生成辅助（§8.2）
+def _run_guest_generation(client, product, languages, platforms, level,
+                          m_main, m_fast, m_review, deadline) -> None:
+    """访客演示生成：同步跑 Pipeline，仅渲染进度，不扣积分/不落库（演示模式）。"""
+    st.subheader("生成进度（完成一条显示一条）")
+    status = st.status(f"引擎运行中：{len(platforms)} 平台 × {len(languages)} 语言 …", expanded=True)
+    live_box = st.container()
+    with st.sidebar.status("环境", expanded=False):
+        st.write(f"网关: {client.base_url}")
+        st.write(f"Key: {mask_key(client.api_key)}")
+
+    def cb(stage, done, total, msg):
+        status.write(f"[{stage}] ({done}/{total}) {msg}")
+
+    def icb(platform, language, item):
+        icon = STATUS_ICON.get(item["status"], "STATUS")
+        stats = item.get("stats", {})
+        live_box.markdown(
+            f"{icon} **{platform} × {language}** → {STATUS_LABELS.get(item['status'], item['status'])}"
+            f"（{stats.get('latency_s', '?')}s / {stats.get('tokens', 0)} tok"
+            + (f"｜{str(item.get('error'))[:100]}" if item.get("error") else "") + "）")
+
+    try:
+        pipeline = Pipeline(client, product, languages, platforms, level,
+                            models={"main": m_main, "fast": m_fast, "review": m_review},
+                            batch_deadline_s=float(deadline))
+        result = pipeline.run(progress_cb=cb, item_cb=icb)
+        u = result["usage"]
+        status.update(label=f"运行结束（{u['wall_time_s']}s / {u['total_tokens']:,} tokens / "
+                            f"≈¥{u['cost_estimate_cny']}）——可交付 {result['counts']['delivered']}/"
+                            f"{result['counts']['total']}", state="complete", expanded=False)
+        st.session_state["result"] = result
+        st.session_state["_result_source"] = "small"
+    except Exception as e:  # noqa: BLE001
+        status.update(label="生成失败", state="error", expanded=True)
+        st.error(_friendly_error(e))
+        st.stop()
+    st.session_state["result"] = st.session_state.get("result")
+
+
+def _start_logged_in_generation(current, client, product, languages, platforms, level,
+                                m_main, m_fast, m_review, deadline) -> None:
+    """登录用户：后台线程生成 + 预扣积分 + 取消 + 落库（ARCHITECTURE_V2.md §8.2）。"""
+    ensure_db()
+    cost = len(languages) * pricing.PER_LANGUAGE
+    task_id = tasks_service.create_task(
+        current["user_id"], product.get("product_name", ""), product.get("product_name_en", ""),
+        languages, platforms, level)
+    try:
+        credits_service.pre_deduct(current["user_id"], cost, task_id=task_id)
+    except credits_service.InsufficientCredits:
+        # 余额不足：回滚建好的 pending 任务，避免脏数据
+        tasks_dao.TaskDAO.finish(task_id, "failed", credit_cost=0, credit_refunded=0,
+                                 result_summary=None, result_path=None)
+        st.error(f"积分不足：本次预计消耗 {cost} 积分，当前余额 {current['credits']}。"
+                 f"请到「管理后台」或联系管理员充值后重试。")
+        st.stop()
+    tasks_dao.TaskDAO.set_running(task_id)
+
+    pipeline = Pipeline(client, product, languages, platforms, level,
+                        models={"main": m_main, "fast": m_fast, "review": m_review},
+                        batch_deadline_s=float(deadline))
+    q: "queue.Queue" = queue.Queue()
+    user_id = current["user_id"]
+
+    def _q_cb(stage, done, total, msg):
+        # 子线程禁止直接写 Streamlit 元素，仅投递队列（§8.2）
+        q.put(f"[{stage}] ({done}/{total}) {msg}")
+
+    def _q_icb(platform, language, item):
+        icon = STATUS_ICON.get(item["status"], "STATUS")
+        stats = item.get("stats", {})
+        q.put(f"{icon} **{platform} × {language}** → {STATUS_LABELS.get(item['status'], item['status'])}"
+              f"（{stats.get('latency_s', '?')}s / {stats.get('tokens', 0)} tok"
+              + (f"｜{str(item.get('error'))[:100]}" if item.get("error") else "") + "）")
+
+    def _worker():
+        try:
+            res = pipeline.run(progress_cb=_q_cb, item_cb=_q_icb)
+            q.put(("done", res))
+        except Exception as e:  # noqa: BLE001
+            q.put(("error", e))
+
+    st.session_state["_gen_queue"] = q
+    st.session_state["_gen_pipeline"] = pipeline
+    st.session_state["_gen_task_id"] = task_id
+    st.session_state["_gen_cost"] = cost
+    st.session_state["_gen_user_id"] = user_id
+    st.session_state["_gen_log"] = []
+    st.session_state["_gen_final"] = None
+    thread = threading.Thread(daemon=True, target=_worker)
+    st.session_state["_gen_thread"] = thread
+    thread.start()
+
+
+def _render_generation_monitor() -> None:
+    """轮询后台生成队列并渲染；提供取消按钮；结束后落库 + 退还。"""
+    thread = st.session_state.get("_gen_thread")
+    if thread is None:
+        return
+    q = st.session_state["_gen_queue"]
+    while not q.empty():
+        msg = q.get()
+        if isinstance(msg, tuple) and msg[0] in ("done", "error"):
+            st.session_state["_gen_final"] = msg
+        else:
+            st.session_state["_gen_log"].append(msg)
+
+    st.subheader("生成进度（后台运行中，完成一条显示一条）")
+    with st.status("引擎运行中 …（可点「取消生成」中止，取消后全额退还积分）", expanded=True) as s:
+        for m in st.session_state.get("_gen_log", []):
+            s.write(m)
+
+    final = st.session_state.get("_gen_final")
+    if final is None:
+        if st.button("取消生成", key="cancel_gen", type="primary", use_container_width=True):
+            pl = st.session_state.get("_gen_pipeline")
+            if pl is not None:
+                pl.request_cancel()
+            st.rerun()
+        time.sleep(1.0)
+        st.rerun()
+        return
+
+    _finalize_gen(final)
+
+
+def _finalize_gen(final) -> None:
+    """线程结束后落库 + 按状态退还积分（§8.2）。"""
+    kind, payload = final
+    user_id = st.session_state.get("_gen_user_id")
+    task_id = st.session_state.get("_gen_task_id")
+    cost = st.session_state.get("_gen_cost")
+    try:
+        if kind == "done":
+            result = payload
+            cancelled = bool(result.get("meta", {}).get("cancelled"))
+            status = "cancelled" if cancelled else "completed"
+            refunded = cost if cancelled else 0
+            tasks_service.finalize_task(user_id, task_id, status,
+                                        credit_cost=cost, credit_refunded=refunded, result=result)
+            if cancelled:
+                credits_service.refund(user_id, task_id, cost)
+            st.session_state["result"] = result
+            st.session_state["_result_source"] = "small"
+            st.session_state["_gen_error_msg"] = None
+        else:
+            err = payload
+            tasks_service.finalize_task(user_id, task_id, "failed",
+                                        credit_cost=cost, credit_refunded=cost)
+            credits_service.refund(user_id, task_id, cost)
+            st.session_state["result"] = None
+            st.session_state["_gen_error_msg"] = _friendly_error(err)
+    except Exception as e:  # noqa: BLE001
+        st.session_state["_gen_error_msg"] = _friendly_error(e)
+    finally:
+        for k in ("_gen_thread", "_gen_pipeline", "_gen_queue", "_gen_task_id",
+                  "_gen_cost", "_gen_user_id", "_gen_log", "_gen_final"):
+            st.session_state.pop(k, None)
+        try:
+            auth_session.refresh_credits(credits_service.get_balance(user_id))
+        except Exception:
+            pass
+    st.rerun()
+
+
+def _friendly_error(e: Exception) -> str:
+    """把异常翻译成中文友好提示（R09：不向页面吐 traceback）。原始异常仅服务端 logging。"""
+    logging.getLogger("app").exception("generation error")
+    name = type(e).__name__
+    msg = str(e).lower()
+    if "callstopped" in name or "cancel" in msg:
+        return "已取消生成。"
+    if "connection" in name or "timeout" in name or "timeout" in msg or "timed out" in msg:
+        return "生成失败：模型服务暂时不可用或网络超时，请稍后重试。"
+    if "api_key" in msg or "401" in msg or "403" in msg or "unauthorized" in msg:
+        return "生成失败：模型服务鉴权失败，请检查网关与凭证。"
+    return "生成失败：服务暂时不可用，请稍后重试。"
+
 
 run_btn = st.button("开始生成", type="primary", use_container_width=True,
                     disabled=not (languages and platforms)) if mode == "small" else False
@@ -409,40 +877,24 @@ if run_btn:
         st.error(str(e))
         st.stop()
 
-    st.subheader("生成进度（完成一条显示一条）")
-    status = st.status(f"引擎运行中：{len(platforms)} 平台 × {len(languages)} 语言 …", expanded=True)
-    live_box = st.container()
-    with st.sidebar.status("环境", expanded=False):
-        st.write(f"网关: {client.base_url}")
-        st.write(f"Key: {mask_key(client.api_key)}")
+    current = auth_session.get_current_user()
+    if current is None:
+        # 访客：同步演示生成（不触碰数据库 / 积分，演示模式零 DB 访问）
+        _run_guest_generation(client, product, languages, platforms, level,
+                              m_main, m_fast, m_review, deadline)
+    else:
+        # 登录用户：后台线程生成 + 预扣积分 + 取消 + 落库（§8.2）
+        _start_logged_in_generation(current, client, product, languages, platforms, level,
+                                    m_main, m_fast, m_review, deadline)
+        st.rerun()
 
-    def cb(stage, done, total, msg):
-        status.write(f"[{stage}] ({done}/{total}) {msg}")
 
-    def icb(platform, language, item):
-        icon = STATUS_ICON.get(item["status"], "STATUS")
-        stats = item.get("stats", {})
-        live_box.markdown(
-            f"{icon} **{platform} × {language}** → {STATUS_LABELS.get(item['status'], item['status'])}"
-            f"（{stats.get('latency_s', '?')}s / {stats.get('tokens', 0)} tok"
-            + (f"｜{str(item.get('error'))[:100]}" if item.get("error") else "") + "）")
-
-    try:
-        pipeline = Pipeline(client, product, languages, platforms, level,
-                            models={"main": m_main, "fast": m_fast, "review": m_review},
-                            batch_deadline_s=float(deadline))
-        result = pipeline.run(progress_cb=cb, item_cb=icb)
-        u = result["usage"]
-        status.update(label=f"运行结束（{u['wall_time_s']}s / {u['total_tokens']:,} tokens / "
-                            f"≈¥{u['cost_estimate_cny']}）——可交付 {result['counts']['delivered']}/"
-                            f"{result['counts']['total']}", state="complete", expanded=False)
-        st.session_state["result"] = result
-        st.session_state["_result_source"] = "small"
-    except Exception as e:  # noqa: BLE001
-        status.update(label="生成失败", state="error", expanded=True)
-        st.error(f"{type(e).__name__}: {e}")
-        st.stop()
-    result = st.session_state.get("result")
+# ================================================================ 后台生成监控
+if st.session_state.get("_gen_thread") is not None:
+    _render_generation_monitor()
+elif st.session_state.get("_gen_error_msg"):
+    st.error(st.session_state["_gen_error_msg"])
+    st.session_state.pop("_gen_error_msg", None)
 
 # ================================================================ 价值看板（P2-14 同一快照）
 st.header("④ 业务价值看板（参数为可调假设）")
@@ -494,16 +946,20 @@ if result:
         st.write(v.get("assumption_note", ""))
 
     # 导出：与看板同一份快照（result + 当前参数 + 重算 value）
+    # R08 导出文件名：{product}_{langN}lang_{ts}.json/.md（文件名可区分、可复现）
+    _export_langs = result.get("meta", {}).get("languages", [])
+    _export_base = (f"{storage_space.secure_filename(name or 'product', max_len=40)}"
+                    f"_{len(_export_langs)}lang_{datetime.now():%Y%m%d_%H%M%S}")
     ecol1, ecol2 = st.columns(2)
     with ecol1:
         st.download_button("⬇️ 导出 JSON（完整调试数据+当前参数）",
                            data=to_export_json(result, value=v, params=params),
-                           file_name=f"copy_engine_result_{datetime.now():%Y%m%d_%H%M%S}.json",
+                           file_name=f"{_export_base}.json",
                            mime="application/json", use_container_width=True)
     with ecol2:
         st.download_button("⬇️ 导出 Markdown 发布稿（只含审核后安全版）",
                            data=to_markdown(result, value=v, languages_cfg=LANGUAGES_CFG),
-                           file_name=f"copy_engine_result_{datetime.now():%Y%m%d_%H%M%S}.md",
+                           file_name=f"{_export_base}.md",
                            mime="text/markdown", use_container_width=True)
 else:
     st.info("选择演示模式并生成或加载结果后，本看板出账。零成功时将如实显示「无有效产出，无法估算」。")
@@ -515,6 +971,7 @@ if result:
     render_result(result)
 
     # 图像生成（显式开启，默认不生，P0-4）
+    # E3：登录用户产物落 outputs_dir（隔离目录），并按张预扣 PER_IMAGE（取消/失败退还）。
     st.header("⑤ 图像生成（显式开启，默认不生图）")
     if st.button("用首条可交付文案生成 1 张示例图（30-120s）"):
         try:
@@ -525,18 +982,39 @@ if result:
             else:
                 prompt = (delivered[0].get("asset_prompt") or {}).get("prompt_en") or \
                     "A pediatric resident doctor wearing a small smart badge device in a hospital ward"
-                with st.spinner("生成中…"):
+                _img_user = auth_session.get_current_user()
+                _need_refund = False
+                if _img_user is not None:
+                    ensure_db()
+                    try:
+                        credits_service.pre_deduct(_img_user["user_id"], pricing.PER_IMAGE)
+                    except credits_service.InsufficientCredits:
+                        st.error(f"积分不足：生图需 {pricing.PER_IMAGE} 积分，请充值后重试。")
+                        st.stop()
+                    _img_path = storage_space.outputs_dir(_img_user["user_id"]) / f"image_{uuid4().hex}.png"
+                    _need_refund = True
+                else:
                     from core import ensure_output_dir
-                    img = client.generate_image(prompt, ensure_output_dir() / f"image_{uuid4().hex}.png",
-                                                model=m_image)
+                    _img_path = ensure_output_dir() / f"image_{uuid4().hex}.png"
+                with st.spinner("生成中…"):
+                    img = client.generate_image(prompt, _img_path, model=m_image)
                 update_result_usage(result, client)
                 if img["ok"]:
+                    if _need_refund:
+                        # 成功：不退还（已消费 10 积分）
+                        try:
+                            auth_session.refresh_credits(
+                                credits_service.get_balance(_img_user["user_id"]))
+                        except Exception:
+                            pass
                     st.success(f"成功：{img['model']} → {img['path']}")
                     st.image(img["path"], caption="示例生成图", use_container_width=True)
                 else:
+                    if _need_refund:
+                        credits_service.refund(_img_user["user_id"], None, pricing.PER_IMAGE)
                     st.error(f"失败（如实标注）: {img['error']}")
         except Exception as e:  # noqa: BLE001
-            st.error(f"{type(e).__name__}: {e}")
+            st.error(_friendly_error(e))
 
 st.markdown('<div class="workspace-section">内容包浏览器</div>', unsafe_allow_html=True)
 show_packages()

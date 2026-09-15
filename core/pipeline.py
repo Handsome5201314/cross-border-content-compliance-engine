@@ -115,6 +115,18 @@ class Pipeline:
         self.agent_compliance = ComplianceAgent(client, models, compliance_cfg)
         self.agent_asset = AssetPromptAgent(client, models)
         self.client = client
+        # 取消标志（最小侵入，ARCHITECTURE_V2.md §8）：不改引擎逻辑，仅用于短路未开始的平台/组合。
+        self._cancel_requested = False
+
+    # ---------------------------------------------------------------- 取消（最小侵入）
+    def request_cancel(self) -> None:
+        """用户取消：置标志 + 复用 LLMClient.cancel() 让在途调用尽快抛 CallStopped。"""
+        self._cancel_requested = True
+        if isinstance(self.client, LLMClient):
+            try:
+                self.client.cancel()   # threading.Event.set() -> _check_call 抛 CallStopped
+            except Exception:
+                pass
 
     # ---------------------------------------------------------------- 主流程
     def run(self, progress_cb=None, item_cb=None) -> dict:
@@ -177,12 +189,16 @@ class Pipeline:
         cb("platform", 0, total, f"平台适配 Agent：{total} 个平台并行生成…")
         done = 0
         with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
-            futs = {
-                pool.submit(self.agent_platform.run, analysis, p,
-                            self.platforms_cfg[p], self.compliance_level,
-                            f"stage:platform:{p}"): p
-                for p in self.platforms
-            }
+            futs = {}
+            for p in self.platforms:
+                if self._cancel_requested:
+                    platform_copies[p] = None
+                    done += 1
+                    cb("platform", done, total, f"平台适配跳过: {p}（用户取消）")
+                    continue
+                futs[pool.submit(self.agent_platform.run, analysis, p,
+                                self.platforms_cfg[p], self.compliance_level,
+                                f"stage:platform:{p}")] = p
             for fut in as_completed(futs):
                 p = futs[fut]
                 done += 1
@@ -202,8 +218,9 @@ class Pipeline:
         with ThreadPoolExecutor(max_workers=self.max_workers) as pool:
             futs = {}
             for p, l in combos:
-                if time.monotonic() >= deadline:
-                    item = self._skipped_item(p, l, "提交前已超整批 deadline")
+                if time.monotonic() >= deadline or self._cancel_requested:
+                    _why = "用户取消" if self._cancel_requested else "提交前已超整批 deadline"
+                    item = self._skipped_item(p, l, _why)
                     result["results"].append(item)
                     icb(p, l, item)
                     continue
@@ -213,8 +230,8 @@ class Pipeline:
             for fut in as_completed(futs):
                 p, l = futs[fut]
                 done += 1
-                # 整批 deadline：取消尚未开始的任务并如实标记
-                if time.monotonic() >= deadline:
+                # 整批 deadline / 用户取消：取消尚未开始的任务并如实标记
+                if time.monotonic() >= deadline or self._cancel_requested:
                     for other in futs:
                         other.cancel()
                 try:
@@ -231,6 +248,9 @@ class Pipeline:
 
         result["results"].sort(key=lambda r: (self.platforms.index(r["platform"]) if r["platform"] in self.platforms else 99,
                                               self.languages.index(r["language"]) if r["language"] in self.languages else 99))
+        # 用户取消：标记 meta.cancelled 供 app 判定任务状态（§8.1）
+        if self._cancel_requested:
+            result["meta"]["cancelled"] = True
         return self.finalize(result)
 
     # ---------------------------------------------------------------- 收尾统计（单条重跑后可重算）
