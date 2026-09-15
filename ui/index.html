@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>跨境内容合规引擎</title>
+<style>
+/* ══════════════════════════════════════════════════
+   皮肤系统 · Token 化（换肤只改这一块）—— 1:1 复刻设计稿
+   2026 B端设计共识：dark-first / 1px 边框 / 无阴影 /
+   单 accent + 状态色 / 圆角克制 / 等宽数字
+   ══════════════════════════════════════════════════ */
+
+/* ── 皮肤 A：Slate Pro（默认）· Clean Brutalism ── */
+:root{
+  --bg:#0B0D10; --panel:#111418; --panel-2:#171B21; --line:#23282F; --line-2:#323942;
+  --ink:#EDEFF2; --ink-2:#9BA3AE; --ink-3:#68707B;
+  --brand:#5B8DEF; --brand-dim:#1C3355;
+  --pass:#3FB950; --pass-bg:#0C1F12;
+  --block:#F85149; --block-bg:#241315;
+  --warn:#D29922; --warn-bg:#241C10;
+  --mono:"JetBrains Mono","Cascadia Mono",Consolas,monospace;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --serif:"Noto Serif SC","Songti SC",Georgia,serif;
+  --r:4px; --r-lg:6px;
+  /* 由 accent 派生的两层，避免各处硬编码浅色 */
+  --brand-ink:color-mix(in oklab,var(--brand) 74%,white);
+  --brand-wash:color-mix(in oklab,var(--brand) 11%,transparent);
+  --brand-wash-2:color-mix(in oklab,var(--brand) 18%,transparent);
+  --shadow:none;
+}
+
+/* ── 皮肤 B：Midnight Amber ── */
+[data-skin="amber"]{
+  --bg:#0C1017; --panel:#121822; --panel-2:#19212D; --line:#233044; --line-2:#33445C;
+  --ink:#F0EDE6; --ink-2:#A6A296; --ink-3:#6E6B62;
+  --brand:#E0A458; --brand-dim:#4A361A;
+  --pass:#4CBF6E; --pass-bg:#0F2417;
+  --block:#EF6B5C; --block-bg:#2B1512;
+  --warn:#D9A036; --warn-bg:#2B2113;
+  --r:6px; --r-lg:10px;
+}
+
+/* ── 皮肤 C：Paper · 浅色 editorial ── */
+[data-skin="paper"]{
+  --bg:#FAF9F6; --panel:#FFFFFF; --panel-2:#F4F2ED; --line:#E2DED4; --line-2:#CFC9BC;
+  --ink:#1A1815; --ink-2:#5C574E; --ink-3:#8C857A;
+  --brand:#B4472F; --brand-dim:#E8CFC8;
+  --pass:#1F7A3D; --pass-bg:#E8F4EC;
+  --block:#C0392B; --block-bg:#FBEAE8;
+  --warn:#9A6B14; --warn-bg:#FAF1DC;
+  --r:2px; --r-lg:3px;
+  --shadow:none;
+}
+[data-skin="paper"] .brand,
+[data-skin="paper"] .hd h1{font-family:var(--serif)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+
+/* ── 布局 ── */
+.app{display:none;height:100vh;grid-template-rows:52px 1fr}
+.app.on{display:grid}
+.top{display:flex;align-items:center;gap:14px;padding:0 16px;background:var(--panel);
+  border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:15px;letter-spacing:.2px}
+.brand img{width:26px;height:26px;border-radius:6px;object-fit:cover}
+.brand span.sub{font-weight:400;font-size:12px;color:var(--ink-3);
+  padding-left:10px;border-left:1px solid var(--line-2);letter-spacing:0}
+.top .spacer{flex:1}
+
+/* 积分胶囊 */
+.credits{display:flex;align-items:center;gap:8px;background:var(--panel-2);
+  border:1px solid var(--line-2);border-radius:999px;padding:5px 6px 5px 14px}
+.credits .lbl{font-size:12px;color:var(--ink-3)}
+.credits .val{font-family:var(--mono);font-size:14px;font-weight:600;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.credits .val.low{color:var(--warn)}
+.credits .val.out{color:var(--block)}
+.credits button{background:var(--brand);color:#fff;border-radius:999px;
+  padding:5px 13px;font-size:12px;font-weight:500}
+.credits button:hover{filter:brightness(1.1)}
+
+.avatar{width:30px;height:30px;border-radius:var(--r);background:var(--brand);
+  display:grid;place-items:center;font-size:12px;font-weight:600;color:#fff;
+  font-family:var(--mono)}
+.iconbtn{width:32px;height:32px;border-radius:var(--r);display:grid;place-items:center;
+  color:var(--ink-2);transition:.15s}
+.iconbtn:hover{background:var(--panel-2);color:var(--ink)}
+
+/* ── 侧栏 ── */
+.body{display:grid;grid-template-columns:268px 1fr;overflow:hidden}
+.side{background:var(--panel);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;overflow:hidden}
+.newtask{margin:12px;padding:9px;border:1px solid var(--brand-dim);border-radius:var(--r);
+  background:var(--brand-wash);color:var(--brand-ink);font-size:13px;font-weight:500;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:.15s}
+.newtask:hover{background:var(--brand-wash-2)}
+.nav{flex:1;overflow-y:auto;padding:0 8px 12px}
+.nav::-webkit-scrollbar{width:8px}
+.nav::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:4px}
+.grp{margin-top:14px}
+.grp>h4{font-size:11px;font-weight:500;color:var(--ink-3);letter-spacing:.8px;
+  padding:0 8px 6px;text-transform:uppercase;display:flex;align-items:center;gap:6px}
+.grp>h4 .cnt{font-family:var(--mono);font-size:10px;color:var(--ink-3);font-weight:400;
+  padding:1px 5px;background:var(--panel-2);border-radius:4px}
+.item{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:6px;
+  font-size:13px;color:var(--ink-2);transition:.12s;cursor:pointer}
+.item:hover{background:var(--panel-2);color:var(--ink)}
+.item.on{background:var(--panel-2);color:var(--ink);box-shadow:inset 2px 0 0 var(--brand)}
+.item .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.item .tag{font-size:10px;font-family:var(--mono);padding:1px 5px;border-radius:4px;
+  background:var(--panel-2);color:var(--ink-3);border:1px solid var(--line)}
+.item .tag.pass{color:var(--pass);border-color:#1C4A2A;background:var(--pass-bg)}
+.item .tag.block{color:var(--block);border-color:#5A2426;background:var(--block-bg)}
+.item .dot{width:6px;height:6px;border-radius:50%;background:var(--line-2);flex:0 0 6px}
+.item .dot.pass{background:var(--pass)} .item .dot.block{background:var(--block)}
+i.ico{display:inline-flex;align-items:center;justify-content:center}
+.ico{width:15px;height:15px;flex:0 0 15px;stroke:currentColor;fill:none;
+  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* 空间隐私标识 */
+.space-note{margin:0 12px 10px;padding:8px 10px;border:1px dashed var(--line-2);
+  border-radius:6px;font-size:11px;color:var(--ink-3);line-height:1.5;
+  display:flex;gap:7px;align-items:flex-start}
+.space-note svg{width:13px;height:13px;flex:0 0 13px;margin-top:2px;stroke:var(--pass)}
+
+/* ── 主区 ── */
+.main{overflow-y:auto;padding:26px 32px 90px}
+.main::-webkit-scrollbar{width:10px}
+.main::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:5px}
+.hd{display:flex;align-items:flex-start;gap:16px;margin-bottom:22px}
+.hd h1{font-size:21px;font-weight:600;letter-spacing:-.2px}
+.hd p{font-size:13px;color:var(--ink-2);margin-top:5px}
+.hd .spacer{flex:1}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:20px;margin-bottom:16px}
+.card>h3{font-size:13px;font-weight:600;color:var(--ink-2);letter-spacing:.4px;
+  margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.card>h3 .n{font-family:var(--mono);font-size:11px;color:var(--brand);
+  background:rgba(76,141,255,.1);border-radius:4px;padding:1px 6px;font-weight:400}
+
+/* 字段网格 */
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.f label{display:block;font-size:12px;color:var(--ink-3);margin-bottom:5px}
+.f input,.f select,.f textarea{width:100%;background:var(--bg);border:1px solid var(--line-2);
+  border-radius:6px;padding:8px 10px;color:var(--ink);font-size:13px;font-family:inherit}
+.f input:focus,.f select:focus,.f textarea:focus{outline:0;border-color:var(--brand)}
+.f .hint{font-size:11px;color:var(--ink-3);margin-top:4px}
+
+/* 语种选择 */
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{padding:5px 11px;border:1px solid var(--line-2);border-radius:999px;font-size:12px;
+  color:var(--ink-2);transition:.12s;font-family:var(--mono)}
+.chip:hover{border-color:var(--brand);color:var(--ink)}
+.chip.on{background:var(--brand-wash-2);border-color:var(--brand);color:var(--brand-ink)}
+.chip .rtl{font-size:10px;color:var(--ink-3);margin-left:4px}
+.chip.plat{font-family:var(--sans)}
+
+/* 按钮 */
+.btn{background:var(--brand);color:#fff;border-radius:7px;padding:9px 20px;
+  font-size:13px;font-weight:500;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;border:1px solid var(--line-2);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--ink-3);color:var(--ink)}
+.btn.sm{padding:6px 13px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+
+/* 合规裁决 */
+.verdict{border-radius:10px;border:1px solid;padding:14px;margin-bottom:10px}
+.verdict.block{border-color:#5A2426;background:var(--block-bg)}
+.verdict.pass{border-color:#1C4A2A;background:var(--pass-bg)}
+.verdict .vh{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.verdict .vname{font-family:var(--mono);font-size:12px;font-weight:600;
+  padding:2px 7px;border-radius:4px}
+.verdict.block .vname{background:var(--block);color:#fff}
+.verdict.pass .vname{background:var(--pass);color:#04170A}
+.verdict .vtitle{font-size:13px;font-weight:500}
+.verdict .vsent{font-family:var(--mono);font-size:12.5px;color:var(--ink);
+  background:rgba(0,0,0,.35);border-radius:6px;padding:9px 11px;margin:8px 0;
+  word-break:break-word;line-height:1.7}
+.verdict .vsent .hl{background:rgba(210,153,34,.28);border-radius:3px;padding:0 3px}
+.verdict .vmeta{font-size:12px;color:var(--ink-2);line-height:1.65}
+.verdict .vmeta b{color:var(--ink);font-weight:500}
+.verdict .vfix{font-size:12px;color:var(--pass);margin-top:6px;
+  padding-top:6px;border-top:1px dashed var(--line-2)}
+
+/* 表格 */
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;font-weight:500;color:var(--ink-3);
+  letter-spacing:.5px;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);color:var(--ink-2)}
+tr:last-child td{border-bottom:0}
+td.mono,th.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+td .pill,span.pill{font-size:11px;font-family:var(--mono);padding:2px 7px;border-radius:4px}
+.pill.pass{background:var(--pass-bg);color:var(--pass);border:1px solid #1C4A2A}
+.pill.block{background:var(--block-bg);color:var(--block);border:1px solid #5A2426}
+.pill.warn{background:var(--warn-bg);color:var(--warn);border:1px solid #4A3A15}
+.pill.plain{background:var(--panel-2);color:var(--ink-2);border:1px solid var(--line-2)}
+
+/* 统计卡 */
+.stat{background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:14px}
+.stat .k{font-size:11px;color:var(--ink-3);margin-bottom:6px}
+.stat .v{font-family:var(--mono);font-size:22px;font-weight:600;
+  font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+.stat .d{font-size:11px;color:var(--ink-3);margin-top:4px}
+.stat .v.pass{color:var(--pass)} .stat .v.block{color:var(--block)} .stat .v.warn{color:var(--warn)}
+
+/* 提示条 */
+.note{display:flex;gap:10px;padding:11px 13px;border-radius:8px;font-size:12.5px;
+  line-height:1.6;margin-bottom:14px}
+.note svg{width:15px;height:15px;flex:0 0 15px;margin-top:2px}
+.note.info{background:var(--brand-wash);border:1px solid var(--brand-dim);color:var(--brand-ink)}
+.note.info svg{stroke:var(--brand-ink)}
+.note.warn{background:var(--warn-bg);border:1px solid #4A3A15;color:#E3B341}
+.note.warn svg{stroke:#E3B341}
+.note.danger{background:var(--block-bg);border:1px solid #5A2426;color:#FF9E99}
+.note.danger svg{stroke:#FF9E99}
+
+/* 文件空间树 */
+.tree{font-family:var(--mono);font-size:12.5px;line-height:1.9}
+.tree .row{display:flex;align-items:center;gap:8px;padding:3px 6px;border-radius:5px}
+.tree .row:hover{background:var(--panel-2)}
+.tree .row .sz{margin-left:auto;color:var(--ink-3);font-size:11px}
+.tree .ind{padding-left:22px} .tree .ind2{padding-left:44px}
+.tree .fold{color:var(--brand)} .tree .file{color:var(--ink-2)}
+.tree .lock{color:var(--pass);font-size:11px}
+
+/* 进度 */
+.prog{margin:10px 0}
+.prog .line{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:12.5px}
+.prog .line .st{width:56px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+.prog .line .bar{flex:1;height:3px;background:var(--panel-2);border-radius:2px;overflow:hidden}
+.prog .line .bar i{display:block;height:100%;border-radius:2px}
+.prog .line .bar i.done{background:var(--pass)}
+.prog .line .bar i.run{background:var(--brand);width:60%}
+.prog .line .bar i.wait{background:var(--line-2);width:0}
+
+.divider{height:1px;background:var(--line);margin:16px 0}
+.kv{display:flex;justify-content:space-between;padding:7px 0;font-size:13px;
+  border-bottom:1px solid var(--line)}
+.kv:last-child{border-bottom:0}
+.kv .k{color:var(--ink-3)} .kv .v{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.kv .v.pass{color:var(--pass)} .kv .v.block{color:var(--block)} .kv .v.warn{color:var(--warn)}
+
+.hide{display:none!important}
+
+/* ── 会话/工具层（token 与设计稿一致，仅新增组件） ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;
+  display:none;align-items:center;justify-content:center}
+.overlay.on{display:flex}
+.modal{width:360px;max-width:92vw;background:var(--panel);border:1px solid var(--line-2);
+  border-radius:var(--r-lg);padding:22px}
+.modal h3{font-size:15px;margin-bottom:4px}
+.modal .msub{font-size:12px;color:var(--ink-3);margin-bottom:14px}
+.mtabs{display:flex;gap:2px;background:var(--panel-2);border:1px solid var(--line);
+  border-radius:var(--r);padding:3px;margin-bottom:14px}
+.mtabs button{flex:1;padding:7px 0;border-radius:var(--r);font-size:13px;color:var(--ink-2)}
+.mtabs button.on{background:var(--brand);color:#fff;font-weight:500}
+.merr{display:none;margin-bottom:12px}
+.merr.on{display:flex}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:94vw;z-index:61;
+  background:var(--panel);border-left:1px solid var(--line-2);padding:20px;
+  display:none;overflow-y:auto}
+.drawer.on{display:block}
+.toast{position:fixed;top:14px;right:14px;z-index:70;display:none;max-width:360px;
+  background:var(--panel-2);border:1px solid var(--line-2);border-radius:var(--r);
+  padding:10px 14px;font-size:13px;color:var(--ink)}
+.toast.on{display:block}
+.toast.err{border-color:#5A2426;background:var(--block-bg);color:#FF9E99}
+.toast.ok{border-color:#1C4A2A;background:var(--pass-bg);color:var(--pass)}
+.skinbtns{display:flex;gap:6px;align-items:center;font-size:11px;color:var(--ink-3)}
+.skinbtns button{font-family:var(--mono);font-size:11px;padding:4px 10px;
+  border:1px solid var(--line-2);border-radius:var(--r);color:var(--ink-2)}
+.skinbtns button.on{border-color:var(--brand);color:var(--brand-ink);background:var(--brand-wash)}
+</style>
+</head>
+<body>
+
+<!-- ══════════ 访客视图 ══════════ -->
+<div class="app" id="app-guest">
+  <div class="top">
+    <div class="brand"><img src="assets/logo-square.png" alt="AI新青年"><span>跨境内容合规引擎</span><span class="sub">访客模式</span></div>
+    <div class="spacer"></div>
+    <div class="skinbtns" title="按场景换肤：换肤只改 8 个 CSS 变量">
+      <button data-skinbtn="slate" class="on">Slate Pro</button>
+      <button data-skinbtn="amber">Amber</button>
+      <button data-skinbtn="paper">Paper</button>
+    </div>
+    <div class="credits">
+      <span class="lbl">体验额度</span><span class="val low">3</span>
+      <button id="btn-guest-register">注册领 100 积分</button>
+    </div>
+    <div class="avatar" style="background:var(--line-2);color:var(--ink-3)">访</div>
+  </div>
+  <div class="body">
+    <div class="side">
+      <div class="newtask" id="btn-guest-newtask">＋ 新建任务（需注册）</div>
+      <div class="nav">
+        <div class="grp">
+          <h4>公开示例</h4>
+          <div class="item on"><span class="dot pass"></span><i class="ico" data-icon="doc"></i><span class="nm">医疗出海 · 真实交付案例（只读）</span></div>
+          <div class="item" id="guest-item-demo2"><span class="dot"></span><i class="ico" data-icon="doc"></i><span class="nm">合规裁决示例（真实输出）</span></div>
+        </div>
+        <div class="grp">
+          <h4>访客可做</h4>
+          <div class="item" id="btn-guest-register2"><i class="ico" data-icon="plus"></i><span class="nm">注册后解锁实时生成</span></div>
+          <div class="item" id="guest-item-verdict"><i class="ico" data-icon="eye"></i><span class="nm">查看合规裁决示例</span></div>
+        </div>
+      </div>
+      <div class="space-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        <span>访客不写入任何存储，体验数据阅后即清</span>
+      </div>
+    </div>
+    <div class="main">
+      <div class="hd">
+        <div>
+          <h1>医疗出海 · 多语种内容包（真实案例）</h1>
+          <p>这是团队已交付的真实案例（只读预览）。注册后可创建自己的空间与任务。</p>
+        </div>
+        <div class="spacer"></div>
+        <span class="pill pass" id="guest-pill" style="padding:5px 11px;font-size:12px">加载中…</span>
+      </div>
+
+      <div class="note info">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
+        <div><b>访客模式</b>：可查看真实交付案例与合规裁决过程，生成功能需注册。</div>
+      </div>
+
+      <div class="grid g4" style="margin-bottom:16px" id="guest-value-board">
+        <div class="stat"><div class="k">可交付</div><div class="v pass" id="gv-delivered">–</div><div class="d">通过合规与交付门禁</div></div>
+        <div class="stat"><div class="k">审核未过</div><div class="v warn" id="gv-blocked">–</div><div class="d">需人工处理后重跑</div></div>
+        <div class="stat"><div class="k">失败</div><div class="v block" id="gv-failed">–</div><div class="d">如实统计，不伪装</div></div>
+        <div class="stat"><div class="k">覆盖市场</div><div class="v" id="gv-markets">–</div><div class="d">东南亚 · 中东 · 俄语区</div></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="n">核心能力</span>同一个「100%」，两个相反判决（真实输出）</h3>
+        <div id="guest-verdicts"><div class="note info" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg><span>正在加载真实案例数据…</span></div></div>
+        <div class="note info" style="margin:14px 0 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>
+          <span>关键词层只负责捞出可疑句，<b>真正裁决的是语义层</b>——理解这句话到底在承诺什么，而非匹配词表。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 普通用户视图 ══════════ -->
+<div class="app" id="app-user">
+  <div class="top">
+    <div class="brand"><img src="assets/logo-square.png" alt="AI新青年"><span>跨境内容合规引擎</span></div>
+    <div class="spacer"></div>
+    <div class="skinbtns" title="按场景换肤：换肤只改 8 个 CSS 变量">
+      <button data-skinbtn="slate" class="on">Slate Pro</button>
+      <button data-skinbtn="amber">Amber</button>
+      <button data-skinbtn="paper">Paper</button>
+    </div>
+    <div class="credits">
+      <span class="lbl">积分</span><span class="val" id="u-credits">–</span>
+      <button id="btn-recharge-hint">充值</button>
+    </div>
+    <button class="iconbtn" id="btn-ledger-top" title="积分明细"><i class="ico" data-icon="wallet"></i></button>
+    <button class="iconbtn" id="btn-logout-user" title="登出"><i class="ico" data-icon="logout"></i></button>
+    <div class="avatar" id="u-avatar">–</div>
+  </div>
+  <div class="body">
+    <div class="side">
+      <div class="newtask" id="btn-focus-form">＋ 新建生成任务</div>
+      <div class="nav">
+        <div class="grp">
+          <h4>我的空间 <span class="cnt">私有</span></h4>
+          <div class="item" id="btn-view-files"><i class="ico" data-icon="folder"></i><span class="nm">我的文件</span><span class="tag" id="cnt-files">–</span></div>
+          <div class="item" id="btn-view-uploads"><i class="ico" data-icon="upload"></i><span class="nm">我上传的资料</span><span class="tag" id="cnt-uploads">–</span></div>
+          <div class="item" id="btn-view-outputs"><i class="ico" data-icon="doc"></i><span class="nm">生成产物</span><span class="tag" id="cnt-outputs">–</span></div>
+        </div>
+
+        <div class="grp">
+          <h4>最近任务</h4>
+          <div id="recent-tasks"><div class="item"><span class="nm">加载中…</span></div></div>
+        </div>
+
+        <div class="grp">
+          <h4>账户</h4>
+          <div class="item" id="btn-ledger"><i class="ico" data-icon="history"></i><span class="nm">积分明细</span></div>
+          <div class="item" id="btn-ledger-recharge"><i class="ico" data-icon="wallet"></i><span class="nm">充值记录</span></div>
+          <div class="item" id="btn-privacy"><i class="ico" data-icon="security"></i><span class="nm">隐私与权限</span></div>
+        </div>
+      </div>
+      <div class="space-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        <span>你的数据存于独立空间，仅你本人可读写</span>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="hd">
+        <div><h1>新建生成任务</h1><p>输入产品资料，输出多语种合规内容包；发布前自动拦截违规表述。</p></div>
+        <div class="spacer"></div>
+        <span class="pill pass" style="padding:5px 11px;font-size:12px" id="u-pill">独立数据空间</span>
+      </div>
+
+      <div class="card">
+        <h3><span class="n">01</span>产品输入</h3>
+        <div class="grid g2">
+          <div class="f"><label>产品名（中文）</label><input id="p-name" value="某三甲医院儿科住院医师 AI 助手"></div>
+          <div class="f"><label>产品名（英文）</label><input id="p-name-en" value="Pediatric Resident AI Assistant"></div>
+        </div>
+        <div class="grid g2" style="margin-top:12px">
+          <div class="f"><label>产品形态</label><input id="p-form" value="软件（本地部署）+ 智能胸卡（硬件）"></div>
+          <div class="f"><label>目标市场</label><input id="p-market" value="东南亚（印尼/泰国/越南/马来）· 中东（沙特/阿联酋）"></div>
+        </div>
+        <div class="f" style="margin-top:12px">
+          <label>营销注意事项 / 红线</label>
+          <textarea rows="2" id="p-notes">禁止编造认证；禁止编造性能数字；不得暗示真实客户与真实合作方</textarea>
+          <div class="hint">输入会先过字段白名单与本地隐私门禁，命中患者标识直接阻断。</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="n">02</span>目标语种与平台</h3>
+        <div class="chips" id="lang-chips">
+          <span class="chip on" data-value="en">en</span><span class="chip on" data-value="ar">ar<span class="rtl">RTL</span></span>
+          <span class="chip on" data-value="id">id</span><span class="chip on" data-value="th">th</span><span class="chip on" data-value="vi">vi</span><span class="chip on" data-value="ms">ms</span>
+        </div>
+        <div class="divider"></div>
+        <div class="chips" id="plat-chips">
+          <span class="chip plat on" data-value="landing_page">独立站</span><span class="chip plat on" data-value="tiktok">tiktok</span>
+          <span class="chip plat" data-value="instagram">instagram</span><span class="chip plat" data-value="amazon">amazon</span>
+        </div>
+        <div class="note warn" style="margin:14px 0 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+          <div id="cost-hint">本次预计消耗 <b>–</b>。当前余额 <b>–</b>。</div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:16px">
+          <button class="btn" id="btn-generate">开始生成</button>
+          <button class="btn ghost" id="btn-draft">保存为草稿</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span class="n">03</span>生成进度 <span id="gen-status" style="font-weight:400;color:var(--ink-3);font-size:12px"></span>
+          <span style="flex:1"></span><button class="btn ghost sm hide" id="btn-cancel">取消任务</button></h3>
+        <div class="prog" id="prog-lines"></div>
+        <div class="divider"></div>
+        <div class="kv"><span class="k">已完成组合</span><span class="v" id="kv-done">0 / 0</span></div>
+        <div class="kv"><span class="k">已预扣积分</span><span class="v warn" id="kv-cost">0</span></div>
+        <div class="kv"><span class="k">当前余额</span><span class="v" id="kv-balance">–</span></div>
+      </div>
+
+      <div class="card">
+        <h3><span class="n">04</span>合规裁决（实时输出，逐条送达）</h3>
+        <div id="verdicts"><div class="note info" style="margin:0"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg><span>提交生成后，裁决结果将在此逐条显示。</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 管理员视图 ══════════ -->
+<div class="app" id="app-admin">
+  <div class="top">
+    <div class="brand"><img src="assets/logo-square.png" alt="AI新青年"><span>跨境内容合规引擎</span><span class="sub">管理控制台</span></div>
+    <div class="spacer"></div>
+    <div class="credits"><span class="lbl">平台用户</span><span class="val" id="a-pill">–</span></div>
+    <div class="skinbtns" title="按场景换肤：换肤只改 8 个 CSS 变量">
+      <button data-skinbtn="slate" class="on">Slate Pro</button>
+      <button data-skinbtn="amber">Amber</button>
+      <button data-skinbtn="paper">Paper</button>
+    </div>
+    <button class="iconbtn" id="btn-logout-admin" title="登出"><i class="ico" data-icon="logout"></i></button>
+    <div class="avatar" style="background:linear-gradient(140deg,#D29922,#F85149)">管</div>
+  </div>
+  <div class="body">
+    <div class="side">
+      <div class="newtask" id="btn-admin-recharge">＋ 用户充值</div>
+      <div class="nav">
+        <div class="grp">
+          <h4>运营</h4>
+          <div class="item on" id="a-nav-users"><i class="ico" data-icon="user"></i><span class="nm">用户管理</span><span class="tag" id="a-usercount">–</span></div>
+          <div class="item" id="a-nav-recharge"><i class="ico" data-icon="wallet"></i><span class="nm">充值管理</span></div>
+          <div class="item" id="a-nav-usage"><i class="ico" data-icon="chart"></i><span class="nm">用量统计</span><span class="tag">开发中</span></div>
+        </div>
+        <div class="grp">
+          <h4>系统</h4>
+          <div class="item" id="a-nav-storage"><i class="ico" data-icon="security"></i><span class="nm">存储与隔离</span><span class="tag pass">独立目录</span></div>
+          <div class="item" id="a-nav-gateway"><i class="ico" data-icon="flash"></i><span class="nm">模型与网关</span><span class="tag">开发中</span></div>
+          <div class="item" id="a-nav-audit"><i class="ico" data-icon="history"></i><span class="nm">审计日志</span></div>
+        </div>
+      </div>
+      <div class="space-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        <span>管理员<b style="color:var(--warn)">不默认拥有</b>用户文件读取权，需用户授权或工单审批</span>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="hd">
+        <div><h1>用户管理</h1><p>用户、积分、存储隔离状态一览（真实数据）。</p></div>
+        <div class="spacer"></div>
+        <button class="btn ghost sm" id="btn-export-csv">导出 CSV</button>
+      </div>
+
+      <div class="grid g4" style="margin-bottom:16px">
+        <div class="stat"><div class="k">用户总数</div><div class="v" id="s-users">–</div><div class="d">真实注册用户</div></div>
+        <div class="stat"><div class="k">积分流通</div><div class="v" id="s-credits">–</div><div class="d">当前余额合计</div></div>
+        <div class="stat"><div class="k">任务总数</div><div class="v pass" id="s-tasks">–</div><div class="d">累计生成任务</div></div>
+        <div class="stat"><div class="k">审计事件</div><div class="v" id="s-audit">–</div><div class="d">管理操作与登录拦截</div></div>
+      </div>
+
+      <div class="card">
+        <h3>用户列表</h3>
+        <table>
+          <thead><tr>
+            <th>用户</th><th>角色</th><th class="mono">积分余额</th>
+            <th class="mono">状态</th><th class="mono">上传/产物</th><th>操作</th>
+          </tr></thead>
+          <tbody id="admin-users"><tr><td colspan="6">加载中…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>存储与隔离（每用户独立目录）</h3>
+        <div class="note info" style="margin-bottom:14px">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>
+          <div>每个用户拥有真实文件系统目录，AI 在其中读写；<b>路径沙箱 + 归属校验 + 输入重解析</b>三层防护。</div>
+        </div>
+        <div class="tree" id="admin-tree"></div>
+        <div class="note danger" style="margin-top:14px">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg>
+          <div><b>红线</b>：管理员默认无用户文件读取权。任何跨用户访问须走工单审批 + 留审计日志，且用户可收到通知。</div>
+        </div>
+      </div>
+
+      <div class="card" id="card-audit">
+        <h3>审计日志（最近 50 条）</h3>
+        <table>
+          <thead><tr><th>时间</th><th>操作</th><th>目标用户</th><th>明细</th></tr></thead>
+          <tbody id="admin-audit"><tr><td colspan="4">加载中…</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="card" id="card-ledger">
+        <h3>任务流水（含消耗积分）</h3>
+        <table>
+          <thead><tr><th>任务</th><th>用户</th><th class="mono">语种×平台</th><th>状态</th><th class="mono">消耗/退还</th><th class="mono">时间</th></tr></thead>
+          <tbody id="admin-ledger"><tr><td colspan="6">加载中…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 登录 / 注册 弹层 ══════════ -->
+<div class="overlay" id="auth-overlay">
+  <div class="modal">
+    <h3 id="auth-title">登录</h3>
+    <div class="msub" id="auth-sub">登录后解锁实时生成 / 积分 / 我的空间 / 任务历史</div>
+    <div class="mtabs">
+      <button id="tab-login" class="on">登录</button>
+      <button id="tab-register">注册（送 100 积分）</button>
+    </div>
+    <div class="note danger merr" id="auth-err"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><span id="auth-err-text"></span></div>
+    <div class="f" style="margin-bottom:12px"><label>用户名</label><input id="auth-username" autocomplete="username"></div>
+    <div class="f" style="margin-bottom:16px"><label>密码</label><input id="auth-password" type="password" autocomplete="current-password"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn" id="btn-auth-submit" style="flex:1;justify-content:center">登录</button>
+      <button class="btn ghost" id="btn-auth-cancel">取消</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ 积分明细 抽屉 ══════════ -->
+<div class="drawer" id="ledger-drawer">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+    <h3 style="flex:1;font-size:15px" id="ledger-title">积分明细</h3>
+    <button class="btn ghost sm" id="btn-ledger-close">关闭</button>
+  </div>
+  <div id="ledger-body"><div class="note info"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg><span>加载中…</span></div></div>
+</div>
+
+<!-- ══════════ 文件列表 抽屉 ══════════ -->
+<div class="drawer" id="files-drawer">
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+    <h3 style="flex:1;font-size:15px" id="files-title">我的文件</h3>
+    <label class="btn sm" style="cursor:pointer">上传资料<input type="file" id="file-input" class="hide"></label>
+    <button class="btn ghost sm" id="btn-files-close">关闭</button>
+  </div>
+  <div id="files-body"><div class="note info"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg><span>加载中…</span></div></div>
+</div>
+
+<!-- ══════════ 充值 弹层（管理员） ══════════ -->
+<div class="overlay" id="recharge-overlay">
+  <div class="modal">
+    <h3>用户充值</h3>
+    <div class="msub">充值即时到账，操作将记入审计日志</div>
+    <div class="note danger merr" id="recharge-err"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg><span id="recharge-err-text"></span></div>
+    <div class="f" style="margin-bottom:12px"><label>用户名</label><input id="recharge-username" placeholder="要充值的用户名"></div>
+    <div class="f" style="margin-bottom:12px"><label>充值额（正整数）</label><input id="recharge-amount" type="number" min="1" placeholder="例如 100"></div>
+    <div class="f" style="margin-bottom:16px"><label>备注（必填）</label><input id="recharge-note" placeholder="例如：2026-09 内部结算"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn" id="btn-recharge-submit" style="flex:1;justify-content:center">确认充值</button>
+      <button class="btn ghost" id="btn-recharge-cancel">取消</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="assets/icons.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

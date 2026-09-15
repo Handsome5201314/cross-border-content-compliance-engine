@@ -7,3 +7,9 @@ streamlit>=1.63,<2
 jsonschema>=4.26,<5
 pillow>=11,<13
 bcrypt>=4.0.1
+
+# ── V3 壳层新增依赖（FastAPI + 静态前端 + Docker 部署）──
+fastapi>=0.115
+uvicorn>=0.34
+itsdangerous>=2.2
+python-multipart>=0.0.9
