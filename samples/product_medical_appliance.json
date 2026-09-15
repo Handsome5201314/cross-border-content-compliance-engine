@@ -1,0 +1,158 @@
+{
+  "schema_version": "3.0",
+  "product_name": "301 儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）",
+  "product_name_en": "Pediatric Resident AI Assistant (Software) + Smart Badge (Hardware)",
+  "brand": "团队自研（医院合作项目）",
+  "form": "软硬一体：全本地部署的儿科住院医师 AI 助手软件 + 佩戴式智能胸卡（在研）",
+  "deployment": "院内全本地部署：ASR/OCR/视觉复核/文书生成全部运行在院内 GPU（RTX 3090 24GB），患儿资料 100% 本机处理，任何数据不上云 API；原始录音/图片处理完成即删除",
+  "capabilities": [
+    {
+      "id": "SW-1",
+      "area": "software",
+      "name": "查房录音转写与主任指示提取",
+      "desc": "早查房/主任查房录音经说话人分离转写，自动提取主任指示并按床位归档，多人讨论分清说话人（主任/管床/家属）",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "《智能胸卡_交互需求说明书 v1》查房场景；技术栈：Qwen3-ASR-1.7B（vLLM 本地）+ pyannote 多角色分离"
+    },
+    {
+      "id": "SW-2",
+      "area": "software",
+      "name": "床旁问诊与文书草稿",
+      "desc": "床旁问诊引导病史采集，自动生成入院记录/首次病程记录草稿，供医生审核修改；听不清的内容标注「待确认」不脑补",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "《智能胸卡_交互需求说明书 v1》床旁问诊场景；文书生成：Hermes agent（主模型 deepseek-v4-flash，按本院儿科模板）"
+    },
+    {
+      "id": "SW-3",
+      "area": "software",
+      "name": "检验结果本地 OCR 与结构化摘要",
+      "desc": "HIS 截图/扫描 PDF 经本地 OCR（含视觉模型复核）转为结构化检验摘要，异常值按儿科年龄参考区间标注",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "《智能胸卡_交互需求说明书 v1》检验结构化场景；OCR：MinerU + PaddleOCR 类本地管线，视觉复核 qwen3.8:27b（ollama 本地）"
+    },
+    {
+      "id": "SW-4",
+      "area": "software",
+      "name": "教学查房与疑难病例知识沉淀",
+      "desc": "教学查房/疑难病例讨论生成完整记录并沉淀为病种知识，写入自生长知识库",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "《智能胸卡_交互需求说明书 v1》教学查房场景"
+    },
+    {
+      "id": "SW-5",
+      "area": "software",
+      "name": "微信随访辅助",
+      "desc": "家长微信随访消息生成补充问诊清单与回复草稿，由医生确认后发出",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "《智能胸卡_交互需求说明书 v1》随访场景"
+    },
+    {
+      "id": "SW-6",
+      "area": "software",
+      "name": "待办管理（每日 17:00 推送）",
+      "desc": "自动汇总当日待办（文书缺口/待确认项/随访任务），每天 17:00 推送提醒",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "《智能胸卡_交互需求说明书 v1》待办管理章节"
+    },
+    {
+      "id": "SW-7",
+      "area": "software",
+      "name": "自生长知识库（Obsidian 兼容）",
+      "desc": "全部记录与知识以 Obsidian 兼容 markdown + git 管理，每日加密备份",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "项目 MEMORY.md：知识库架构（Obsidian 兼容 markdown + git + 每日加密备份）"
+    },
+    {
+      "id": "HW-1",
+      "area": "hardware",
+      "name": "佩戴式麦克风与 VAD 自动录音",
+      "desc": "智能胸卡佩戴式高质麦克风，VAD 分段自动录音，替代手动录音",
+      "status": "planned",
+      "priority": "P0",
+      "evidence": "《智能胸卡_交互需求说明书 v1》功能项（优先级 P0：录音自动采集上传）"
+    },
+    {
+      "id": "HW-2",
+      "area": "hardware",
+      "name": "录音自动上传分发（时间/床位上下文）",
+      "desc": "录音自动上传并按时间与床位上下文分发到对应患者记录",
+      "status": "planned",
+      "priority": "P0",
+      "evidence": "《智能胸卡_交互需求说明书 v1》功能项（优先级 P0：录音与床位上下文关联）"
+    },
+    {
+      "id": "HW-3",
+      "area": "hardware",
+      "name": "屏幕拍照 OCR（HIS 屏幕/腕带/条码）",
+      "desc": "胸卡拍照/扫码 HIS 屏幕、患者腕带与条码，本地 OCR 结构化",
+      "status": "planned",
+      "priority": "P1",
+      "evidence": "《智能胸卡_交互需求说明书 v1》功能项（优先级 P1：屏幕拍照 OCR）"
+    },
+    {
+      "id": "HW-4",
+      "area": "hardware",
+      "name": "床位与患者识别",
+      "desc": "通过腕带/条码关联床位与患者，为录音/照片自动附加上下文",
+      "status": "planned",
+      "priority": "P1",
+      "evidence": "《智能胸卡_交互需求说明书 v1》功能项"
+    },
+    {
+      "id": "HW-5",
+      "area": "hardware",
+      "name": "轻量状态屏与震动提醒",
+      "desc": "胸卡轻量状态屏与震动提醒（待办/推送）",
+      "status": "planned",
+      "priority": "P2",
+      "evidence": "《智能胸卡_交互需求说明书 v1》功能项（优先级 P2：提醒与语音问答）"
+    },
+    {
+      "id": "HW-6",
+      "area": "hardware",
+      "name": "离线低功耗持续监听",
+      "desc": "院内离线场景低功耗持续监听，断网可用",
+      "status": "planned",
+      "priority": "P2",
+      "evidence": "《智能胸卡_交互需求说明书 v1》功能项"
+    }
+  ],
+  "tech_stack": [
+    {"layer": "语音识别", "component": "Qwen3-ASR-1.7B（vLLM 本地部署）+ pyannote 多角色说话人分离"},
+    {"layer": "OCR/视觉", "component": "MinerU（扫描 PDF）+ PaddleOCR 类本地管线；视觉复核 qwen3.8:27b（ollama 本地）"},
+    {"layer": "文书生成", "component": "Hermes agent（主模型 deepseek-v4-flash，按本院儿科模板）"},
+    {"layer": "知识库", "component": "Obsidian 兼容 markdown + git 版本管理 + 每日加密备份"},
+    {"layer": "算力", "component": "RTX 3090 24GB 全本地 GPU（ASR/OCR/视觉/转写共用）"}
+  ],
+  "red_lines": [
+    "患儿资料 100% 本机处理——OCR、视觉、转写、脱敏全本地，任何数据不上云 API；原始录音/图片处理完即删",
+    "医疗严谨：文书是草稿需医生审核；听不清标「待确认」不脑补；数值按年龄参考区间解读",
+    "AI 文书不代签医生名、不含医院实名",
+    "多人讨论必须分清说话人（主任 vs 管床 vs 家属），主任指示最高优先级"
+  ],
+  "selling_angles": [
+    "数据主权：全本地推理、数据不出院，契合 GDPR/印尼 PDPA/中东数据本地化方向，无需跨境传输评估（具体合规义务仍须按目标市场逐项核验，见市场报告待核清单）",
+    "交付简单：软硬一体、插电即用，不依赖院方 IT 与云资源",
+    "专科适配：儿科病历模板、年龄参考区间解读、生长发育/遗传代谢/发育行为方向",
+    "主任指示不丢：说话人分离让查房指令可追溯",
+    "医生零操作：胸卡佩戴即采集，替代手动录音拍照（硬件能力为在研规划，文案中须标注 roadmap）"
+  ],
+  "target_buyers": [
+    "海外医院儿科/综合医院住院部",
+    "本地医疗器械经销商（渠道合作）",
+    "公立采购部门"
+  ],
+  "target_markets": ["ID", "TH", "VN", "MY", "SA", "AE", "RU"],
+  "target_languages": ["en", "ar", "id", "th", "vi", "ms", "ru"],
+  "target_platforms": ["tiktok", "instagram", "youtube_shorts", "google_ads", "amazon", "landing_page"],
+  "compliance_level": "strict",
+  "pricing_positioning": "软件订阅 + 胸卡硬件（定价未定，文案中不得出现具体价格与折扣承诺）",
+  "marketing_notes": "B2B：面向医院与经销商，不做患者直销。所有能力以 capabilities 的事实与状态为准：status=planned 的一律标注 roadmap/规划中；产品资料未提供认证信息与性能数字，任何文案不得出现认证宣称（FDA/CE/SFDA 等）或具体性能数字（毫秒级/准确率等）。"
+}

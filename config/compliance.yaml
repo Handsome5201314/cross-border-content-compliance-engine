@@ -1,0 +1,216 @@
+# =========================================================================
+# 医疗广告合规规则库（合规审查 Agent 的数据源）
+# 双层审查 = 本地正则规则引擎（待审信号）+ LLM 语义裁决（跨厂商模型）
+#
+# 重要口径（对应评审 P1-12 / P1-11）：
+# 1. 正则命中一律是「待审信号」（mode: signal），不是确定违规；否定语境
+#    （Not a cure / do not guarantee / 不保证治愈）由语义层裁决为 benign 并保留原文；
+#    未获裁决的信号按违规保守处理（fail-closed）；
+# 2. 本规则库为比赛 Demo 用途的工程化整理，未联网核验各国法规原文，
+#    不构成法律意见；正式商用需以各国监管原文为准；
+# 3. 每个市场输出 广告规则 + 准入待核(access_notes) + 数据主权待核
+#    (data_sovereignty_notes)；未知不视为通过。
+# =========================================================================
+
+meta:
+  version: "3.0"
+  legal_notice: "本合规输出为工程化规则与模型辅助判断，不构成法律意见。"
+  evidence_status: "规则为 Demo 用途的工程化整理，未联网核验监管原文；认证/准入/数据主权事项均为待核清单。"
+
+# ---------- 全局红线（跨市场通用；命中=待审信号） ----------
+global_rules:
+  mode: signal
+  forbidden_patterns:
+    # 绝对化用语（英文）
+    - {pattern: '\b(?:best|No\.?\s*1|number\s*one|world.s\s+(?:best|leading)|top\s+rated|most\s+advanced)\b', severity: high, reason: 疑似绝对化用语（医疗广告普遍禁止，待语义层裁决语境）}
+    # 疗效承诺（英文）
+    - {pattern: '\b(?:cure[sd]?|heals?|treats?\s+all|miracle|revolutionary)\b', severity: high, reason: 疑似疗效承诺/夸大宣传（否定语境由语义层裁决）}
+    # 绝对安全/保证承诺——已修 100% 词边界漏报（P1-12：不再要求 % 后还有词边界）
+    - {pattern: '\b100\s*%', severity: high, reason: 疑似百分比绝对化宣称（如 100% safe/effective）}
+    - {pattern: '\b(?:guarantee[sd]?|guaranteed\s+results?|completely\s+safe|risk[-\s]?free|no\s+side\s+effects?|zero\s+risk)\b', severity: high, reason: 疑似保证承诺/绝对安全宣称（否定语境由语义层裁决）}
+    # 认证声明（无证据不得出现）
+    - {pattern: '\b(?:FDA\s+approved|CE\s+certified|WHO\s+approved|NMPA\s+approved|SFDA\s+approved|BPOM\s+approved|ISO\s*13485\s+certified)\b', severity: high, reason: 认证声明必须有证书证据；本产品资料未提供认证信息，一律不得出现}
+    - {pattern: '\b(?:cheapest|lowest\s+price|free\s+trial\s+forever)\b', severity: medium, reason: 最低价/无限免费承诺}
+    # 中文源文案风险
+    - {pattern: '治愈|根治|包治|百分百|百分之百|全球第一|最先进|保证有效|无副作用|彻底治好|药到病除', severity: high, reason: 中文绝对化/疗效承诺用语}
+    # 俄语（新覆盖语种）
+    # 已知瑕疵（2026-09-09，暂不修）：本行含通用模式 100\s*%，导致阿语/印尼语文案命中时
+    # 审计标签误显示「俄语」。判定结果不受影响（真正拍板的是语义层 verdict/reason）。
+    # 修复需改动 pattern 集合 → 触发 verify_deep_outputs 的「规则与快照不一致」而全红，
+    # 且重跑 ar/id 有丢失「100% 双判」演示案例的风险。故保留，待赛后处理。
+    - {pattern: '(?:гарантир\w+|100\s*%|излеч\w+|полностью\s+безопасн\w+|без\s+побочн\w+|чудо[-\s]?\w*\s+средство)', severity: high, reason: 俄语保证承诺/疗效宣称（否定语境由语义层裁决）}
+    # 印尼语
+    - {pattern: 'sembuh\s+total|dijamin\s+sembuh|100\s*%\s*aman', severity: high, reason: 印尼语疗效承诺}
+    # 泰语
+    - {pattern: 'หายขาด|รักษาได้\s*100|รับประกันผล', severity: high, reason: 泰语疗效承诺}
+    # 越南语（声调符号须保留）
+    - {pattern: 'chữa\s+khỏi|chữa\s+dứt\s+điểm|an\s+toàn\s+tuyệt\s+đối|đảm\s+bảo\s+100', severity: high, reason: 越南语疗效承诺}
+    # 马来语
+    - {pattern: 'sembuh\s+sepenuhnya|dijamin\s+selamat\s+100', severity: high, reason: 马来语疗效承诺}
+    # 阿拉伯语
+    - {pattern: 'الشفاء|علاج\s*نهائي|مضمون\s*المفعول', severity: high, reason: 阿拉伯语疗效承诺}
+    # 结构性风险
+    - {pattern: '\bdoctor\s+(?:recommended|approved)\b', severity: medium, reason: 医生推荐类背书需实名与授权（多数市场限制）}
+    - {pattern: '\bpatients?\s+(?:love|report|experienced)\b', severity: medium, reason: 患者证言类表述在医疗广告中受限}
+  # 正反例（_verify_all.py 逐条回归，P1-12）
+  test_cases:
+    - {text: "100% safe", expect_hit: true, note: 修掉词边界漏报后的必中用例}
+    - {text: "100%effective", expect_hit: true}
+    - {text: "It is not a cure for any disease", expect_hit: true, adjudication: benign, note: 否定语境——信号命中但应判 benign 并保留}
+    - {text: "We do not guarantee results", expect_hit: true, adjudication: benign, note: 否定语境同上}
+    - {text: "AI assistant supports clinical documentation", expect_hit: false, note: 干净文案}
+  b2b_clarification: "本产品为 B2B 医疗器械软件+硬件（卖给医院/经销商），非面向患者直销（DTC）；DTC 限制条款不直接适用，但医疗广告基础红线仍适用。"
+
+# ---------- 免责声明（按语种；确定性配置，由流水线追加，不经模型手，P1-10） ----------
+# 内容三要素：AI 输出为草稿须医生审核；能力以注册范围为准；面向专业/机构受众
+disclaimers:
+  en: "AI-generated content is a draft and must be reviewed and approved by a physician before use. Product capabilities are limited to the scope of regulatory registration. Intended for healthcare professionals and institutional buyers."
+  ar: "المحتوى الذي ينشئه الذكاء الاصطناعي مسودة ويتطلب مراجعة الطبيب واعتماده قبل الاستخدام. قدرات المنتج محدودة بنطاق التسجيل التنظيمي. موجه للمهنيين الصحيين والمشترين المؤسسيين."
+  id: "Konten yang dihasilkan AI adalah draf dan harus ditinjau serta disetujui dokter sebelum digunakan. Kemampuan produk terbatas pada lingkup registrasi regulasi. Ditujukan untuk tenaga kesehatan profesional dan pembeli institusi."
+  th: "เนื้อหาที่สร้างโดย AI เป็นฉบับร่างและต้องได้รับการตรวจทานและอนุมัติโดยแพทย์ก่อนใช้งาน ความสามารถของผลิตภัณฑ์อยู่ในขอบเขตการจดทะเบียนตามกฎระเบียบ ออกแบบมาสำหรับบุคลากรทางการแพทย์และผู้ซื้อสถาบัน"
+  vi: "Nội dung do AI tạo ra là bản dự thảo và phải được bác sĩ xem xét, phê duyệt trước khi sử dụng. Năng lực sản phẩm giới hạn trong phạm vi đăng ký quy định. Dành cho chuyên gia y tế và người mua tổ chức."
+  ms: "Kandungan yang dihasilkan AI adalah draf dan mesti disemak serta diluluskan oleh doktor sebelum digunakan. Keupayaan produk terhad kepada skop pendaftaran kawal selia. Untuk profesional penjagaan kesihatan dan pembeli institusi."
+  ru: "Материалы, созданные ИИ, являются черновиком и требуют проверки и одобрения врача перед использованием. Возможности продукта ограничены объёмом регистрационного удостоверения. Предназначено для медицинских работников и институциональных покупателей."
+
+# ---------- 分市场规则（市场独立于语言；GLOBAL 为规则桶，不算国家市场，P1-11） ----------
+markets:
+  ID:
+    name: 印度尼西亚
+    regulator: "BPOM / Kemenkes（卫生部）——待核"
+    rules:
+      - "医疗器械广告不得超出注册范围表述功效（与 izin edar 一致）"
+      - "英文物料不得与印尼语版本宣称冲突"
+    access_notes:
+      - "医疗器械软件在印尼的分类界定（风险等级）待核"
+      - "AKD/AKL 注册路径与本地授权代表（nama dagang）要求待核"
+      - "公立采购的 TKDN（本地含量）要求待核"
+    data_sovereignty_notes:
+      - "印尼 PDPA（个人数据保护法）对健康数据的处理与本地化要求待核"
+      - "患者数据跨境传输限制与电子系统注册（PSE）要求待核"
+  TH:
+    name: 泰国
+    regulator: "TFDA（泰国食品药品监督管理局）——待核"
+    rules:
+      - "医疗器械广告需事先取得广告预审许可（广告许可号）"
+      - "严禁任何形式的王室名义使用（刑法 112 条红线）"
+      - "疗效表述需与注册证核准的预期用途一致，不得扩大"
+    access_notes:
+      - "医疗器械软件注册路径（通知/许可制分类）待核"
+      - "广告预审许可（广告许可号）申请流程待核"
+      - "本地进口商/经销商资质要求待核"
+    data_sovereignty_notes:
+      - "泰国 PDPA 对健康数据的合规要求待核"
+      - "数据本地化义务（如适用）待核"
+  VN:
+    name: 越南
+    regulator: "MOH（卫生部）/ 医疗器械管理部门——待核"
+    rules:
+      - "医疗器械宣传需与注册申报资料中的预期用途一致"
+      - "越南语宣称与英文宣称不一致时以越南语监管口径为准"
+      - "不得在广告中引用未经公布的临床数据"
+    access_notes:
+      - "医疗器械分类与注册申报路径（MD-13 等法令口径）待核"
+      - "进口医疗器械本地授权代表要求待核"
+      - "公立医院采购准入流程待核"
+    data_sovereignty_notes:
+      - "越南《网络安全法》与个人数据法令（PDPD）的数据本地化/跨境要求待核"
+      - "健康数据的存储与传输合规义务待核"
+  MY:
+    name: 马来西亚
+    regulator: "MDA（医疗器械管理局）——待核"
+    rules:
+      - "医疗器械广告宣称需与 MDA 注册的预期用途一致"
+      - "广告材料使用前需符合 MDA 广告指南"
+      - "清真敏感元素审查（图像/联想）"
+    access_notes:
+      - "医疗器械软件注册路径（CMDA 分类）待核"
+      - "本地授权代表（ARR/ABR）要求待核"
+      - "广告审批流程待核"
+    data_sovereignty_notes:
+      - "马来西亚 PDPA 对健康数据的处理要求待核"
+      - "公立部门数据驻留要求（如适用）待核"
+  SA:
+    name: 沙特阿拉伯
+    regulator: "SFDA（沙特食品药品监督管理局）——待核"
+    rules:
+      - "医疗器械促销材料需 SFDA 事先批准"
+      - "阿语版本与英文版本宣称必须一致（consistency 要求）"
+      - "宗教元素与文化敏感性审查（不得用宗教符号做营销）"
+    access_notes:
+      - "医疗器械软件（含 AI 功能）分类界定与注册路径待核"
+      - "授权代表（AR）与进口许可要求待核"
+      - "促销材料 SFDA 事先批准流程待核"
+    data_sovereignty_notes:
+      - "沙特 PDPL（个人数据保护法）及实施条例对健康数据的本地化/跨境要求待核"
+      - "数据跨境传输评估（DTS）义务待核"
+  AE:
+    name: 阿联酋
+    regulator: "MOHAP（卫生预防部）——待核"
+    rules:
+      - "医疗器械广告需 MOHAP 广告许可"
+      - "阿语+英语双语物料宣称一致性要求"
+      - "健康宣称不得超出产品注册范围"
+    access_notes:
+      - "医疗器械注册路径（MOHAP/TAWJEH 系统）待核"
+      - "自由区 vs 大陆销售的许可差异待核"
+      - "广告许可申请流程待核"
+    data_sovereignty_notes:
+      - "阿联酋 PDPL 联邦法对健康数据的要求待核"
+      - "健康数据跨境传输限制（含 DHA/DOH 特区要求）待核"
+  RU:
+    name: 俄罗斯（备选市场）
+    regulator: "Roszdravnadzor（联邦医疗卫生监督局）——待核"
+    rules:
+      - "医疗器械软件须按注册证（РУ）核准的预期用途宣传"
+      - "广告宣称须与注册证一致，不得扩大"
+    access_notes:
+      - "医疗器械软件注册（РУ）路径与本地测试要求待核"
+      - "EAC（欧亚经济联盟）认证适用性待核"
+      - "进口与本地代表要求待核"
+    data_sovereignty_notes:
+      - "俄罗斯个人数据本地化法（152-ФЗ）要求初级数据库置于境内——待核适用范围"
+      - "健康数据跨境传输限制待核"
+  GLOBAL:
+    name: 通用英语物料规则（规则桶，不计为国家市场）
+    regulator: "以各投放国当地卫生部门要求为准（如 HSA Singapore 等）——待核"
+    rules:
+      - "英语宣称不得使用绝对化用语与疗效承诺"
+      - "认证声明需与实际证书一致并留存证据链（本产品未提供认证信息则一律不写）"
+    access_notes:
+      - "英语物料投放的具体国家/地区准入要求需按投放国逐项核对"
+    data_sovereignty_notes:
+      - "英语物料投放国的数据主权要求需按投放国逐项核对（如 GDPR 适用性）"
+
+# ---------- 语种 -> 市场规则映射（市场选择独立于语言：∩ 产品目标市场，P1-11） ----------
+language_market_map:
+  en: [GLOBAL]
+  ar: [SA, AE]
+  id: [ID]
+  th: [TH]
+  vi: [VN]
+  ms: [MY]
+  ru: [RU]
+
+# ---------- 合规等级 ----------
+levels:
+  strict:
+    name: 严格（默认，推荐）
+    description: "全量规则：全局红线信号 + 目标市场规则 + 免责声明强制追加并校验非空 + 双层审查全开"
+    append_disclaimer: true
+    require_disclaimer: true
+  standard:
+    name: 标准
+    description: "全局红线 + 目标市场规则，免责声明追加（不强制校验非空）"
+    append_disclaimer: true
+    require_disclaimer: false
+  loose:
+    name: 宽松（内部草稿用）
+    description: "仅全局红线信号 + LLM 快扫，不追加免责声明"
+    append_disclaimer: false
+    require_disclaimer: false
+
+# ---------- 引擎声明（UI/导出/CLI 统一展示，P0-2） ----------
+engine_notices:
+  deployment_clarification: "被营销的产品（301 儿科住院医师 AI 助手 + 智能胸卡）为院内全本地部署、患者数据不出院——这是产品卖点；本营销引擎自身会调用云端大模型生成文案，两件事不得混同。"
+  privacy: "所有模型调用前经过本地敏感内容门禁：命中患者标识（姓名/床号/住院号/身份证/手机号等）即本地阻断，绝不外发云端脱敏。"
+  legal: "本引擎输出的合规提示为工程化规则与模型辅助判断，不构成法律意见；准入与数据主权事项为待核清单。"

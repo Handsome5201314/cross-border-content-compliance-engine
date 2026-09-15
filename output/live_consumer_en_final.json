@@ -1,0 +1,2025 @@
+{
+  "meta": {
+    "schema_version": "3.0",
+    "module": "live",
+    "languages": [
+      "en"
+    ],
+    "generated_at": "2026-09-09T10:41:24.914935+00:00",
+    "elapsed_s": 97.03
+  },
+  "product": {
+    "schema_version": "3.0",
+    "product_name": "户外便携储能电源 600W（演示样例）",
+    "product_name_en": "Portable Power Station 600W (Demo Sample)",
+    "brand": "DEMO-BRAND（虚构，仅演示用）",
+    "form": "消费电子 / 户外储能：600W 输出、磷酸铁锂电池、支持太阳能板充电",
+    "deployment": "常规跨境电商：亚马逊 FBA + 独立站 + TikTok 社媒，无需本地部署",
+    "capabilities": [
+      {
+        "id": "PS-1",
+        "area": "product",
+        "name": "600W 纯正弦波交流输出",
+        "desc": "可驱动小型家电与电子设备，纯正弦波输出，适配敏感设备",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-2",
+        "area": "product",
+        "name": "磷酸铁锂电池，循环寿命长",
+        "desc": "磷酸铁锂电芯，标称循环次数高于普通三元锂（具体数字未在样例中提供，文案不得编造）",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-3",
+        "area": "product",
+        "name": "太阳能充电支持",
+        "desc": "支持外接太阳能板补电，适合户外与断电场景",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-4",
+        "area": "product",
+        "name": "多路接口（AC/USB-C/USB-A/车充）",
+        "desc": "多路输出接口，可同时为多台设备供电",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-5",
+        "area": "service",
+        "name": "本地化说明书与售后",
+        "desc": "随附多语言说明书；售后由当地合作方承担（具体政策未在样例中提供）",
+        "status": "planned",
+        "priority": "P1",
+        "evidence": "演示样例设定（虚构）"
+      }
+    ],
+    "tech_stack": [
+      {
+        "layer": "品类",
+        "component": "消费电子 / 户外储能（跨境电商常规品类）"
+      },
+      {
+        "layer": "渠道",
+        "component": "亚马逊 + 独立站 + TikTok/Instagram 社媒"
+      }
+    ],
+    "red_lines": [
+      "不得宣称通过任何安全认证（样例未提供认证信息，文案不得出现 UL/CE/PSE 等认证宣称）",
+      "不得编造循环次数、容量保持率、充电时长等具体性能数字（样例未提供）",
+      "不得出现具体价格、折扣、限时促销承诺（定价未在样例中提供）",
+      "不得暗示真实客户、真实销量、真实评价或真实合作方"
+    ],
+    "selling_angles": [
+      "断电备用：应对东南亚部分区域的不稳定供电与台风季停电",
+      "户外场景：中东与东南亚露营、夜市摆摊、移动办公",
+      "太阳能补电：日照充足地区可日间补电，降低用电成本",
+      "一机多充：多路接口同时供电，减少携带多个充电宝"
+    ],
+    "target_buyers": [
+      "家庭应急备电用户",
+      "户外露营与自驾人群",
+      "夜市/地摊等移动用电小微商户"
+    ],
+    "target_markets": [
+      "ID",
+      "TH",
+      "VN",
+      "MY",
+      "SA",
+      "AE"
+    ],
+    "target_languages": [
+      "en",
+      "ar",
+      "id",
+      "th"
+    ],
+    "target_platforms": [
+      "tiktok",
+      "instagram",
+      "amazon",
+      "landing_page"
+    ],
+    "compliance_level": "standard",
+    "pricing_positioning": "中端价位（具体价格未提供，文案不得出现数字）",
+    "marketing_notes": "B2C 常规消费品，非医疗场景：不使用医疗合规等级，但仍受广告法约束（绝对化用语、虚假宣传、疗效/安全承诺）。所有能力以 capabilities 为准，status=planned 标注 roadmap；样例未提供认证、性能数字与价格，文案一律不得编造。本样例为虚构演示用途。"
+  },
+  "results": [
+    {
+      "platform": "live",
+      "module": "live",
+      "language": "en",
+      "rtl": false,
+      "status": "delivered",
+      "error": null,
+      "content": {
+        "title": "Live Stream Script: Portable Power Station 600W (Demo Sample)",
+        "capabilities": [
+          {
+            "id": "PS-1",
+            "status": "implemented",
+            "text": "Delivers **600W pure sine wave** AC output, suitable for small appliances and sensitive electronics."
+          },
+          {
+            "id": "PS-2",
+            "status": "implemented",
+            "text": "Equipped with **LiFePO4 battery cells**, designed for a longer cycle life compared to standard ternary lithium batteries."
+          },
+          {
+            "id": "PS-3",
+            "status": "implemented",
+            "text": "Supports **solar panel charging**, enabling power replenishment in outdoor or off-grid scenarios."
+          },
+          {
+            "id": "PS-4",
+            "status": "implemented",
+            "text": "Features **multiple output interfaces** (AC/USB-C/USB-A/Car Port) to power several devices simultaneously."
+          },
+          {
+            "id": "PS-5",
+            "status": "planned",
+            "text": "Roadmap — planned, not available for demonstration or delivery. Localized manuals and after-sales support via local partners are in the planning stage."
+          }
+        ],
+        "timeline": [
+          {
+            "stage": "opening",
+            "title": "Welcome & Disclaimer",
+            "duration_seconds": 60,
+            "talking_points": [
+              "Introduce the product as a demo sample.",
+              "State clearly that this is a fictional demonstration.",
+              "Highlight the 600W capacity and portability."
+            ],
+            "spoken": "Hello everyone, welcome to our live session. [pause] Today, we are showcasing the **DEMO-BRAND Portable Power Station 600W**. [pause] Please note, this is a **fictional demonstration sample** for illustrative purposes only. [pause] It is not a real customer sale or partnership announcement. [pause] Let's explore how this unit can support your outdoor and emergency power needs.",
+            "action": "Host stands next to the product on a table, smiles, and gestures to the 'Demo Sample' label on the device."
+          },
+          {
+            "stage": "pain_points",
+            "title": "Power Challenges in Daily Life",
+            "duration_seconds": 90,
+            "talking_points": [
+              "Unstable power supply in some regions.",
+              "Need for power during camping or outdoor events.",
+              "Limitations of traditional power banks."
+            ],
+            "spoken": "Many of us face **unstable power supplies** or unexpected outages, especially during storm seasons. [pause] For outdoor enthusiasts, finding reliable power for laptops or lights can be challenging. [pause] Traditional power banks often lack the **AC output** needed for larger devices. [pause] This creates a gap for a versatile, portable solution.",
+            "action": "Host holds up a standard small power bank, then sets it aside to contrast with the larger demo unit."
+          },
+          {
+            "stage": "solution",
+            "title": "Introducing the 600W Solution",
+            "duration_seconds": 120,
+            "talking_points": [
+              "600W pure sine wave output.",
+              "LiFePO4 battery technology.",
+              "Solar charging capability.",
+              "Multiple interfaces."
+            ],
+            "spoken": "This unit offers a **600W pure sine wave** AC output, safe for sensitive electronics. [pause] It uses **LiFePO4 battery cells**, known for their stability and longer cycle life. [pause] You can recharge it via **solar panels**, making it ideal for sunny outdoor locations. [pause] With multiple ports including USB-C and AC, you can charge **multiple devices** at once.",
+            "action": "Host points to the specification label on the side of the unit and traces the line from the battery icon to the output ports."
+          },
+          {
+            "stage": "demo",
+            "title": "Live Demonstration of Implemented Features",
+            "duration_seconds": 180,
+            "talking_points": [
+              "Demonstrate AC output with a small fan.",
+              "Show USB-C charging for a phone.",
+              "Explain solar input port (no solar panel connected).",
+              "Clarify PS-5 is planned only."
+            ],
+            "spoken": "Let's see it in action. [pause] I am plugging in this small fan to the **AC outlet**. [pause] As you can see, it runs smoothly thanks to the pure sine wave. [pause] Next, I connect my phone via **USB-C** for fast charging. [pause] Here is the solar input port; while we don't have a panel connected today, it supports solar recharging. [pause] Please remember, localized manuals and specific after-sales structures are **planned features**, not currently available for demonstration.",
+            "action": "Host plugs in a small desk fan to show it running, then connects a smartphone via USB-C cable to show the charging indicator light."
+          },
+          {
+            "stage": "case",
+            "title": "Hypothetical Usage Scenarios",
+            "duration_seconds": 120,
+            "talking_points": [
+              "Scenario 1: Camping trip with laptop and lights.",
+              "Scenario 2: Emergency backup for home router.",
+              "Emphasize these are hypothetical examples."
+            ],
+            "spoken": "Imagine a **camping trip** where you need to power a laptop and LED lights. [pause] This unit can handle both simultaneously. [pause] Another scenario is using it as an **emergency backup** for your home router during a short outage. [pause] These are **hypothetical workflows** to illustrate potential utility, not records of real customer usage.",
+            "action": "Host displays a printed card with icons representing a tent and a home router to visualize the scenarios."
+          },
+          {
+            "stage": "compliance",
+            "title": "Compliance & Important Notices",
+            "duration_seconds": 90,
+            "talking_points": [
+              "Reiterate fictional nature of demo.",
+              "No certification claims (UL/CE etc.).",
+              "No specific performance numbers fabricated.",
+              "Read mandatory notices."
+            ],
+            "spoken": "It is crucial to clarify our compliance stance. [pause] We do **not claim** any specific safety certifications like UL or CE for this demo sample. [pause] We have not fabricated specific cycle counts or charging times. [pause] Please listen carefully to this notice: **Fictional demonstration sample; not a real customer, sale or partnership.** [pause] Data sovereignty and market access details are **to be verified** and not promised here.",
+            "action": "Host holds up a sign with the text 'DEMO ONLY - NO CERTIFICATION CLAIMS' and reads the notice clearly."
+          },
+          {
+            "stage": "qa",
+            "title": "Q&A Session",
+            "duration_seconds": 120,
+            "talking_points": [
+              "Address common objections: price, certification, support.",
+              "Refer to roadmap for planned features.",
+              "Maintain professional tone."
+            ],
+            "spoken": "We have time for a few questions. [pause] If you ask about **price**, please note that no specific pricing is provided in this demo. [pause] Regarding **certification**, we do not claim any passed certifications for this sample. [pause] For **support** inquiries, remember that localized after-sales services are part of our **roadmap**, not currently implemented. [pause] We appreciate your understanding of these boundaries.",
+            "action": "Host looks at a tablet screen simulating incoming questions and gestures openly to indicate transparency."
+          },
+          {
+            "stage": "cta",
+            "title": "Closing & Next Steps",
+            "duration_seconds": 60,
+            "talking_points": [
+              "Summarize key benefits.",
+              "Encourage following for updates on roadmap.",
+              "Final disclaimer.",
+              "End stream."
+            ],
+            "spoken": "To summarize, this 600W station offers **versatile power** for outdoor and emergency use. [pause] Follow our channel for updates on **planned features** like localized support. [pause] Thank you for joining this **fictional demonstration**. [pause] Have a great day, and stay powered up!",
+            "action": "Host waves goodbye, turns off the demo fan, and fades out the screen."
+          }
+        ],
+        "interaction": {
+          "prompts": [
+            "How does the pure sine wave benefit my devices?",
+            "Can I use this for long-term off-grid living?",
+            "What is the expected timeline for the planned support services?"
+          ],
+          "objections": [
+            {
+              "topic": "price",
+              "question": "How much does this cost?",
+              "answer": "Specific pricing is not provided in this demonstration sample. Please refer to official channels for future pricing information."
+            },
+            {
+              "topic": "deployment",
+              "question": "Is this available for local deployment in my country?",
+              "answer": "This is a cross-border e-commerce demo sample. Specific local deployment details are not part of this fictional demonstration."
+            },
+            {
+              "topic": "security",
+              "question": "Is this unit certified safe?",
+              "answer": "We do not claim any specific safety certifications such as UL or CE for this demo sample. Safety data is to be verified."
+            },
+            {
+              "topic": "certification",
+              "question": "Does it have CE or PSE marks?",
+              "answer": "No certification claims are made for this fictional demonstration sample. Any certification status is to be verified."
+            },
+            {
+              "topic": "languages",
+              "question": "Is the manual available in my language?",
+              "answer": "Localized manuals are a planned feature under our roadmap. They are not currently available for demonstration."
+            },
+            {
+              "topic": "support",
+              "question": "Who handles after-sales service?",
+              "answer": "After-sales support via local partners is a planned feature. It is not currently implemented or available for delivery."
+            }
+          ]
+        },
+        "notices": [
+          "Fictional demonstration sample; not a real customer, sale or partnership."
+        ]
+      },
+      "compliance": {
+        "rounds": [
+          {
+            "sentences": [
+              {
+                "id": "s0",
+                "path": [
+                  "title"
+                ],
+                "start": 0,
+                "end": 61,
+                "text": "Live Stream Script: Portable Power Station 600W (Demo Sample)",
+                "signals": []
+              },
+              {
+                "id": "s1",
+                "path": [
+                  "capabilities",
+                  0,
+                  "text"
+                ],
+                "start": 0,
+                "end": 100,
+                "text": "Delivers **600W pure sine wave** AC output, suitable for small appliances and sensitive electronics.",
+                "signals": []
+              },
+              {
+                "id": "s2",
+                "path": [
+                  "capabilities",
+                  1,
+                  "text"
+                ],
+                "start": 0,
+                "end": 121,
+                "text": "Equipped with **LiFePO4 battery cells**, designed for a longer cycle life compared to standard ternary lithium batteries.",
+                "signals": []
+              },
+              {
+                "id": "s3",
+                "path": [
+                  "capabilities",
+                  2,
+                  "text"
+                ],
+                "start": 0,
+                "end": 97,
+                "text": "Supports **solar panel charging**, enabling power replenishment in outdoor or off-grid scenarios.",
+                "signals": []
+              },
+              {
+                "id": "s4",
+                "path": [
+                  "capabilities",
+                  3,
+                  "text"
+                ],
+                "start": 0,
+                "end": 106,
+                "text": "Features **multiple output interfaces** (AC/USB-C/USB-A/Car Port) to power several devices simultaneously.",
+                "signals": []
+              },
+              {
+                "id": "s5",
+                "path": [
+                  "capabilities",
+                  4,
+                  "text"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s6",
+                "path": [
+                  "capabilities",
+                  4,
+                  "text"
+                ],
+                "start": 63,
+                "end": 151,
+                "text": " Localized manuals and after-sales support via local partners are in the planning stage.",
+                "signals": []
+              },
+              {
+                "id": "s7",
+                "path": [
+                  "timeline",
+                  0,
+                  "title"
+                ],
+                "start": 0,
+                "end": 20,
+                "text": "Welcome & Disclaimer",
+                "signals": []
+              },
+              {
+                "id": "s8",
+                "path": [
+                  "timeline",
+                  0,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 39,
+                "text": "Introduce the product as a demo sample.",
+                "signals": []
+              },
+              {
+                "id": "s9",
+                "path": [
+                  "timeline",
+                  0,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 53,
+                "text": "State clearly that this is a fictional demonstration.",
+                "signals": []
+              },
+              {
+                "id": "s10",
+                "path": [
+                  "timeline",
+                  0,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 44,
+                "text": "Highlight the 600W capacity and portability.",
+                "signals": []
+              },
+              {
+                "id": "s11",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 44,
+                "text": "Hello everyone, welcome to our live session.",
+                "signals": []
+              },
+              {
+                "id": "s12",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 44,
+                "end": 125,
+                "text": " [pause] Today, we are showcasing the **DEMO-BRAND Portable Power Station 600W**.",
+                "signals": []
+              },
+              {
+                "id": "s13",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 125,
+                "end": 223,
+                "text": " [pause] Please note, this is a **fictional demonstration sample** for illustrative purposes only.",
+                "signals": []
+              },
+              {
+                "id": "s14",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 223,
+                "end": 291,
+                "text": " [pause] It is not a real customer sale or partnership announcement.",
+                "signals": []
+              },
+              {
+                "id": "s15",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 291,
+                "end": 379,
+                "text": " [pause] Let's explore how this unit can support your outdoor and emergency power needs.",
+                "signals": []
+              },
+              {
+                "id": "s16",
+                "path": [
+                  "timeline",
+                  0,
+                  "action"
+                ],
+                "start": 0,
+                "end": 106,
+                "text": "Host stands next to the product on a table, smiles, and gestures to the 'Demo Sample' label on the device.",
+                "signals": []
+              },
+              {
+                "id": "s17",
+                "path": [
+                  "timeline",
+                  1,
+                  "title"
+                ],
+                "start": 0,
+                "end": 30,
+                "text": "Power Challenges in Daily Life",
+                "signals": []
+              },
+              {
+                "id": "s18",
+                "path": [
+                  "timeline",
+                  1,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 38,
+                "text": "Unstable power supply in some regions.",
+                "signals": []
+              },
+              {
+                "id": "s19",
+                "path": [
+                  "timeline",
+                  1,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 48,
+                "text": "Need for power during camping or outdoor events.",
+                "signals": []
+              },
+              {
+                "id": "s20",
+                "path": [
+                  "timeline",
+                  1,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 39,
+                "text": "Limitations of traditional power banks.",
+                "signals": []
+              },
+              {
+                "id": "s21",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 99,
+                "text": "Many of us face **unstable power supplies** or unexpected outages, especially during storm seasons.",
+                "signals": []
+              },
+              {
+                "id": "s22",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 99,
+                "end": 197,
+                "text": " [pause] For outdoor enthusiasts, finding reliable power for laptops or lights can be challenging.",
+                "signals": []
+              },
+              {
+                "id": "s23",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 197,
+                "end": 285,
+                "text": " [pause] Traditional power banks often lack the **AC output** needed for larger devices.",
+                "signals": []
+              },
+              {
+                "id": "s24",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 285,
+                "end": 348,
+                "text": " [pause] This creates a gap for a versatile, portable solution.",
+                "signals": []
+              },
+              {
+                "id": "s25",
+                "path": [
+                  "timeline",
+                  1,
+                  "action"
+                ],
+                "start": 0,
+                "end": 100,
+                "text": "Host holds up a standard small power bank, then sets it aside to contrast with the larger demo unit.",
+                "signals": []
+              },
+              {
+                "id": "s26",
+                "path": [
+                  "timeline",
+                  2,
+                  "title"
+                ],
+                "start": 0,
+                "end": 29,
+                "text": "Introducing the 600W Solution",
+                "signals": []
+              },
+              {
+                "id": "s27",
+                "path": [
+                  "timeline",
+                  2,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 27,
+                "text": "600W pure sine wave output.",
+                "signals": []
+              },
+              {
+                "id": "s28",
+                "path": [
+                  "timeline",
+                  2,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 27,
+                "text": "LiFePO4 battery technology.",
+                "signals": []
+              },
+              {
+                "id": "s29",
+                "path": [
+                  "timeline",
+                  2,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 26,
+                "text": "Solar charging capability.",
+                "signals": []
+              },
+              {
+                "id": "s30",
+                "path": [
+                  "timeline",
+                  2,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 20,
+                "text": "Multiple interfaces.",
+                "signals": []
+              },
+              {
+                "id": "s31",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 85,
+                "text": "This unit offers a **600W pure sine wave** AC output, safe for sensitive electronics.",
+                "signals": []
+              },
+              {
+                "id": "s32",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 85,
+                "end": 177,
+                "text": " [pause] It uses **LiFePO4 battery cells**, known for their stability and longer cycle life.",
+                "signals": []
+              },
+              {
+                "id": "s33",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 177,
+                "end": 272,
+                "text": " [pause] You can recharge it via **solar panels**, making it ideal for sunny outdoor locations.",
+                "signals": []
+              },
+              {
+                "id": "s34",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 272,
+                "end": 369,
+                "text": " [pause] With multiple ports including USB-C and AC, you can charge **multiple devices** at once.",
+                "signals": []
+              },
+              {
+                "id": "s35",
+                "path": [
+                  "timeline",
+                  2,
+                  "action"
+                ],
+                "start": 0,
+                "end": 125,
+                "text": "Host points to the specification label on the side of the unit and traces the line from the battery icon to the output ports.",
+                "signals": []
+              },
+              {
+                "id": "s36",
+                "path": [
+                  "timeline",
+                  3,
+                  "title"
+                ],
+                "start": 0,
+                "end": 42,
+                "text": "Live Demonstration of Implemented Features",
+                "signals": []
+              },
+              {
+                "id": "s37",
+                "path": [
+                  "timeline",
+                  3,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 39,
+                "text": "Demonstrate AC output with a small fan.",
+                "signals": []
+              },
+              {
+                "id": "s38",
+                "path": [
+                  "timeline",
+                  3,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 32,
+                "text": "Show USB-C charging for a phone.",
+                "signals": []
+              },
+              {
+                "id": "s39",
+                "path": [
+                  "timeline",
+                  3,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 52,
+                "text": "Explain solar input port (no solar panel connected).",
+                "signals": []
+              },
+              {
+                "id": "s40",
+                "path": [
+                  "timeline",
+                  3,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 29,
+                "text": "Clarify PS-5 is planned only.",
+                "signals": []
+              },
+              {
+                "id": "s41",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 23,
+                "text": "Let's see it in action.",
+                "signals": []
+              },
+              {
+                "id": "s42",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 23,
+                "end": 85,
+                "text": " [pause] I am plugging in this small fan to the **AC outlet**.",
+                "signals": []
+              },
+              {
+                "id": "s43",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 85,
+                "end": 156,
+                "text": " [pause] As you can see, it runs smoothly thanks to the pure sine wave.",
+                "signals": []
+              },
+              {
+                "id": "s44",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 156,
+                "end": 222,
+                "text": " [pause] Next, I connect my phone via **USB-C** for fast charging.",
+                "signals": []
+              },
+              {
+                "id": "s45",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 222,
+                "end": 335,
+                "text": " [pause] Here is the solar input port; while we don't have a panel connected today, it supports solar recharging.",
+                "signals": []
+              },
+              {
+                "id": "s46",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 335,
+                "end": 483,
+                "text": " [pause] Please remember, localized manuals and specific after-sales structures are **planned features**, not currently available for demonstration.",
+                "signals": []
+              },
+              {
+                "id": "s47",
+                "path": [
+                  "timeline",
+                  3,
+                  "action"
+                ],
+                "start": 0,
+                "end": 131,
+                "text": "Host plugs in a small desk fan to show it running, then connects a smartphone via USB-C cable to show the charging indicator light.",
+                "signals": []
+              },
+              {
+                "id": "s48",
+                "path": [
+                  "timeline",
+                  4,
+                  "title"
+                ],
+                "start": 0,
+                "end": 28,
+                "text": "Hypothetical Usage Scenarios",
+                "signals": []
+              },
+              {
+                "id": "s49",
+                "path": [
+                  "timeline",
+                  4,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 48,
+                "text": "Scenario 1: Camping trip with laptop and lights.",
+                "signals": []
+              },
+              {
+                "id": "s50",
+                "path": [
+                  "timeline",
+                  4,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 45,
+                "text": "Scenario 2: Emergency backup for home router.",
+                "signals": []
+              },
+              {
+                "id": "s51",
+                "path": [
+                  "timeline",
+                  4,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 42,
+                "text": "Emphasize these are hypothetical examples.",
+                "signals": []
+              },
+              {
+                "id": "s52",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 75,
+                "text": "Imagine a **camping trip** where you need to power a laptop and LED lights.",
+                "signals": []
+              },
+              {
+                "id": "s53",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 75,
+                "end": 125,
+                "text": " [pause] This unit can handle both simultaneously.",
+                "signals": []
+              },
+              {
+                "id": "s54",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 125,
+                "end": 233,
+                "text": " [pause] Another scenario is using it as an **emergency backup** for your home router during a short outage.",
+                "signals": []
+              },
+              {
+                "id": "s55",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 233,
+                "end": 347,
+                "text": " [pause] These are **hypothetical workflows** to illustrate potential utility, not records of real customer usage.",
+                "signals": []
+              },
+              {
+                "id": "s56",
+                "path": [
+                  "timeline",
+                  4,
+                  "action"
+                ],
+                "start": 0,
+                "end": 105,
+                "text": "Host displays a printed card with icons representing a tent and a home router to visualize the scenarios.",
+                "signals": []
+              },
+              {
+                "id": "s57",
+                "path": [
+                  "timeline",
+                  5,
+                  "title"
+                ],
+                "start": 0,
+                "end": 30,
+                "text": "Compliance & Important Notices",
+                "signals": []
+              },
+              {
+                "id": "s58",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 35,
+                "text": "Reiterate fictional nature of demo.",
+                "signals": []
+              },
+              {
+                "id": "s59",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 35,
+                "text": "No certification claims (UL/CE etc.",
+                "signals": [
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s60",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  1
+                ],
+                "start": 35,
+                "end": 37,
+                "text": ").",
+                "signals": []
+              },
+              {
+                "id": "s61",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 43,
+                "text": "No specific performance numbers fabricated.",
+                "signals": []
+              },
+              {
+                "id": "s62",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 23,
+                "text": "Read mandatory notices.",
+                "signals": []
+              },
+              {
+                "id": "s63",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 47,
+                "text": "It is crucial to clarify our compliance stance.",
+                "signals": []
+              },
+              {
+                "id": "s64",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 47,
+                "end": 146,
+                "text": " [pause] We do **not claim** any specific safety certifications like UL or CE for this demo sample.",
+                "signals": [
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s65",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 146,
+                "end": 218,
+                "text": " [pause] We have not fabricated specific cycle counts or charging times.",
+                "signals": []
+              },
+              {
+                "id": "s66",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 218,
+                "end": 342,
+                "text": " [pause] Please listen carefully to this notice: **Fictional demonstration sample; not a real customer, sale or partnership.",
+                "signals": []
+              },
+              {
+                "id": "s67",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 342,
+                "end": 441,
+                "text": "** [pause] Data sovereignty and market access details are **to be verified** and not promised here.",
+                "signals": []
+              },
+              {
+                "id": "s68",
+                "path": [
+                  "timeline",
+                  5,
+                  "action"
+                ],
+                "start": 0,
+                "end": 102,
+                "text": "Host holds up a sign with the text 'DEMO ONLY - NO CERTIFICATION CLAIMS' and reads the notice clearly.",
+                "signals": []
+              },
+              {
+                "id": "s69",
+                "path": [
+                  "timeline",
+                  6,
+                  "title"
+                ],
+                "start": 0,
+                "end": 11,
+                "text": "Q&A Session",
+                "signals": []
+              },
+              {
+                "id": "s70",
+                "path": [
+                  "timeline",
+                  6,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 57,
+                "text": "Address common objections: price, certification, support.",
+                "signals": []
+              },
+              {
+                "id": "s71",
+                "path": [
+                  "timeline",
+                  6,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 38,
+                "text": "Refer to roadmap for planned features.",
+                "signals": []
+              },
+              {
+                "id": "s72",
+                "path": [
+                  "timeline",
+                  6,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 27,
+                "text": "Maintain professional tone.",
+                "signals": []
+              },
+              {
+                "id": "s73",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 33,
+                "text": "We have time for a few questions.",
+                "signals": []
+              },
+              {
+                "id": "s74",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 33,
+                "end": 132,
+                "text": " [pause] If you ask about **price**, please note that no specific pricing is provided in this demo.",
+                "signals": []
+              },
+              {
+                "id": "s75",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 132,
+                "end": 228,
+                "text": " [pause] Regarding **certification**, we do not claim any passed certifications for this sample.",
+                "signals": []
+              },
+              {
+                "id": "s76",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 228,
+                "end": 364,
+                "text": " [pause] For **support** inquiries, remember that localized after-sales services are part of our **roadmap**, not currently implemented.",
+                "signals": []
+              },
+              {
+                "id": "s77",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 364,
+                "end": 426,
+                "text": " [pause] We appreciate your understanding of these boundaries.",
+                "signals": []
+              },
+              {
+                "id": "s78",
+                "path": [
+                  "timeline",
+                  6,
+                  "action"
+                ],
+                "start": 0,
+                "end": 105,
+                "text": "Host looks at a tablet screen simulating incoming questions and gestures openly to indicate transparency.",
+                "signals": []
+              },
+              {
+                "id": "s79",
+                "path": [
+                  "timeline",
+                  7,
+                  "title"
+                ],
+                "start": 0,
+                "end": 20,
+                "text": "Closing & Next Steps",
+                "signals": []
+              },
+              {
+                "id": "s80",
+                "path": [
+                  "timeline",
+                  7,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 23,
+                "text": "Summarize key benefits.",
+                "signals": []
+              },
+              {
+                "id": "s81",
+                "path": [
+                  "timeline",
+                  7,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 43,
+                "text": "Encourage following for updates on roadmap.",
+                "signals": []
+              },
+              {
+                "id": "s82",
+                "path": [
+                  "timeline",
+                  7,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 17,
+                "text": "Final disclaimer.",
+                "signals": []
+              },
+              {
+                "id": "s83",
+                "path": [
+                  "timeline",
+                  7,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 11,
+                "text": "End stream.",
+                "signals": []
+              },
+              {
+                "id": "s84",
+                "path": [
+                  "timeline",
+                  7,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 89,
+                "text": "To summarize, this 600W station offers **versatile power** for outdoor and emergency use.",
+                "signals": []
+              },
+              {
+                "id": "s85",
+                "path": [
+                  "timeline",
+                  7,
+                  "spoken"
+                ],
+                "start": 89,
+                "end": 176,
+                "text": " [pause] Follow our channel for updates on **planned features** like localized support.",
+                "signals": []
+              },
+              {
+                "id": "s86",
+                "path": [
+                  "timeline",
+                  7,
+                  "spoken"
+                ],
+                "start": 176,
+                "end": 240,
+                "text": " [pause] Thank you for joining this **fictional demonstration**.",
+                "signals": []
+              },
+              {
+                "id": "s87",
+                "path": [
+                  "timeline",
+                  7,
+                  "spoken"
+                ],
+                "start": 240,
+                "end": 287,
+                "text": " [pause] Have a great day, and stay powered up!",
+                "signals": []
+              },
+              {
+                "id": "s88",
+                "path": [
+                  "timeline",
+                  7,
+                  "action"
+                ],
+                "start": 0,
+                "end": 69,
+                "text": "Host waves goodbye, turns off the demo fan, and fades out the screen.",
+                "signals": []
+              },
+              {
+                "id": "s89",
+                "path": [
+                  "interaction",
+                  "prompts",
+                  0
+                ],
+                "start": 0,
+                "end": 47,
+                "text": "How does the pure sine wave benefit my devices?",
+                "signals": []
+              },
+              {
+                "id": "s90",
+                "path": [
+                  "interaction",
+                  "prompts",
+                  1
+                ],
+                "start": 0,
+                "end": 45,
+                "text": "Can I use this for long-term off-grid living?",
+                "signals": []
+              },
+              {
+                "id": "s91",
+                "path": [
+                  "interaction",
+                  "prompts",
+                  2
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "What is the expected timeline for the planned support services?",
+                "signals": []
+              },
+              {
+                "id": "s92",
+                "path": [
+                  "interaction",
+                  "objections",
+                  0,
+                  "question"
+                ],
+                "start": 0,
+                "end": 24,
+                "text": "How much does this cost?",
+                "signals": []
+              },
+              {
+                "id": "s93",
+                "path": [
+                  "interaction",
+                  "objections",
+                  0,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 62,
+                "text": "Specific pricing is not provided in this demonstration sample.",
+                "signals": []
+              },
+              {
+                "id": "s94",
+                "path": [
+                  "interaction",
+                  "objections",
+                  0,
+                  "answer"
+                ],
+                "start": 62,
+                "end": 128,
+                "text": " Please refer to official channels for future pricing information.",
+                "signals": []
+              },
+              {
+                "id": "s95",
+                "path": [
+                  "interaction",
+                  "objections",
+                  1,
+                  "question"
+                ],
+                "start": 0,
+                "end": 53,
+                "text": "Is this available for local deployment in my country?",
+                "signals": []
+              },
+              {
+                "id": "s96",
+                "path": [
+                  "interaction",
+                  "objections",
+                  1,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 46,
+                "text": "This is a cross-border e-commerce demo sample.",
+                "signals": []
+              },
+              {
+                "id": "s97",
+                "path": [
+                  "interaction",
+                  "objections",
+                  1,
+                  "answer"
+                ],
+                "start": 46,
+                "end": 126,
+                "text": " Specific local deployment details are not part of this fictional demonstration.",
+                "signals": []
+              },
+              {
+                "id": "s98",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "question"
+                ],
+                "start": 0,
+                "end": 28,
+                "text": "Is this unit certified safe?",
+                "signals": [
+                  {
+                    "term": "certified",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s99",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 89,
+                "text": "We do not claim any specific safety certifications such as UL or CE for this demo sample.",
+                "signals": [
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s100",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "answer"
+                ],
+                "start": 89,
+                "end": 120,
+                "text": " Safety data is to be verified.",
+                "signals": []
+              },
+              {
+                "id": "s101",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "question"
+                ],
+                "start": 0,
+                "end": 29,
+                "text": "Does it have CE or PSE marks?",
+                "signals": [
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s102",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 73,
+                "text": "No certification claims are made for this fictional demonstration sample.",
+                "signals": []
+              },
+              {
+                "id": "s103",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "answer"
+                ],
+                "start": 73,
+                "end": 117,
+                "text": " Any certification status is to be verified.",
+                "signals": []
+              },
+              {
+                "id": "s104",
+                "path": [
+                  "interaction",
+                  "objections",
+                  4,
+                  "question"
+                ],
+                "start": 0,
+                "end": 39,
+                "text": "Is the manual available in my language?",
+                "signals": []
+              },
+              {
+                "id": "s105",
+                "path": [
+                  "interaction",
+                  "objections",
+                  4,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 58,
+                "text": "Localized manuals are a planned feature under our roadmap.",
+                "signals": []
+              },
+              {
+                "id": "s106",
+                "path": [
+                  "interaction",
+                  "objections",
+                  4,
+                  "answer"
+                ],
+                "start": 58,
+                "end": 110,
+                "text": " They are not currently available for demonstration.",
+                "signals": []
+              },
+              {
+                "id": "s107",
+                "path": [
+                  "interaction",
+                  "objections",
+                  5,
+                  "question"
+                ],
+                "start": 0,
+                "end": 32,
+                "text": "Who handles after-sales service?",
+                "signals": []
+              },
+              {
+                "id": "s108",
+                "path": [
+                  "interaction",
+                  "objections",
+                  5,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 60,
+                "text": "After-sales support via local partners is a planned feature.",
+                "signals": []
+              },
+              {
+                "id": "s109",
+                "path": [
+                  "interaction",
+                  "objections",
+                  5,
+                  "answer"
+                ],
+                "start": 60,
+                "end": 119,
+                "text": " It is not currently implemented or available for delivery.",
+                "signals": []
+              },
+              {
+                "id": "s110",
+                "path": [
+                  "notices",
+                  0
+                ],
+                "start": 0,
+                "end": 73,
+                "text": "Fictional demonstration sample; not a real customer, sale or partnership.",
+                "signals": []
+              }
+            ],
+            "checked_ids": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6",
+              "s7",
+              "s8",
+              "s9",
+              "s10",
+              "s11",
+              "s12",
+              "s13",
+              "s14",
+              "s15",
+              "s16",
+              "s17",
+              "s18",
+              "s19",
+              "s20",
+              "s21",
+              "s22",
+              "s23",
+              "s24",
+              "s25",
+              "s26",
+              "s27",
+              "s28",
+              "s29",
+              "s30",
+              "s31",
+              "s32",
+              "s33",
+              "s34",
+              "s35",
+              "s36",
+              "s37",
+              "s38",
+              "s39",
+              "s40",
+              "s41",
+              "s42",
+              "s43",
+              "s44",
+              "s45",
+              "s46",
+              "s47",
+              "s48",
+              "s49",
+              "s50",
+              "s51",
+              "s52",
+              "s53",
+              "s54",
+              "s55",
+              "s56",
+              "s57",
+              "s58",
+              "s59",
+              "s60",
+              "s61",
+              "s62",
+              "s63",
+              "s64",
+              "s65",
+              "s66",
+              "s67",
+              "s68",
+              "s69",
+              "s70",
+              "s71",
+              "s72",
+              "s73",
+              "s74",
+              "s75",
+              "s76",
+              "s77",
+              "s78",
+              "s79",
+              "s80",
+              "s81",
+              "s82",
+              "s83",
+              "s84",
+              "s85",
+              "s86",
+              "s87",
+              "s88",
+              "s89",
+              "s90",
+              "s91",
+              "s92",
+              "s93",
+              "s94",
+              "s95",
+              "s96",
+              "s97",
+              "s98",
+              "s99",
+              "s100",
+              "s101",
+              "s102",
+              "s103",
+              "s104",
+              "s105",
+              "s106",
+              "s107",
+              "s108",
+              "s109",
+              "s110"
+            ],
+            "findings": [
+              {
+                "id": "s59",
+                "verdict": "benign",
+                "reason": "否定声称，非违规（未声称通过认证，仅述不声称）",
+                "replacement": "",
+                "risk_sentence": "No certification claims (UL/CE etc.",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  1
+                ]
+              },
+              {
+                "id": "s64",
+                "verdict": "benign",
+                "reason": "否定承诺，非违规（明确说不声称任何安全认证）",
+                "replacement": "",
+                "risk_sentence": " [pause] We do **not claim** any specific safety certifications like UL or CE for this demo sample.",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ]
+              },
+              {
+                "id": "s98",
+                "verdict": "benign",
+                "reason": "用户提问，非产品声明，无违规",
+                "replacement": "",
+                "risk_sentence": "Is this unit certified safe?",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "question"
+                ]
+              },
+              {
+                "id": "s99",
+                "verdict": "benign",
+                "reason": "否定承诺，非违规（不声称任何认证）",
+                "replacement": "",
+                "risk_sentence": "We do not claim any specific safety certifications such as UL or CE for this demo sample.",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "answer"
+                ]
+              },
+              {
+                "id": "s101",
+                "verdict": "benign",
+                "reason": "用户提问，非产品声明，无违规",
+                "replacement": "",
+                "risk_sentence": "Does it have CE or PSE marks?",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "question"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "生成结构首次校验失败，已请求一次显式修复：'action' is a required property"
+      ],
+      "markets": [
+        "ID",
+        "TH",
+        "VN",
+        "MY",
+        "SA",
+        "AE"
+      ]
+    }
+  ],
+  "counts": {
+    "total": 1,
+    "delivered": 1,
+    "review_blocked": 0,
+    "failed": 0,
+    "skipped_deadline": 0
+  },
+  "usage": {
+    "total_calls": 3,
+    "total_tokens": 22204,
+    "prompt_tokens": 16048,
+    "completion_tokens": 6156,
+    "by_model": {
+      "qwen3.7-plus": {
+        "calls": 2,
+        "total_tokens": 10965,
+        "prompt_tokens": 6417,
+        "completion_tokens": 4548
+      },
+      "deepseek-v4-flash": {
+        "calls": 1,
+        "total_tokens": 11239,
+        "prompt_tokens": 9631,
+        "completion_tokens": 1608
+      }
+    },
+    "by_tag": {
+      "live__en": {
+        "calls": 3,
+        "total_tokens": 22204
+      }
+    },
+    "cost_estimate_cny": 0.0332,
+    "wall_time_s": 97.1,
+    "price_note": "单价为可调估算值（元/百万token，混合输入输出），非实际成本，见 llm_client.PRICE_CNY_PER_MTOK"
+  },
+  "usage_records": [
+    {
+      "model": "qwen3.7-plus",
+      "prompt_tokens": 2258,
+      "completion_tokens": 2189,
+      "total_tokens": 4447,
+      "latency_s": 38.18,
+      "label": "live-generate",
+      "tag": "live__en"
+    },
+    {
+      "model": "qwen3.7-plus",
+      "prompt_tokens": 4159,
+      "completion_tokens": 2359,
+      "total_tokens": 6518,
+      "latency_s": 41.07,
+      "label": "live-schema-repair",
+      "tag": "live__en"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "prompt_tokens": 9631,
+      "completion_tokens": 1608,
+      "total_tokens": 11239,
+      "latency_s": 17.76,
+      "label": "live-review",
+      "tag": "live__en"
+    }
+  ],
+  "market_report": {
+    "ID": {
+      "status": "pending_verification",
+      "access_pending": [
+        "消费品安全认证、进口与广告要求需由目标市场专业人员核实；未提供证据不视为已准入。"
+      ],
+      "data_sovereignty_pending": [
+        "官网留资、直播受众信息与跨境数据处理义务待核，不适用医疗器械注册判断。"
+      ]
+    },
+    "TH": {
+      "status": "pending_verification",
+      "access_pending": [
+        "消费品安全认证、进口与广告要求需由目标市场专业人员核实；未提供证据不视为已准入。"
+      ],
+      "data_sovereignty_pending": [
+        "官网留资、直播受众信息与跨境数据处理义务待核，不适用医疗器械注册判断。"
+      ]
+    },
+    "VN": {
+      "status": "pending_verification",
+      "access_pending": [
+        "消费品安全认证、进口与广告要求需由目标市场专业人员核实；未提供证据不视为已准入。"
+      ],
+      "data_sovereignty_pending": [
+        "官网留资、直播受众信息与跨境数据处理义务待核，不适用医疗器械注册判断。"
+      ]
+    },
+    "MY": {
+      "status": "pending_verification",
+      "access_pending": [
+        "消费品安全认证、进口与广告要求需由目标市场专业人员核实；未提供证据不视为已准入。"
+      ],
+      "data_sovereignty_pending": [
+        "官网留资、直播受众信息与跨境数据处理义务待核，不适用医疗器械注册判断。"
+      ]
+    },
+    "SA": {
+      "status": "pending_verification",
+      "access_pending": [
+        "消费品安全认证、进口与广告要求需由目标市场专业人员核实；未提供证据不视为已准入。"
+      ],
+      "data_sovereignty_pending": [
+        "官网留资、直播受众信息与跨境数据处理义务待核，不适用医疗器械注册判断。"
+      ]
+    },
+    "AE": {
+      "status": "pending_verification",
+      "access_pending": [
+        "消费品安全认证、进口与广告要求需由目标市场专业人员核实；未提供证据不视为已准入。"
+      ],
+      "data_sovereignty_pending": [
+        "官网留资、直播受众信息与跨境数据处理义务待核，不适用医疗器械注册判断。"
+      ]
+    }
+  },
+  "engine_notices": {
+    "deployment_clarification": "本营销引擎调用云端模型，仅允许经隐私门禁校验的公开产品资料；产品部署方式以输入事实为准。",
+    "privacy": "所有模型调用前经过本地敏感内容门禁：命中患者标识（姓名/床号/住院号/身份证/手机号等）即本地阻断，绝不外发云端脱敏。",
+    "legal": "本引擎输出的合规提示为工程化规则与模型辅助判断，不构成法律意见；准入与数据主权事项为待核清单。"
+  }
+}

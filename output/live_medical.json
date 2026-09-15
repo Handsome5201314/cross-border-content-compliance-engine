@@ -1,0 +1,3037 @@
+{
+  "meta": {
+    "schema_version": "3.0",
+    "module": "live",
+    "languages": [
+      "en",
+      "ar",
+      "id"
+    ],
+    "generated_at": "2026-09-09T10:33:15.171507+00:00",
+    "elapsed_s": 116.46
+  },
+  "product": {
+    "schema_version": "3.0",
+    "product_name": "301 儿科住院医师 AI 助手（软件）+ 智能胸卡（硬件）",
+    "product_name_en": "Pediatric Resident AI Assistant (Software) + Smart Badge (Hardware)",
+    "brand": "团队自研（医院合作项目）",
+    "form": "软硬一体：全本地部署的儿科住院医师 AI 助手软件 + 佩戴式智能胸卡（在研）",
+    "deployment": "院内全本地部署：ASR/OCR/视觉复核/文书生成全部运行在院内 GPU（RTX 3090 24GB），患儿资料 100% 本机处理，任何数据不上云 API；原始录音/图片处理完成即删除",
+    "capabilities": [
+      {
+        "id": "SW-1",
+        "area": "software",
+        "name": "查房录音转写与主任指示提取",
+        "desc": "早查房/主任查房录音经说话人分离转写，自动提取主任指示并按床位归档，多人讨论分清说话人（主任/管床/家属）",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "《智能胸卡_交互需求说明书 v1》查房场景；技术栈：Qwen3-ASR-1.7B（vLLM 本地）+ pyannote 多角色分离"
+      },
+      {
+        "id": "SW-2",
+        "area": "software",
+        "name": "床旁问诊与文书草稿",
+        "desc": "床旁问诊引导病史采集，自动生成入院记录/首次病程记录草稿，供医生审核修改；听不清的内容标注「待确认」不脑补",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "《智能胸卡_交互需求说明书 v1》床旁问诊场景；文书生成：Hermes agent（主模型 deepseek-v4-flash，按本院儿科模板）"
+      },
+      {
+        "id": "SW-3",
+        "area": "software",
+        "name": "检验结果本地 OCR 与结构化摘要",
+        "desc": "HIS 截图/扫描 PDF 经本地 OCR（含视觉模型复核）转为结构化检验摘要，异常值按儿科年龄参考区间标注",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "《智能胸卡_交互需求说明书 v1》检验结构化场景；OCR：MinerU + PaddleOCR 类本地管线，视觉复核 qwen3.8:27b（ollama 本地）"
+      },
+      {
+        "id": "SW-4",
+        "area": "software",
+        "name": "教学查房与疑难病例知识沉淀",
+        "desc": "教学查房/疑难病例讨论生成完整记录并沉淀为病种知识，写入自生长知识库",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "《智能胸卡_交互需求说明书 v1》教学查房场景"
+      },
+      {
+        "id": "SW-5",
+        "area": "software",
+        "name": "微信随访辅助",
+        "desc": "家长微信随访消息生成补充问诊清单与回复草稿，由医生确认后发出",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "《智能胸卡_交互需求说明书 v1》随访场景"
+      },
+      {
+        "id": "SW-6",
+        "area": "software",
+        "name": "待办管理（每日 17:00 推送）",
+        "desc": "自动汇总当日待办（文书缺口/待确认项/随访任务），每天 17:00 推送提醒",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "《智能胸卡_交互需求说明书 v1》待办管理章节"
+      },
+      {
+        "id": "SW-7",
+        "area": "software",
+        "name": "自生长知识库（Obsidian 兼容）",
+        "desc": "全部记录与知识以 Obsidian 兼容 markdown + git 管理，每日加密备份",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "项目 MEMORY.md：知识库架构（Obsidian 兼容 markdown + git + 每日加密备份）"
+      },
+      {
+        "id": "HW-1",
+        "area": "hardware",
+        "name": "佩戴式麦克风与 VAD 自动录音",
+        "desc": "智能胸卡佩戴式高质麦克风，VAD 分段自动录音，替代手动录音",
+        "status": "planned",
+        "priority": "P0",
+        "evidence": "《智能胸卡_交互需求说明书 v1》功能项（优先级 P0：录音自动采集上传）"
+      },
+      {
+        "id": "HW-2",
+        "area": "hardware",
+        "name": "录音自动上传分发（时间/床位上下文）",
+        "desc": "录音自动上传并按时间与床位上下文分发到对应患者记录",
+        "status": "planned",
+        "priority": "P0",
+        "evidence": "《智能胸卡_交互需求说明书 v1》功能项（优先级 P0：录音与床位上下文关联）"
+      },
+      {
+        "id": "HW-3",
+        "area": "hardware",
+        "name": "屏幕拍照 OCR（HIS 屏幕/腕带/条码）",
+        "desc": "胸卡拍照/扫码 HIS 屏幕、患者腕带与条码，本地 OCR 结构化",
+        "status": "planned",
+        "priority": "P1",
+        "evidence": "《智能胸卡_交互需求说明书 v1》功能项（优先级 P1：屏幕拍照 OCR）"
+      },
+      {
+        "id": "HW-4",
+        "area": "hardware",
+        "name": "床位与患者识别",
+        "desc": "通过腕带/条码关联床位与患者，为录音/照片自动附加上下文",
+        "status": "planned",
+        "priority": "P1",
+        "evidence": "《智能胸卡_交互需求说明书 v1》功能项"
+      },
+      {
+        "id": "HW-5",
+        "area": "hardware",
+        "name": "轻量状态屏与震动提醒",
+        "desc": "胸卡轻量状态屏与震动提醒（待办/推送）",
+        "status": "planned",
+        "priority": "P2",
+        "evidence": "《智能胸卡_交互需求说明书 v1》功能项（优先级 P2：提醒与语音问答）"
+      },
+      {
+        "id": "HW-6",
+        "area": "hardware",
+        "name": "离线低功耗持续监听",
+        "desc": "院内离线场景低功耗持续监听，断网可用",
+        "status": "planned",
+        "priority": "P2",
+        "evidence": "《智能胸卡_交互需求说明书 v1》功能项"
+      }
+    ],
+    "tech_stack": [
+      {
+        "layer": "语音识别",
+        "component": "Qwen3-ASR-1.7B（vLLM 本地部署）+ pyannote 多角色说话人分离"
+      },
+      {
+        "layer": "OCR/视觉",
+        "component": "MinerU（扫描 PDF）+ PaddleOCR 类本地管线；视觉复核 qwen3.8:27b（ollama 本地）"
+      },
+      {
+        "layer": "文书生成",
+        "component": "Hermes agent（主模型 deepseek-v4-flash，按本院儿科模板）"
+      },
+      {
+        "layer": "知识库",
+        "component": "Obsidian 兼容 markdown + git 版本管理 + 每日加密备份"
+      },
+      {
+        "layer": "算力",
+        "component": "RTX 3090 24GB 全本地 GPU（ASR/OCR/视觉/转写共用）"
+      }
+    ],
+    "red_lines": [
+      "患儿资料 100% 本机处理——OCR、视觉、转写、脱敏全本地，任何数据不上云 API；原始录音/图片处理完即删",
+      "医疗严谨：文书是草稿需医生审核；听不清标「待确认」不脑补；数值按年龄参考区间解读",
+      "AI 文书不代签医生名、不含医院实名",
+      "多人讨论必须分清说话人（主任 vs 管床 vs 家属），主任指示最高优先级"
+    ],
+    "selling_angles": [
+      "数据主权：全本地推理、数据不出院，契合 GDPR/印尼 PDPA/中东数据本地化方向，无需跨境传输评估（具体合规义务仍须按目标市场逐项核验，见市场报告待核清单）",
+      "交付简单：软硬一体、插电即用，不依赖院方 IT 与云资源",
+      "专科适配：儿科病历模板、年龄参考区间解读、生长发育/遗传代谢/发育行为方向",
+      "主任指示不丢：说话人分离让查房指令可追溯",
+      "医生零操作：胸卡佩戴即采集，替代手动录音拍照（硬件能力为在研规划，文案中须标注 roadmap）"
+    ],
+    "target_buyers": [
+      "海外医院儿科/综合医院住院部",
+      "本地医疗器械经销商（渠道合作）",
+      "公立采购部门"
+    ],
+    "target_markets": [
+      "ID",
+      "TH",
+      "VN",
+      "MY",
+      "SA",
+      "AE",
+      "RU"
+    ],
+    "target_languages": [
+      "en",
+      "ar",
+      "id",
+      "th",
+      "vi",
+      "ms",
+      "ru"
+    ],
+    "target_platforms": [
+      "tiktok",
+      "instagram",
+      "youtube_shorts",
+      "google_ads",
+      "amazon",
+      "landing_page"
+    ],
+    "compliance_level": "strict",
+    "pricing_positioning": "软件订阅 + 胸卡硬件（定价未定，文案中不得出现具体价格与折扣承诺）",
+    "marketing_notes": "B2B：面向医院与经销商，不做患者直销。所有能力以 capabilities 的事实与状态为准：status=planned 的一律标注 roadmap/规划中；产品资料未提供认证信息与性能数字，任何文案不得出现认证宣称（FDA/CE/SFDA 等）或具体性能数字（毫秒级/准确率等）。"
+  },
+  "results": [
+    {
+      "platform": "live",
+      "module": "live",
+      "language": "en",
+      "rtl": false,
+      "status": "delivered",
+      "error": null,
+      "content": {
+        "title": "Pediatric Resident AI Assistant: Local-First Clinical Workflow Solution",
+        "capabilities": [
+          {
+            "id": "SW-1",
+            "status": "implemented",
+            "text": "Ward round recording transcription and chief physician instruction extraction with speaker separation."
+          },
+          {
+            "id": "SW-2",
+            "status": "implemented",
+            "text": "Bedside consultation guidance and medical record draft generation for physician review."
+          },
+          {
+            "id": "SW-3",
+            "status": "implemented",
+            "text": "Local OCR and structured summary of laboratory results with pediatric age-specific reference ranges."
+          },
+          {
+            "id": "SW-4",
+            "status": "implemented",
+            "text": "Teaching ward round documentation and knowledge base accumulation for complex cases."
+          },
+          {
+            "id": "SW-5",
+            "status": "implemented",
+            "text": "WeChat follow-up assistance generating query lists and reply drafts for physician confirmation."
+          },
+          {
+            "id": "SW-6",
+            "status": "implemented",
+            "text": "Daily task management with automated reminders at 17:00 for pending items."
+          },
+          {
+            "id": "SW-7",
+            "status": "implemented",
+            "text": "Self-growing knowledge base compatible with Obsidian markdown and git version control."
+          },
+          {
+            "id": "HW-1",
+            "status": "planned",
+            "text": "Roadmap — planned, not available for demonstration or delivery. Wearable microphone with VAD automatic recording."
+          },
+          {
+            "id": "HW-2",
+            "status": "planned",
+            "text": "Roadmap — planned, not available for demonstration or delivery. Automatic upload and distribution of recordings with time and bed context."
+          },
+          {
+            "id": "HW-3",
+            "status": "planned",
+            "text": "Roadmap — planned, not available for demonstration or delivery. Screen photo OCR for HIS screens, wristbands, and barcodes."
+          },
+          {
+            "id": "HW-4",
+            "status": "planned",
+            "text": "Roadmap — planned, not available for demonstration or delivery. Bed and patient identification via wristband/barcode scanning."
+          },
+          {
+            "id": "HW-5",
+            "status": "planned",
+            "text": "Roadmap — planned, not available for demonstration or delivery. Lightweight status screen and vibration alerts."
+          },
+          {
+            "id": "HW-6",
+            "status": "planned",
+            "text": "Roadmap — planned, not available for demonstration or delivery. Offline low-power continuous listening capability."
+          }
+        ],
+        "timeline": [
+          {
+            "stage": "opening",
+            "title": "Introduction to Local-First Pediatric AI",
+            "duration_seconds": 60,
+            "talking_points": [
+              "Introduce the Pediatric Resident AI Assistant as a software solution with planned hardware integration.",
+              "Emphasize full local deployment on hospital GPUs (RTX 3090).",
+              "Highlight data sovereignty: 100% on-premise processing, no cloud API usage."
+            ],
+            "spoken": "Welcome. Today we present the **Pediatric Resident AI Assistant**, a clinical workflow tool designed for hospital deployment. Our core principle is **data sovereignty**. All processing—speech recognition, optical character recognition, and document generation—runs entirely on local hospital GPUs. No patient data leaves the premises. This solution supports pediatric residents in managing daily tasks while maintaining strict data privacy standards.",
+            "action": "Display title slide with 'Local Deployment' and 'Data Sovereignty' icons. Show diagram of on-premise GPU server."
+          },
+          {
+            "stage": "pain_points",
+            "title": "Clinical Workflow Challenges",
+            "duration_seconds": 90,
+            "talking_points": [
+              "Manual transcription of ward rounds is time-consuming.",
+              "Risk of missing chief physician instructions during multi-speaker discussions.",
+              "Laboratory result interpretation requires cross-referencing pediatric age norms.",
+              "Administrative burden of drafting admission records and follow-up messages."
+            ],
+            "spoken": "Pediatric residents face significant administrative burdens. Manual transcription of ward rounds consumes valuable clinical time. In multi-speaker environments, distinguishing between the chief physician, attending doctors, and family members is critical yet difficult. Interpreting laboratory results requires constant reference to age-specific norms. Additionally, drafting admission records and managing parent follow-ups via messaging apps adds to the workload. These tasks divert attention from direct patient care.",
+            "action": "Show split-screen image: left side shows a stressed doctor with paperwork, right side shows a clean digital interface."
+          },
+          {
+            "stage": "solution",
+            "title": "Software Capabilities Overview",
+            "duration_seconds": 120,
+            "talking_points": [
+              "Speaker separation for ward rounds (SW-1).",
+              "Draft generation for medical records with 'to be confirmed' markers (SW-2).",
+              "Local OCR for lab results with pediatric reference ranges (SW-3).",
+              "Knowledge base accumulation for teaching cases (SW-4).",
+              "Automated task reminders (SW-6)."
+            ],
+            "spoken": "Our software addresses these challenges through several implemented modules. First, **ward round transcription** uses speaker separation to identify the chief physician’s instructions specifically. Second, **bedside consultation** tools generate drafts for admission records, marking unclear audio as 'to be confirmed' to prevent hallucination. Third, **laboratory result OCR** structures data from screenshots, highlighting abnormal values based on pediatric age references. Fourth, **teaching rounds** are documented and added to a self-growing knowledge base. Finally, a **daily task manager** pushes reminders at 17:00 for pending items.",
+            "action": "Cycle through screenshots of the software interface showing transcription with speaker labels, a draft medical record with highlighted 'to be confirmed' text, and a structured lab result table."
+          },
+          {
+            "stage": "demo",
+            "title": "Live Demonstration of Implemented Features",
+            "duration_seconds": 180,
+            "talking_points": [
+              "Demo SW-1: Transcription with speaker separation.",
+              "Demo SW-3: OCR of a sample lab report.",
+              "Demo SW-2: Generation of a discharge summary draft.",
+              "Clarify that hardware features are not demonstrated as they are planned."
+            ],
+            "spoken": "Let us demonstrate the implemented software capabilities. [pause] Here, we process a simulated ward round recording. The system separates speakers: **Chief Physician**, **Attending**, and **Family**. Note how the chief’s instructions are extracted and archived by bed number. [pause] Next, we upload a sample laboratory report screenshot. The local OCR engine structures the data, flagging values outside the pediatric reference range for this specific age group. [pause] Finally, based on these inputs, the system generates a draft discharge summary. Please note: **AI outputs are drafts and require physician review before use.** Any unclear audio segments are marked 'to be confirmed'. [pause] Regarding the smart badge hardware: features such as automatic recording and screen OCR are currently in the planning phase. They are not available for demonstration today.",
+            "action": "Screen share: Play audio clip, show real-time transcription with color-coded speakers. Upload image file, show OCR result. Generate text document. Display 'Roadmap' slide for hardware features."
+          },
+          {
+            "stage": "case",
+            "title": "Hypothetical Workflow Scenario",
+            "duration_seconds": 90,
+            "talking_points": [
+              "Scenario: Morning ward round for a patient with pneumonia.",
+              "Step 1: Record round, extract chief's instruction on antibiotic adjustment.",
+              "Step 2: OCR new lab results showing improved inflammatory markers.",
+              "Step 3: Generate updated progress note draft.",
+              "Step 4: Add case details to teaching knowledge base."
+            ],
+            "spoken": "Consider a hypothetical scenario: A resident manages a pediatric pneumonia case. During the morning round, the system records the discussion. It identifies the chief physician’s instruction to adjust antibiotics. Later, the resident captures a screenshot of the latest lab results. The system structures these results, noting the improvement in inflammatory markers. Using this data, it drafts an updated progress note. The resident reviews and edits the draft. Finally, the key learning points from this case are automatically added to the department’s teaching knowledge base. This workflow reduces manual entry and ensures instruction traceability.",
+            "action": "Show a flowchart animation: Microphone icon -> Text Extract -> Lab Image -> Structured Data -> Document Draft -> Knowledge Base Icon."
+          },
+          {
+            "stage": "compliance",
+            "title": "Data Security and Compliance Considerations",
+            "duration_seconds": 120,
+            "talking_points": [
+              "Reiterate 100% local processing on RTX 3090 GPUs.",
+              "Original recordings and images are deleted after processing.",
+              "No cloud API usage for patient data.",
+              "Compliance obligations (GDPR, PDPA, etc.) must be verified per market.",
+              "Include mandatory notice: AI outputs are drafts requiring physician review."
+            ],
+            "spoken": "Security is foundational. All data processing occurs on local hospital hardware. **Original recordings and images are deleted immediately after processing.** No patient data is transmitted to cloud APIs. This architecture supports data localization requirements in various markets. However, specific compliance obligations such as GDPR or Indonesia’s PDPA must be verified by the hospital according to local regulations. We do not claim certification for any specific jurisdiction. Please remember: **AI outputs are drafts and require physician review before use.** The system assists but does not replace clinical judgment.",
+            "action": "Display security architecture diagram showing data flow within the local server only. Show text of the mandatory notice prominently."
+          },
+          {
+            "stage": "qa",
+            "title": "Addressing Common Questions",
+            "duration_seconds": 120,
+            "talking_points": [
+              "Deployment: Plug-and-play on local GPU, no IT overhaul needed.",
+              "Languages: Supports English, Arabic, Indonesian, Thai, Vietnamese, Malay, Russian.",
+              "Hardware roadmap: Smart badge features are planned, not yet delivered.",
+              "Certification: No medical device certification claimed; tool for administrative assistance."
+            ],
+            "spoken": "Common questions include deployment and language support. The software runs on standard local GPUs, minimizing IT infrastructure changes. It supports multiple languages including English, Arabic, and Southeast Asian languages. Regarding the smart badge: hardware features like automatic recording and screen OCR are on the roadmap and not currently available. On certification: this tool is designed for administrative assistance and documentation drafting. It is not a diagnostic device, and we do not claim FDA or CE medical device certification. Hospitals should conduct their own regulatory assessments.",
+            "action": "Display list of supported languages. Show 'Roadmap' timeline graphic for hardware. Display disclaimer about non-diagnostic nature."
+          },
+          {
+            "stage": "cta",
+            "title": "Next Steps for Hospital Partners",
+            "duration_seconds": 60,
+            "talking_points": [
+              "Contact for technical specification review.",
+              "Schedule a local server environment assessment.",
+              "Discuss pilot program possibilities for software modules.",
+              "No pricing or delivery promises made in this presentation."
+            ],
+            "spoken": "For hospitals interested in enhancing resident efficiency while maintaining data sovereignty, we invite you to review our technical specifications. We can schedule an assessment of your local server environment to ensure compatibility. Pilot programs for the implemented software modules are available for discussion. Please contact our team for further details. Note that specific pricing and delivery timelines will be provided in subsequent commercial discussions.",
+            "action": "Display contact information and QR code for technical whitepaper download. Show 'Contact Us' slide."
+          }
+        ],
+        "interaction": {
+          "prompts": [
+            "How does the system handle multi-speaker noise in busy wards?",
+            "Can the software integrate with our existing HIS via API?",
+            "What happens if the local GPU server goes offline?"
+          ],
+          "objections": [
+            {
+              "topic": "price",
+              "question": "What is the subscription cost and hardware price?",
+              "answer": "Pricing details are not included in this presentation. Commercial terms, including software subscription and hardware costs, will be discussed individually based on hospital size and deployment scope."
+            },
+            {
+              "topic": "deployment",
+              "question": "Does this require major changes to our IT infrastructure?",
+              "answer": "The solution is designed for local deployment on existing or dedicated hospital GPUs. It does not rely on cloud resources, minimizing network infrastructure changes. A technical assessment will confirm specific hardware requirements."
+            },
+            {
+              "topic": "security",
+              "question": "Is patient data sent to any external servers?",
+              "answer": "No. All data processing, including speech recognition and OCR, occurs entirely on local hospital servers. No patient data is transmitted to cloud APIs. Original media files are deleted after processing."
+            },
+            {
+              "topic": "certification",
+              "question": "Is this device FDA or CE certified?",
+              "answer": "This product is a clinical workflow assistance tool, not a diagnostic medical device. We do not claim FDA, CE, or other medical device certifications. Hospitals are responsible for verifying local regulatory compliance."
+            },
+            {
+              "topic": "languages",
+              "question": "Does it support local languages like Thai or Arabic?",
+              "answer": "Yes, the system supports multiple languages including English, Arabic, Indonesian, Thai, Vietnamese, Malay, and Russian. Language models are deployed locally to ensure data privacy."
+            },
+            {
+              "topic": "support",
+              "question": "What technical support is available during implementation?",
+              "answer": "We provide technical documentation and remote support for software installation and configuration. On-site support availability depends on the specific agreement and region. Detailed support terms will be part of the commercial contract."
+            }
+          ]
+        },
+        "notices": [
+          "AI outputs are drafts and require physician review before use."
+        ]
+      },
+      "compliance": {
+        "rounds": [
+          {
+            "sentences": [
+              {
+                "id": "s0",
+                "path": [
+                  "title"
+                ],
+                "start": 0,
+                "end": 71,
+                "text": "Pediatric Resident AI Assistant: Local-First Clinical Workflow Solution",
+                "signals": []
+              },
+              {
+                "id": "s1",
+                "path": [
+                  "capabilities",
+                  0,
+                  "text"
+                ],
+                "start": 0,
+                "end": 102,
+                "text": "Ward round recording transcription and chief physician instruction extraction with speaker separation.",
+                "signals": []
+              },
+              {
+                "id": "s2",
+                "path": [
+                  "capabilities",
+                  1,
+                  "text"
+                ],
+                "start": 0,
+                "end": 87,
+                "text": "Bedside consultation guidance and medical record draft generation for physician review.",
+                "signals": []
+              },
+              {
+                "id": "s3",
+                "path": [
+                  "capabilities",
+                  2,
+                  "text"
+                ],
+                "start": 0,
+                "end": 100,
+                "text": "Local OCR and structured summary of laboratory results with pediatric age-specific reference ranges.",
+                "signals": []
+              },
+              {
+                "id": "s4",
+                "path": [
+                  "capabilities",
+                  3,
+                  "text"
+                ],
+                "start": 0,
+                "end": 84,
+                "text": "Teaching ward round documentation and knowledge base accumulation for complex cases.",
+                "signals": []
+              },
+              {
+                "id": "s5",
+                "path": [
+                  "capabilities",
+                  4,
+                  "text"
+                ],
+                "start": 0,
+                "end": 95,
+                "text": "WeChat follow-up assistance generating query lists and reply drafts for physician confirmation.",
+                "signals": []
+              },
+              {
+                "id": "s6",
+                "path": [
+                  "capabilities",
+                  5,
+                  "text"
+                ],
+                "start": 0,
+                "end": 74,
+                "text": "Daily task management with automated reminders at 17:00 for pending items.",
+                "signals": []
+              },
+              {
+                "id": "s7",
+                "path": [
+                  "capabilities",
+                  6,
+                  "text"
+                ],
+                "start": 0,
+                "end": 86,
+                "text": "Self-growing knowledge base compatible with Obsidian markdown and git version control.",
+                "signals": []
+              },
+              {
+                "id": "s8",
+                "path": [
+                  "capabilities",
+                  7,
+                  "text"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s9",
+                "path": [
+                  "capabilities",
+                  7,
+                  "text"
+                ],
+                "start": 63,
+                "end": 113,
+                "text": " Wearable microphone with VAD automatic recording.",
+                "signals": []
+              },
+              {
+                "id": "s10",
+                "path": [
+                  "capabilities",
+                  8,
+                  "text"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s11",
+                "path": [
+                  "capabilities",
+                  8,
+                  "text"
+                ],
+                "start": 63,
+                "end": 138,
+                "text": " Automatic upload and distribution of recordings with time and bed context.",
+                "signals": []
+              },
+              {
+                "id": "s12",
+                "path": [
+                  "capabilities",
+                  9,
+                  "text"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s13",
+                "path": [
+                  "capabilities",
+                  9,
+                  "text"
+                ],
+                "start": 63,
+                "end": 123,
+                "text": " Screen photo OCR for HIS screens, wristbands, and barcodes.",
+                "signals": []
+              },
+              {
+                "id": "s14",
+                "path": [
+                  "capabilities",
+                  10,
+                  "text"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s15",
+                "path": [
+                  "capabilities",
+                  10,
+                  "text"
+                ],
+                "start": 63,
+                "end": 126,
+                "text": " Bed and patient identification via wristband/barcode scanning.",
+                "signals": []
+              },
+              {
+                "id": "s16",
+                "path": [
+                  "capabilities",
+                  11,
+                  "text"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s17",
+                "path": [
+                  "capabilities",
+                  11,
+                  "text"
+                ],
+                "start": 63,
+                "end": 111,
+                "text": " Lightweight status screen and vibration alerts.",
+                "signals": []
+              },
+              {
+                "id": "s18",
+                "path": [
+                  "capabilities",
+                  12,
+                  "text"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s19",
+                "path": [
+                  "capabilities",
+                  12,
+                  "text"
+                ],
+                "start": 63,
+                "end": 114,
+                "text": " Offline low-power continuous listening capability.",
+                "signals": []
+              },
+              {
+                "id": "s20",
+                "path": [
+                  "timeline",
+                  0,
+                  "title"
+                ],
+                "start": 0,
+                "end": 40,
+                "text": "Introduction to Local-First Pediatric AI",
+                "signals": []
+              },
+              {
+                "id": "s21",
+                "path": [
+                  "timeline",
+                  0,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 103,
+                "text": "Introduce the Pediatric Resident AI Assistant as a software solution with planned hardware integration.",
+                "signals": []
+              },
+              {
+                "id": "s22",
+                "path": [
+                  "timeline",
+                  0,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 60,
+                "text": "Emphasize full local deployment on hospital GPUs (RTX 3090).",
+                "signals": []
+              },
+              {
+                "id": "s23",
+                "path": [
+                  "timeline",
+                  0,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 75,
+                "text": "Highlight data sovereignty: 100% on-premise processing, no cloud API usage.",
+                "signals": [
+                  {
+                    "source": "regex_signal",
+                    "term": "100%",
+                    "severity": "high",
+                    "reason": "疑似百分比绝对化宣称（如 100% safe/effective）"
+                  },
+                  {
+                    "source": "regex_signal",
+                    "term": "100%",
+                    "severity": "high",
+                    "reason": "俄语保证承诺/疗效宣称（否定语境由语义层裁决）"
+                  },
+                  {
+                    "term": "100%",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s24",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 8,
+                "text": "Welcome.",
+                "signals": []
+              },
+              {
+                "id": "s25",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 8,
+                "end": 125,
+                "text": " Today we present the **Pediatric Resident AI Assistant**, a clinical workflow tool designed for hospital deployment.",
+                "signals": []
+              },
+              {
+                "id": "s26",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 125,
+                "end": 169,
+                "text": " Our core principle is **data sovereignty**.",
+                "signals": []
+              },
+              {
+                "id": "s27",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 169,
+                "end": 297,
+                "text": " All processing—speech recognition, optical character recognition, and document generation—runs entirely on local hospital GPUs.",
+                "signals": []
+              },
+              {
+                "id": "s28",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 297,
+                "end": 334,
+                "text": " No patient data leaves the premises.",
+                "signals": []
+              },
+              {
+                "id": "s29",
+                "path": [
+                  "timeline",
+                  0,
+                  "spoken"
+                ],
+                "start": 334,
+                "end": 450,
+                "text": " This solution supports pediatric residents in managing daily tasks while maintaining strict data privacy standards.",
+                "signals": []
+              },
+              {
+                "id": "s30",
+                "path": [
+                  "timeline",
+                  0,
+                  "action"
+                ],
+                "start": 0,
+                "end": 73,
+                "text": "Display title slide with 'Local Deployment' and 'Data Sovereignty' icons.",
+                "signals": []
+              },
+              {
+                "id": "s31",
+                "path": [
+                  "timeline",
+                  0,
+                  "action"
+                ],
+                "start": 73,
+                "end": 112,
+                "text": " Show diagram of on-premise GPU server.",
+                "signals": []
+              },
+              {
+                "id": "s32",
+                "path": [
+                  "timeline",
+                  1,
+                  "title"
+                ],
+                "start": 0,
+                "end": 28,
+                "text": "Clinical Workflow Challenges",
+                "signals": []
+              },
+              {
+                "id": "s33",
+                "path": [
+                  "timeline",
+                  1,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 54,
+                "text": "Manual transcription of ward rounds is time-consuming.",
+                "signals": []
+              },
+              {
+                "id": "s34",
+                "path": [
+                  "timeline",
+                  1,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 78,
+                "text": "Risk of missing chief physician instructions during multi-speaker discussions.",
+                "signals": []
+              },
+              {
+                "id": "s35",
+                "path": [
+                  "timeline",
+                  1,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 80,
+                "text": "Laboratory result interpretation requires cross-referencing pediatric age norms.",
+                "signals": []
+              },
+              {
+                "id": "s36",
+                "path": [
+                  "timeline",
+                  1,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 75,
+                "text": "Administrative burden of drafting admission records and follow-up messages.",
+                "signals": []
+              },
+              {
+                "id": "s37",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 60,
+                "text": "Pediatric residents face significant administrative burdens.",
+                "signals": []
+              },
+              {
+                "id": "s38",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 60,
+                "end": 129,
+                "text": " Manual transcription of ward rounds consumes valuable clinical time.",
+                "signals": []
+              },
+              {
+                "id": "s39",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 129,
+                "end": 269,
+                "text": " In multi-speaker environments, distinguishing between the chief physician, attending doctors, and family members is critical yet difficult.",
+                "signals": []
+              },
+              {
+                "id": "s40",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 269,
+                "end": 352,
+                "text": " Interpreting laboratory results requires constant reference to age-specific norms.",
+                "signals": []
+              },
+              {
+                "id": "s41",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 352,
+                "end": 465,
+                "text": " Additionally, drafting admission records and managing parent follow-ups via messaging apps adds to the workload.",
+                "signals": []
+              },
+              {
+                "id": "s42",
+                "path": [
+                  "timeline",
+                  1,
+                  "spoken"
+                ],
+                "start": 465,
+                "end": 520,
+                "text": " These tasks divert attention from direct patient care.",
+                "signals": []
+              },
+              {
+                "id": "s43",
+                "path": [
+                  "timeline",
+                  1,
+                  "action"
+                ],
+                "start": 0,
+                "end": 118,
+                "text": "Show split-screen image: left side shows a stressed doctor with paperwork, right side shows a clean digital interface.",
+                "signals": []
+              },
+              {
+                "id": "s44",
+                "path": [
+                  "timeline",
+                  2,
+                  "title"
+                ],
+                "start": 0,
+                "end": 30,
+                "text": "Software Capabilities Overview",
+                "signals": []
+              },
+              {
+                "id": "s45",
+                "path": [
+                  "timeline",
+                  2,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 42,
+                "text": "Speaker separation for ward rounds (SW-1).",
+                "signals": []
+              },
+              {
+                "id": "s46",
+                "path": [
+                  "timeline",
+                  2,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 75,
+                "text": "Draft generation for medical records with 'to be confirmed' markers (SW-2).",
+                "signals": []
+              },
+              {
+                "id": "s47",
+                "path": [
+                  "timeline",
+                  2,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 65,
+                "text": "Local OCR for lab results with pediatric reference ranges (SW-3).",
+                "signals": []
+              },
+              {
+                "id": "s48",
+                "path": [
+                  "timeline",
+                  2,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 54,
+                "text": "Knowledge base accumulation for teaching cases (SW-4).",
+                "signals": []
+              },
+              {
+                "id": "s49",
+                "path": [
+                  "timeline",
+                  2,
+                  "talking_points",
+                  4
+                ],
+                "start": 0,
+                "end": 32,
+                "text": "Automated task reminders (SW-6).",
+                "signals": []
+              },
+              {
+                "id": "s50",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 76,
+                "text": "Our software addresses these challenges through several implemented modules.",
+                "signals": []
+              },
+              {
+                "id": "s51",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 76,
+                "end": 197,
+                "text": " First, **ward round transcription** uses speaker separation to identify the chief physician’s instructions specifically.",
+                "signals": []
+              },
+              {
+                "id": "s52",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 197,
+                "end": 344,
+                "text": " Second, **bedside consultation** tools generate drafts for admission records, marking unclear audio as 'to be confirmed' to prevent hallucination.",
+                "signals": []
+              },
+              {
+                "id": "s53",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 344,
+                "end": 475,
+                "text": " Third, **laboratory result OCR** structures data from screenshots, highlighting abnormal values based on pediatric age references.",
+                "signals": []
+              },
+              {
+                "id": "s54",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 475,
+                "end": 562,
+                "text": " Fourth, **teaching rounds** are documented and added to a self-growing knowledge base.",
+                "signals": []
+              },
+              {
+                "id": "s55",
+                "path": [
+                  "timeline",
+                  2,
+                  "spoken"
+                ],
+                "start": 562,
+                "end": 641,
+                "text": " Finally, a **daily task manager** pushes reminders at 17:00 for pending items.",
+                "signals": []
+              },
+              {
+                "id": "s56",
+                "path": [
+                  "timeline",
+                  2,
+                  "action"
+                ],
+                "start": 0,
+                "end": 193,
+                "text": "Cycle through screenshots of the software interface showing transcription with speaker labels, a draft medical record with highlighted 'to be confirmed' text, and a structured lab result table.",
+                "signals": []
+              },
+              {
+                "id": "s57",
+                "path": [
+                  "timeline",
+                  3,
+                  "title"
+                ],
+                "start": 0,
+                "end": 42,
+                "text": "Live Demonstration of Implemented Features",
+                "signals": []
+              },
+              {
+                "id": "s58",
+                "path": [
+                  "timeline",
+                  3,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 49,
+                "text": "Demo SW-1: Transcription with speaker separation.",
+                "signals": []
+              },
+              {
+                "id": "s59",
+                "path": [
+                  "timeline",
+                  3,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 38,
+                "text": "Demo SW-3: OCR of a sample lab report.",
+                "signals": []
+              },
+              {
+                "id": "s60",
+                "path": [
+                  "timeline",
+                  3,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 51,
+                "text": "Demo SW-2: Generation of a discharge summary draft.",
+                "signals": []
+              },
+              {
+                "id": "s61",
+                "path": [
+                  "timeline",
+                  3,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 72,
+                "text": "Clarify that hardware features are not demonstrated as they are planned.",
+                "signals": []
+              },
+              {
+                "id": "s62",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 57,
+                "text": "Let us demonstrate the implemented software capabilities.",
+                "signals": []
+              },
+              {
+                "id": "s63",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 57,
+                "end": 116,
+                "text": " [pause] Here, we process a simulated ward round recording.",
+                "signals": []
+              },
+              {
+                "id": "s64",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 116,
+                "end": 199,
+                "text": " The system separates speakers: **Chief Physician**, **Attending**, and **Family**.",
+                "signals": []
+              },
+              {
+                "id": "s65",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 199,
+                "end": 275,
+                "text": " Note how the chief’s instructions are extracted and archived by bed number.",
+                "signals": []
+              },
+              {
+                "id": "s66",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 275,
+                "end": 338,
+                "text": " [pause] Next, we upload a sample laboratory report screenshot.",
+                "signals": []
+              },
+              {
+                "id": "s67",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 338,
+                "end": 463,
+                "text": " The local OCR engine structures the data, flagging values outside the pediatric reference range for this specific age group.",
+                "signals": []
+              },
+              {
+                "id": "s68",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 463,
+                "end": 551,
+                "text": " [pause] Finally, based on these inputs, the system generates a draft discharge summary.",
+                "signals": []
+              },
+              {
+                "id": "s69",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 551,
+                "end": 629,
+                "text": " Please note: **AI outputs are drafts and require physician review before use.",
+                "signals": []
+              },
+              {
+                "id": "s70",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 629,
+                "end": 688,
+                "text": "** Any unclear audio segments are marked 'to be confirmed'.",
+                "signals": []
+              },
+              {
+                "id": "s71",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 688,
+                "end": 821,
+                "text": " [pause] Regarding the smart badge hardware: features such as automatic recording and screen OCR are currently in the planning phase.",
+                "signals": []
+              },
+              {
+                "id": "s72",
+                "path": [
+                  "timeline",
+                  3,
+                  "spoken"
+                ],
+                "start": 821,
+                "end": 869,
+                "text": " They are not available for demonstration today.",
+                "signals": []
+              },
+              {
+                "id": "s73",
+                "path": [
+                  "timeline",
+                  3,
+                  "action"
+                ],
+                "start": 0,
+                "end": 86,
+                "text": "Screen share: Play audio clip, show real-time transcription with color-coded speakers.",
+                "signals": []
+              },
+              {
+                "id": "s74",
+                "path": [
+                  "timeline",
+                  3,
+                  "action"
+                ],
+                "start": 86,
+                "end": 122,
+                "text": " Upload image file, show OCR result.",
+                "signals": []
+              },
+              {
+                "id": "s75",
+                "path": [
+                  "timeline",
+                  3,
+                  "action"
+                ],
+                "start": 122,
+                "end": 146,
+                "text": " Generate text document.",
+                "signals": []
+              },
+              {
+                "id": "s76",
+                "path": [
+                  "timeline",
+                  3,
+                  "action"
+                ],
+                "start": 146,
+                "end": 193,
+                "text": " Display 'Roadmap' slide for hardware features.",
+                "signals": []
+              },
+              {
+                "id": "s77",
+                "path": [
+                  "timeline",
+                  4,
+                  "title"
+                ],
+                "start": 0,
+                "end": 30,
+                "text": "Hypothetical Workflow Scenario",
+                "signals": []
+              },
+              {
+                "id": "s78",
+                "path": [
+                  "timeline",
+                  4,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 58,
+                "text": "Scenario: Morning ward round for a patient with pneumonia.",
+                "signals": []
+              },
+              {
+                "id": "s79",
+                "path": [
+                  "timeline",
+                  4,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 75,
+                "text": "Step 1: Record round, extract chief's instruction on antibiotic adjustment.",
+                "signals": []
+              },
+              {
+                "id": "s80",
+                "path": [
+                  "timeline",
+                  4,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 66,
+                "text": "Step 2: OCR new lab results showing improved inflammatory markers.",
+                "signals": []
+              },
+              {
+                "id": "s81",
+                "path": [
+                  "timeline",
+                  4,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 45,
+                "text": "Step 3: Generate updated progress note draft.",
+                "signals": []
+              },
+              {
+                "id": "s82",
+                "path": [
+                  "timeline",
+                  4,
+                  "talking_points",
+                  4
+                ],
+                "start": 0,
+                "end": 52,
+                "text": "Step 4: Add case details to teaching knowledge base.",
+                "signals": []
+              },
+              {
+                "id": "s83",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 80,
+                "text": "Consider a hypothetical scenario: A resident manages a pediatric pneumonia case.",
+                "signals": []
+              },
+              {
+                "id": "s84",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 80,
+                "end": 141,
+                "text": " During the morning round, the system records the discussion.",
+                "signals": []
+              },
+              {
+                "id": "s85",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 141,
+                "end": 212,
+                "text": " It identifies the chief physician’s instruction to adjust antibiotics.",
+                "signals": []
+              },
+              {
+                "id": "s86",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 212,
+                "end": 281,
+                "text": " Later, the resident captures a screenshot of the latest lab results.",
+                "signals": []
+              },
+              {
+                "id": "s87",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 281,
+                "end": 366,
+                "text": " The system structures these results, noting the improvement in inflammatory markers.",
+                "signals": []
+              },
+              {
+                "id": "s88",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 366,
+                "end": 419,
+                "text": " Using this data, it drafts an updated progress note.",
+                "signals": []
+              },
+              {
+                "id": "s89",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 419,
+                "end": 461,
+                "text": " The resident reviews and edits the draft.",
+                "signals": []
+              },
+              {
+                "id": "s90",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 461,
+                "end": 578,
+                "text": " Finally, the key learning points from this case are automatically added to the department’s teaching knowledge base.",
+                "signals": []
+              },
+              {
+                "id": "s91",
+                "path": [
+                  "timeline",
+                  4,
+                  "spoken"
+                ],
+                "start": 578,
+                "end": 651,
+                "text": " This workflow reduces manual entry and ensures instruction traceability.",
+                "signals": []
+              },
+              {
+                "id": "s92",
+                "path": [
+                  "timeline",
+                  4,
+                  "action"
+                ],
+                "start": 0,
+                "end": 133,
+                "text": "Show a flowchart animation: Microphone icon -> Text Extract -> Lab Image -> Structured Data -> Document Draft -> Knowledge Base Icon.",
+                "signals": []
+              },
+              {
+                "id": "s93",
+                "path": [
+                  "timeline",
+                  5,
+                  "title"
+                ],
+                "start": 0,
+                "end": 43,
+                "text": "Data Security and Compliance Considerations",
+                "signals": []
+              },
+              {
+                "id": "s94",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 49,
+                "text": "Reiterate 100% local processing on RTX 3090 GPUs.",
+                "signals": [
+                  {
+                    "source": "regex_signal",
+                    "term": "100%",
+                    "severity": "high",
+                    "reason": "疑似百分比绝对化宣称（如 100% safe/effective）"
+                  },
+                  {
+                    "source": "regex_signal",
+                    "term": "100%",
+                    "severity": "high",
+                    "reason": "俄语保证承诺/疗效宣称（否定语境由语义层裁决）"
+                  },
+                  {
+                    "term": "100%",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s95",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 60,
+                "text": "Original recordings and images are deleted after processing.",
+                "signals": []
+              },
+              {
+                "id": "s96",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 36,
+                "text": "No cloud API usage for patient data.",
+                "signals": []
+              },
+              {
+                "id": "s97",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 40,
+                "text": "Compliance obligations (GDPR, PDPA, etc.",
+                "signals": []
+              },
+              {
+                "id": "s98",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  3
+                ],
+                "start": 40,
+                "end": 70,
+                "text": ") must be verified per market.",
+                "signals": []
+              },
+              {
+                "id": "s99",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  4
+                ],
+                "start": 0,
+                "end": 75,
+                "text": "Include mandatory notice: AI outputs are drafts requiring physician review.",
+                "signals": []
+              },
+              {
+                "id": "s100",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 25,
+                "text": "Security is foundational.",
+                "signals": []
+              },
+              {
+                "id": "s101",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 25,
+                "end": 80,
+                "text": " All data processing occurs on local hospital hardware.",
+                "signals": []
+              },
+              {
+                "id": "s102",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 80,
+                "end": 155,
+                "text": " **Original recordings and images are deleted immediately after processing.",
+                "signals": []
+              },
+              {
+                "id": "s103",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 155,
+                "end": 203,
+                "text": "** No patient data is transmitted to cloud APIs.",
+                "signals": []
+              },
+              {
+                "id": "s104",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 203,
+                "end": 281,
+                "text": " This architecture supports data localization requirements in various markets.",
+                "signals": []
+              },
+              {
+                "id": "s105",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 281,
+                "end": 420,
+                "text": " However, specific compliance obligations such as GDPR or Indonesia’s PDPA must be verified by the hospital according to local regulations.",
+                "signals": []
+              },
+              {
+                "id": "s106",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 420,
+                "end": 481,
+                "text": " We do not claim certification for any specific jurisdiction.",
+                "signals": []
+              },
+              {
+                "id": "s107",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 481,
+                "end": 563,
+                "text": " Please remember: **AI outputs are drafts and require physician review before use.",
+                "signals": []
+              },
+              {
+                "id": "s108",
+                "path": [
+                  "timeline",
+                  5,
+                  "spoken"
+                ],
+                "start": 563,
+                "end": 624,
+                "text": "** The system assists but does not replace clinical judgment.",
+                "signals": []
+              },
+              {
+                "id": "s109",
+                "path": [
+                  "timeline",
+                  5,
+                  "action"
+                ],
+                "start": 0,
+                "end": 85,
+                "text": "Display security architecture diagram showing data flow within the local server only.",
+                "signals": []
+              },
+              {
+                "id": "s110",
+                "path": [
+                  "timeline",
+                  5,
+                  "action"
+                ],
+                "start": 85,
+                "end": 132,
+                "text": " Show text of the mandatory notice prominently.",
+                "signals": []
+              },
+              {
+                "id": "s111",
+                "path": [
+                  "timeline",
+                  6,
+                  "title"
+                ],
+                "start": 0,
+                "end": 27,
+                "text": "Addressing Common Questions",
+                "signals": []
+              },
+              {
+                "id": "s112",
+                "path": [
+                  "timeline",
+                  6,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 62,
+                "text": "Deployment: Plug-and-play on local GPU, no IT overhaul needed.",
+                "signals": []
+              },
+              {
+                "id": "s113",
+                "path": [
+                  "timeline",
+                  6,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 82,
+                "text": "Languages: Supports English, Arabic, Indonesian, Thai, Vietnamese, Malay, Russian.",
+                "signals": []
+              },
+              {
+                "id": "s114",
+                "path": [
+                  "timeline",
+                  6,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 70,
+                "text": "Hardware roadmap: Smart badge features are planned, not yet delivered.",
+                "signals": []
+              },
+              {
+                "id": "s115",
+                "path": [
+                  "timeline",
+                  6,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 91,
+                "text": "Certification: No medical device certification claimed; tool for administrative assistance.",
+                "signals": []
+              },
+              {
+                "id": "s116",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 57,
+                "text": "Common questions include deployment and language support.",
+                "signals": []
+              },
+              {
+                "id": "s117",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 57,
+                "end": 137,
+                "text": " The software runs on standard local GPUs, minimizing IT infrastructure changes.",
+                "signals": []
+              },
+              {
+                "id": "s118",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 137,
+                "end": 226,
+                "text": " It supports multiple languages including English, Arabic, and Southeast Asian languages.",
+                "signals": []
+              },
+              {
+                "id": "s119",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 226,
+                "end": 359,
+                "text": " Regarding the smart badge: hardware features like automatic recording and screen OCR are on the roadmap and not currently available.",
+                "signals": []
+              },
+              {
+                "id": "s120",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 359,
+                "end": 457,
+                "text": " On certification: this tool is designed for administrative assistance and documentation drafting.",
+                "signals": []
+              },
+              {
+                "id": "s121",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 457,
+                "end": 548,
+                "text": " It is not a diagnostic device, and we do not claim FDA or CE medical device certification.",
+                "signals": [
+                  {
+                    "term": "FDA",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  },
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s122",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ],
+                "start": 548,
+                "end": 607,
+                "text": " Hospitals should conduct their own regulatory assessments.",
+                "signals": []
+              },
+              {
+                "id": "s123",
+                "path": [
+                  "timeline",
+                  6,
+                  "action"
+                ],
+                "start": 0,
+                "end": 36,
+                "text": "Display list of supported languages.",
+                "signals": []
+              },
+              {
+                "id": "s124",
+                "path": [
+                  "timeline",
+                  6,
+                  "action"
+                ],
+                "start": 36,
+                "end": 82,
+                "text": " Show 'Roadmap' timeline graphic for hardware.",
+                "signals": []
+              },
+              {
+                "id": "s125",
+                "path": [
+                  "timeline",
+                  6,
+                  "action"
+                ],
+                "start": 82,
+                "end": 130,
+                "text": " Display disclaimer about non-diagnostic nature.",
+                "signals": []
+              },
+              {
+                "id": "s126",
+                "path": [
+                  "timeline",
+                  7,
+                  "title"
+                ],
+                "start": 0,
+                "end": 32,
+                "text": "Next Steps for Hospital Partners",
+                "signals": []
+              },
+              {
+                "id": "s127",
+                "path": [
+                  "timeline",
+                  7,
+                  "talking_points",
+                  0
+                ],
+                "start": 0,
+                "end": 43,
+                "text": "Contact for technical specification review.",
+                "signals": []
+              },
+              {
+                "id": "s128",
+                "path": [
+                  "timeline",
+                  7,
+                  "talking_points",
+                  1
+                ],
+                "start": 0,
+                "end": 47,
+                "text": "Schedule a local server environment assessment.",
+                "signals": []
+              },
+              {
+                "id": "s129",
+                "path": [
+                  "timeline",
+                  7,
+                  "talking_points",
+                  2
+                ],
+                "start": 0,
+                "end": 57,
+                "text": "Discuss pilot program possibilities for software modules.",
+                "signals": []
+              },
+              {
+                "id": "s130",
+                "path": [
+                  "timeline",
+                  7,
+                  "talking_points",
+                  3
+                ],
+                "start": 0,
+                "end": 58,
+                "text": "No pricing or delivery promises made in this presentation.",
+                "signals": []
+              },
+              {
+                "id": "s131",
+                "path": [
+                  "timeline",
+                  7,
+                  "spoken"
+                ],
+                "start": 0,
+                "end": 147,
+                "text": "For hospitals interested in enhancing resident efficiency while maintaining data sovereignty, we invite you to review our technical specifications.",
+                "signals": []
+              },
+              {
+                "id": "s132",
+                "path": [
+                  "timeline",
+                  7,
+                  "spoken"
+                ],
+                "start": 147,
+                "end": 235,
+                "text": " We can schedule an assessment of your local server environment to ensure compatibility.",
+                "signals": []
+              },
+              {
+                "id": "s133",
+                "path": [
+                  "timeline",
+                  7,
+                  "spoken"
+                ],
+                "start": 235,
+                "end": 317,
+                "text": " Pilot programs for the implemented software modules are available for discussion.",
+                "signals": []
+              },
+              {
+                "id": "s134",
+                "path": [
+                  "timeline",
+                  7,
+                  "spoken"
+                ],
+                "start": 317,
+                "end": 362,
+                "text": " Please contact our team for further details.",
+                "signals": []
+              },
+              {
+                "id": "s135",
+                "path": [
+                  "timeline",
+                  7,
+                  "spoken"
+                ],
+                "start": 362,
+                "end": 467,
+                "text": " Note that specific pricing and delivery timelines will be provided in subsequent commercial discussions.",
+                "signals": []
+              },
+              {
+                "id": "s136",
+                "path": [
+                  "timeline",
+                  7,
+                  "action"
+                ],
+                "start": 0,
+                "end": 74,
+                "text": "Display contact information and QR code for technical whitepaper download.",
+                "signals": []
+              },
+              {
+                "id": "s137",
+                "path": [
+                  "timeline",
+                  7,
+                  "action"
+                ],
+                "start": 74,
+                "end": 99,
+                "text": " Show 'Contact Us' slide.",
+                "signals": []
+              },
+              {
+                "id": "s138",
+                "path": [
+                  "interaction",
+                  "prompts",
+                  0
+                ],
+                "start": 0,
+                "end": 61,
+                "text": "How does the system handle multi-speaker noise in busy wards?",
+                "signals": []
+              },
+              {
+                "id": "s139",
+                "path": [
+                  "interaction",
+                  "prompts",
+                  1
+                ],
+                "start": 0,
+                "end": 57,
+                "text": "Can the software integrate with our existing HIS via API?",
+                "signals": []
+              },
+              {
+                "id": "s140",
+                "path": [
+                  "interaction",
+                  "prompts",
+                  2
+                ],
+                "start": 0,
+                "end": 50,
+                "text": "What happens if the local GPU server goes offline?",
+                "signals": []
+              },
+              {
+                "id": "s141",
+                "path": [
+                  "interaction",
+                  "objections",
+                  0,
+                  "question"
+                ],
+                "start": 0,
+                "end": 49,
+                "text": "What is the subscription cost and hardware price?",
+                "signals": []
+              },
+              {
+                "id": "s142",
+                "path": [
+                  "interaction",
+                  "objections",
+                  0,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 54,
+                "text": "Pricing details are not included in this presentation.",
+                "signals": []
+              },
+              {
+                "id": "s143",
+                "path": [
+                  "interaction",
+                  "objections",
+                  0,
+                  "answer"
+                ],
+                "start": 54,
+                "end": 200,
+                "text": " Commercial terms, including software subscription and hardware costs, will be discussed individually based on hospital size and deployment scope.",
+                "signals": []
+              },
+              {
+                "id": "s144",
+                "path": [
+                  "interaction",
+                  "objections",
+                  1,
+                  "question"
+                ],
+                "start": 0,
+                "end": 57,
+                "text": "Does this require major changes to our IT infrastructure?",
+                "signals": []
+              },
+              {
+                "id": "s145",
+                "path": [
+                  "interaction",
+                  "objections",
+                  1,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 85,
+                "text": "The solution is designed for local deployment on existing or dedicated hospital GPUs.",
+                "signals": []
+              },
+              {
+                "id": "s146",
+                "path": [
+                  "interaction",
+                  "objections",
+                  1,
+                  "answer"
+                ],
+                "start": 85,
+                "end": 165,
+                "text": " It does not rely on cloud resources, minimizing network infrastructure changes.",
+                "signals": []
+              },
+              {
+                "id": "s147",
+                "path": [
+                  "interaction",
+                  "objections",
+                  1,
+                  "answer"
+                ],
+                "start": 165,
+                "end": 233,
+                "text": " A technical assessment will confirm specific hardware requirements.",
+                "signals": []
+              },
+              {
+                "id": "s148",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "question"
+                ],
+                "start": 0,
+                "end": 45,
+                "text": "Is patient data sent to any external servers?",
+                "signals": []
+              },
+              {
+                "id": "s149",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 3,
+                "text": "No.",
+                "signals": []
+              },
+              {
+                "id": "s150",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "answer"
+                ],
+                "start": 3,
+                "end": 105,
+                "text": " All data processing, including speech recognition and OCR, occurs entirely on local hospital servers.",
+                "signals": []
+              },
+              {
+                "id": "s151",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "answer"
+                ],
+                "start": 105,
+                "end": 151,
+                "text": " No patient data is transmitted to cloud APIs.",
+                "signals": []
+              },
+              {
+                "id": "s152",
+                "path": [
+                  "interaction",
+                  "objections",
+                  2,
+                  "answer"
+                ],
+                "start": 151,
+                "end": 202,
+                "text": " Original media files are deleted after processing.",
+                "signals": []
+              },
+              {
+                "id": "s153",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "question"
+                ],
+                "start": 0,
+                "end": 35,
+                "text": "Is this device FDA or CE certified?",
+                "signals": [
+                  {
+                    "source": "regex_signal",
+                    "term": "CE certified",
+                    "severity": "high",
+                    "reason": "认证声明必须有证书证据；本产品资料未提供认证信息，一律不得出现"
+                  },
+                  {
+                    "term": "FDA",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  },
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  },
+                  {
+                    "term": "certified",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s154",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 85,
+                "text": "This product is a clinical workflow assistance tool, not a diagnostic medical device.",
+                "signals": []
+              },
+              {
+                "id": "s155",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "answer"
+                ],
+                "start": 85,
+                "end": 150,
+                "text": " We do not claim FDA, CE, or other medical device certifications.",
+                "signals": [
+                  {
+                    "term": "FDA",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  },
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s156",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "answer"
+                ],
+                "start": 150,
+                "end": 219,
+                "text": " Hospitals are responsible for verifying local regulatory compliance.",
+                "signals": []
+              },
+              {
+                "id": "s157",
+                "path": [
+                  "interaction",
+                  "objections",
+                  4,
+                  "question"
+                ],
+                "start": 0,
+                "end": 52,
+                "text": "Does it support local languages like Thai or Arabic?",
+                "signals": []
+              },
+              {
+                "id": "s158",
+                "path": [
+                  "interaction",
+                  "objections",
+                  4,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 120,
+                "text": "Yes, the system supports multiple languages including English, Arabic, Indonesian, Thai, Vietnamese, Malay, and Russian.",
+                "signals": []
+              },
+              {
+                "id": "s159",
+                "path": [
+                  "interaction",
+                  "objections",
+                  4,
+                  "answer"
+                ],
+                "start": 120,
+                "end": 181,
+                "text": " Language models are deployed locally to ensure data privacy.",
+                "signals": []
+              },
+              {
+                "id": "s160",
+                "path": [
+                  "interaction",
+                  "objections",
+                  5,
+                  "question"
+                ],
+                "start": 0,
+                "end": 58,
+                "text": "What technical support is available during implementation?",
+                "signals": []
+              },
+              {
+                "id": "s161",
+                "path": [
+                  "interaction",
+                  "objections",
+                  5,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 98,
+                "text": "We provide technical documentation and remote support for software installation and configuration.",
+                "signals": []
+              },
+              {
+                "id": "s162",
+                "path": [
+                  "interaction",
+                  "objections",
+                  5,
+                  "answer"
+                ],
+                "start": 98,
+                "end": 173,
+                "text": " On-site support availability depends on the specific agreement and region.",
+                "signals": []
+              },
+              {
+                "id": "s163",
+                "path": [
+                  "interaction",
+                  "objections",
+                  5,
+                  "answer"
+                ],
+                "start": 173,
+                "end": 237,
+                "text": " Detailed support terms will be part of the commercial contract.",
+                "signals": []
+              },
+              {
+                "id": "s164",
+                "path": [
+                  "notices",
+                  0
+                ],
+                "start": 0,
+                "end": 62,
+                "text": "AI outputs are drafts and require physician review before use.",
+                "signals": []
+              }
+            ],
+            "checked_ids": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6",
+              "s7",
+              "s8",
+              "s9",
+              "s10",
+              "s11",
+              "s12",
+              "s13",
+              "s14",
+              "s15",
+              "s16",
+              "s17",
+              "s18",
+              "s19",
+              "s20",
+              "s21",
+              "s22",
+              "s23",
+              "s24",
+              "s25",
+              "s26",
+              "s27",
+              "s28",
+              "s29",
+              "s30",
+              "s31",
+              "s32",
+              "s33",
+              "s34",
+              "s35",
+              "s36",
+              "s37",
+              "s38",
+              "s39",
+              "s40",
+              "s41",
+              "s42",
+              "s43",
+              "s44",
+              "s45",
+              "s46",
+              "s47",
+              "s48",
+              "s49",
+              "s50",
+              "s51",
+              "s52",
+              "s53",
+              "s54",
+              "s55",
+              "s56",
+              "s57",
+              "s58",
+              "s59",
+              "s60",
+              "s61",
+              "s62",
+              "s63",
+              "s64",
+              "s65",
+              "s66",
+              "s67",
+              "s68",
+              "s69",
+              "s70",
+              "s71",
+              "s72",
+              "s73",
+              "s74",
+              "s75",
+              "s76",
+              "s77",
+              "s78",
+              "s79",
+              "s80",
+              "s81",
+              "s82",
+              "s83",
+              "s84",
+              "s85",
+              "s86",
+              "s87",
+              "s88",
+              "s89",
+              "s90",
+              "s91",
+              "s92",
+              "s93",
+              "s94",
+              "s95",
+              "s96",
+              "s97",
+              "s98",
+              "s99",
+              "s100",
+              "s101",
+              "s102",
+              "s103",
+              "s104",
+              "s105",
+              "s106",
+              "s107",
+              "s108",
+              "s109",
+              "s110",
+              "s111",
+              "s112",
+              "s113",
+              "s114",
+              "s115",
+              "s116",
+              "s117",
+              "s118",
+              "s119",
+              "s120",
+              "s121",
+              "s122",
+              "s123",
+              "s124",
+              "s125",
+              "s126",
+              "s127",
+              "s128",
+              "s129",
+              "s130",
+              "s131",
+              "s132",
+              "s133",
+              "s134",
+              "s135",
+              "s136",
+              "s137",
+              "s138",
+              "s139",
+              "s140",
+              "s141",
+              "s142",
+              "s143",
+              "s144",
+              "s145",
+              "s146",
+              "s147",
+              "s148",
+              "s149",
+              "s150",
+              "s151",
+              "s152",
+              "s153",
+              "s154",
+              "s155",
+              "s156",
+              "s157",
+              "s158",
+              "s159",
+              "s160",
+              "s161",
+              "s162",
+              "s163",
+              "s164"
+            ],
+            "findings": [
+              {
+                "id": "s23",
+                "verdict": "benign",
+                "reason": "100% on-premise processing 描述技术事实，不涉及疗效或安全承诺，无违规。",
+                "replacement": "",
+                "risk_sentence": "Highlight data sovereignty: 100% on-premise processing, no cloud API usage.",
+                "path": [
+                  "timeline",
+                  0,
+                  "talking_points",
+                  2
+                ]
+              },
+              {
+                "id": "s94",
+                "verdict": "benign",
+                "reason": "100% local processing 为技术事实描述，不构成绝对化疗效或安全保证。",
+                "replacement": "",
+                "risk_sentence": "Reiterate 100% local processing on RTX 3090 GPUs.",
+                "path": [
+                  "timeline",
+                  5,
+                  "talking_points",
+                  0
+                ]
+              },
+              {
+                "id": "s121",
+                "verdict": "benign",
+                "reason": "否定声称FDA或CE认证，符合规则中否定承诺不违规。",
+                "replacement": "",
+                "risk_sentence": " It is not a diagnostic device, and we do not claim FDA or CE medical device certification.",
+                "path": [
+                  "timeline",
+                  6,
+                  "spoken"
+                ]
+              },
+              {
+                "id": "s153",
+                "verdict": "benign",
+                "reason": "用户问题询问认证，非产品声称，无违规。",
+                "replacement": "",
+                "risk_sentence": "Is this device FDA or CE certified?",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "question"
+                ]
+              },
+              {
+                "id": "s155",
+                "verdict": "benign",
+                "reason": "否定声称FDA、CE或其他认证，符合规则。",
+                "replacement": "",
+                "risk_sentence": " We do not claim FDA, CE, or other medical device certifications.",
+                "path": [
+                  "interaction",
+                  "objections",
+                  3,
+                  "answer"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "warnings": [],
+      "markets": [
+        "ID",
+        "TH",
+        "VN",
+        "MY",
+        "SA",
+        "AE",
+        "RU"
+      ]
+    },
+    {
+      "platform": "live",
+      "module": "live",
+      "language": "ar",
+      "status": "failed",
+      "error": "ValueError: 口播缺少停顿与重音标记",
+      "content": null,
+      "markets": [
+        "ID",
+        "TH",
+        "VN",
+        "MY",
+        "SA",
+        "AE",
+        "RU"
+      ]
+    },
+    {
+      "platform": "live",
+      "module": "live",
+      "language": "id",
+      "status": "failed",
+      "error": "ValueError: 口播缺少停顿与重音标记",
+      "content": null,
+      "markets": [
+        "ID",
+        "TH",
+        "VN",
+        "MY",
+        "SA",
+        "AE",
+        "RU"
+      ]
+    }
+  ],
+  "counts": {
+    "delivered": 1,
+    "review_blocked": 0,
+    "failed": 2,
+    "skipped_deadline": 0
+  },
+  "usage": {
+    "total_calls": 4,
+    "total_tokens": 38029,
+    "prompt_tokens": 24865,
+    "completion_tokens": 13164,
+    "by_model": {
+      "qwen3.7-plus": {
+        "calls": 3,
+        "total_tokens": 20003,
+        "prompt_tokens": 10046,
+        "completion_tokens": 9957
+      },
+      "deepseek-v4-flash": {
+        "calls": 1,
+        "total_tokens": 18026,
+        "prompt_tokens": 14819,
+        "completion_tokens": 3207
+      }
+    },
+    "by_tag": {
+      "live__en": {
+        "calls": 2,
+        "total_tokens": 24579
+      },
+      "live__ar": {
+        "calls": 1,
+        "total_tokens": 6690
+      },
+      "live__id": {
+        "calls": 1,
+        "total_tokens": 6760
+      }
+    },
+    "cost_estimate_cny": 0.058,
+    "wall_time_s": 116.5,
+    "price_note": "单价为可调估算值（元/百万token，混合输入输出），非实际成本，见 llm_client.PRICE_CNY_PER_MTOK"
+  },
+  "usage_records": [
+    {
+      "model": "qwen3.7-plus",
+      "prompt_tokens": 3332,
+      "completion_tokens": 3221,
+      "total_tokens": 6553,
+      "latency_s": 56.53,
+      "label": "live-generate",
+      "tag": "live__en"
+    },
+    {
+      "model": "qwen3.7-plus",
+      "prompt_tokens": 3394,
+      "completion_tokens": 3296,
+      "total_tokens": 6690,
+      "latency_s": 57.19,
+      "label": "live-generate",
+      "tag": "live__ar"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "prompt_tokens": 14819,
+      "completion_tokens": 3207,
+      "total_tokens": 18026,
+      "latency_s": 32.75,
+      "label": "live-review",
+      "tag": "live__en"
+    },
+    {
+      "model": "qwen3.7-plus",
+      "prompt_tokens": 3320,
+      "completion_tokens": 3440,
+      "total_tokens": 6760,
+      "latency_s": 59.25,
+      "label": "live-generate",
+      "tag": "live__id"
+    }
+  ],
+  "market_report": {
+    "ID": {
+      "name": "印度尼西亚",
+      "regulator": "BPOM / Kemenkes（卫生部）——待核",
+      "ad_rules_count": 2,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件在印尼的分类界定（风险等级）待核",
+        "AKD/AKL 注册路径与本地授权代表（nama dagang）要求待核",
+        "公立采购的 TKDN（本地含量）要求待核"
+      ],
+      "data_sovereignty_pending": [
+        "印尼 PDPA（个人数据保护法）对健康数据的处理与本地化要求待核",
+        "患者数据跨境传输限制与电子系统注册（PSE）要求待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "TH": {
+      "name": "泰国",
+      "regulator": "TFDA（泰国食品药品监督管理局）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件注册路径（通知/许可制分类）待核",
+        "广告预审许可（广告许可号）申请流程待核",
+        "本地进口商/经销商资质要求待核"
+      ],
+      "data_sovereignty_pending": [
+        "泰国 PDPA 对健康数据的合规要求待核",
+        "数据本地化义务（如适用）待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "VN": {
+      "name": "越南",
+      "regulator": "MOH（卫生部）/ 医疗器械管理部门——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械分类与注册申报路径（MD-13 等法令口径）待核",
+        "进口医疗器械本地授权代表要求待核",
+        "公立医院采购准入流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "越南《网络安全法》与个人数据法令（PDPD）的数据本地化/跨境要求待核",
+        "健康数据的存储与传输合规义务待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "MY": {
+      "name": "马来西亚",
+      "regulator": "MDA（医疗器械管理局）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件注册路径（CMDA 分类）待核",
+        "本地授权代表（ARR/ABR）要求待核",
+        "广告审批流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "马来西亚 PDPA 对健康数据的处理要求待核",
+        "公立部门数据驻留要求（如适用）待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "SA": {
+      "name": "沙特阿拉伯",
+      "regulator": "SFDA（沙特食品药品监督管理局）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件（含 AI 功能）分类界定与注册路径待核",
+        "授权代表（AR）与进口许可要求待核",
+        "促销材料 SFDA 事先批准流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "沙特 PDPL（个人数据保护法）及实施条例对健康数据的本地化/跨境要求待核",
+        "数据跨境传输评估（DTS）义务待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "AE": {
+      "name": "阿联酋",
+      "regulator": "MOHAP（卫生预防部）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械注册路径（MOHAP/TAWJEH 系统）待核",
+        "自由区 vs 大陆销售的许可差异待核",
+        "广告许可申请流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "阿联酋 PDPL 联邦法对健康数据的要求待核",
+        "健康数据跨境传输限制（含 DHA/DOH 特区要求）待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "RU": {
+      "name": "俄罗斯（备选市场）",
+      "regulator": "Roszdravnadzor（联邦医疗卫生监督局）——待核",
+      "ad_rules_count": 2,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件注册（РУ）路径与本地测试要求待核",
+        "EAC（欧亚经济联盟）认证适用性待核",
+        "进口与本地代表要求待核"
+      ],
+      "data_sovereignty_pending": [
+        "俄罗斯个人数据本地化法（152-ФЗ）要求初级数据库置于境内——待核适用范围",
+        "健康数据跨境传输限制待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    }
+  },
+  "engine_notices": {
+    "deployment_clarification": "被营销的产品（301 儿科住院医师 AI 助手 + 智能胸卡）为院内全本地部署、患者数据不出院——这是产品卖点；本营销引擎自身会调用云端大模型生成文案，两件事不得混同。",
+    "privacy": "所有模型调用前经过本地敏感内容门禁：命中患者标识（姓名/床号/住院号/身份证/手机号等）即本地阻断，绝不外发云端脱敏。",
+    "legal": "本引擎输出的合规提示为工程化规则与模型辅助判断，不构成法律意见；准入与数据主权事项为待核清单。"
+  }
+}

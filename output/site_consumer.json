@@ -1,0 +1,2866 @@
+{
+  "meta": {
+    "schema_version": "3.0",
+    "module": "site",
+    "languages": [
+      "en",
+      "ar"
+    ],
+    "generated_at": "2026-09-09T10:34:23.407515+00:00",
+    "elapsed_s": 184.69
+  },
+  "product": {
+    "schema_version": "3.0",
+    "product_name": "户外便携储能电源 600W（演示样例）",
+    "product_name_en": "Portable Power Station 600W (Demo Sample)",
+    "brand": "DEMO-BRAND（虚构，仅演示用）",
+    "form": "消费电子 / 户外储能：600W 输出、磷酸铁锂电池、支持太阳能板充电",
+    "deployment": "常规跨境电商：亚马逊 FBA + 独立站 + TikTok 社媒，无需本地部署",
+    "capabilities": [
+      {
+        "id": "PS-1",
+        "area": "product",
+        "name": "600W 纯正弦波交流输出",
+        "desc": "可驱动小型家电与电子设备，纯正弦波输出，适配敏感设备",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-2",
+        "area": "product",
+        "name": "磷酸铁锂电池，循环寿命长",
+        "desc": "磷酸铁锂电芯，标称循环次数高于普通三元锂（具体数字未在样例中提供，文案不得编造）",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-3",
+        "area": "product",
+        "name": "太阳能充电支持",
+        "desc": "支持外接太阳能板补电，适合户外与断电场景",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-4",
+        "area": "product",
+        "name": "多路接口（AC/USB-C/USB-A/车充）",
+        "desc": "多路输出接口，可同时为多台设备供电",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-5",
+        "area": "service",
+        "name": "本地化说明书与售后",
+        "desc": "随附多语言说明书；售后由当地合作方承担（具体政策未在样例中提供）",
+        "status": "planned",
+        "priority": "P1",
+        "evidence": "演示样例设定（虚构）"
+      }
+    ],
+    "tech_stack": [
+      {
+        "layer": "品类",
+        "component": "消费电子 / 户外储能（跨境电商常规品类）"
+      },
+      {
+        "layer": "渠道",
+        "component": "亚马逊 + 独立站 + TikTok/Instagram 社媒"
+      }
+    ],
+    "red_lines": [
+      "不得宣称通过任何安全认证（样例未提供认证信息，文案不得出现 UL/CE/PSE 等认证宣称）",
+      "不得编造循环次数、容量保持率、充电时长等具体性能数字（样例未提供）",
+      "不得出现具体价格、折扣、限时促销承诺（定价未在样例中提供）",
+      "不得暗示真实客户、真实销量、真实评价或真实合作方"
+    ],
+    "selling_angles": [
+      "断电备用：应对东南亚部分区域的不稳定供电与台风季停电",
+      "户外场景：中东与东南亚露营、夜市摆摊、移动办公",
+      "太阳能补电：日照充足地区可日间补电，降低用电成本",
+      "一机多充：多路接口同时供电，减少携带多个充电宝"
+    ],
+    "target_buyers": [
+      "家庭应急备电用户",
+      "户外露营与自驾人群",
+      "夜市/地摊等移动用电小微商户"
+    ],
+    "target_markets": [
+      "ID",
+      "TH",
+      "VN",
+      "MY",
+      "SA",
+      "AE"
+    ],
+    "target_languages": [
+      "en",
+      "ar",
+      "id",
+      "th"
+    ],
+    "target_platforms": [
+      "tiktok",
+      "instagram",
+      "amazon",
+      "landing_page"
+    ],
+    "compliance_level": "standard",
+    "pricing_positioning": "中端价位（具体价格未提供，文案不得出现数字）",
+    "marketing_notes": "B2C 常规消费品，非医疗场景：不使用医疗合规等级，但仍受广告法约束（绝对化用语、虚假宣传、疗效/安全承诺）。所有能力以 capabilities 为准，status=planned 标注 roadmap；样例未提供认证、性能数字与价格，文案一律不得编造。本样例为虚构演示用途。"
+  },
+  "results": [
+    {
+      "platform": "site",
+      "module": "site",
+      "language": "en",
+      "rtl": false,
+      "status": "delivered",
+      "error": null,
+      "content": {
+        "hero": {
+          "headline": "Reliable 600W Portable Power for Outdoor and Emergency Use",
+          "subtitle": "Pure sine wave output with LiFePO4 battery technology. Supports solar charging for sustainable energy access in Southeast Asia and the Middle East.",
+          "cta": "Request Product Specifications"
+        },
+        "audiences": [
+          {
+            "buyer": "Households in regions with unstable grid power",
+            "pain": "Need for reliable backup power during outages caused by weather or infrastructure issues."
+          },
+          {
+            "buyer": "Outdoor enthusiasts and campers",
+            "pain": "Requirement for portable, clean energy to charge devices and run small appliances off-grid."
+          },
+          {
+            "buyer": "Mobile micro-businesses (e.g., night market vendors)",
+            "pain": "Need for consistent power supply for lighting and electronic payment systems where grid access is limited."
+          }
+        ],
+        "solution": "The DEMO-BRAND 600W Portable Power Station provides a versatile energy solution featuring pure sine wave AC output, suitable for sensitive electronics. Its LiFePO4 battery chemistry offers enhanced cycle life characteristics compared to standard lithium-ion alternatives. With multi-port connectivity and solar input capability, it supports diverse usage scenarios from home backup to outdoor adventures.",
+        "capabilities": [
+          {
+            "id": "PS-1",
+            "status": "implemented",
+            "text": "Delivers 600W pure sine wave AC output, ensuring compatibility with sensitive household appliances and electronic devices."
+          },
+          {
+            "id": "PS-2",
+            "status": "implemented",
+            "text": "Utilises LiFePO4 battery cells, designed for long cycle life and stable performance over time."
+          },
+          {
+            "id": "PS-3",
+            "status": "implemented",
+            "text": "Supports external solar panel input, enabling renewable energy charging for off-grid and emergency scenarios."
+          },
+          {
+            "id": "PS-4",
+            "status": "implemented",
+            "text": "Features multiple output interfaces including AC, USB-C, USB-A, and DC car port, allowing simultaneous charging of multiple devices."
+          },
+          {
+            "id": "PS-5",
+            "status": "planned",
+            "text": "Roadmap — planned, not available for demonstration or delivery. Localised user manuals and after-sales support structures are under development for target markets."
+          }
+        ],
+        "evidence": [
+          {
+            "claim": "Pure sine wave output protects sensitive electronics from power fluctuations.",
+            "source": "Product technical specification: PS-1 capability description."
+          },
+          {
+            "claim": "LiFePO4 chemistry provides structural stability and longevity benefits.",
+            "source": "Product technical specification: PS-2 capability description."
+          }
+        ],
+        "compliance": {
+          "data_sovereignty": "This product is a consumer electronic device and does not process personal data or store user information. Therefore, GDPR, Indonesian Personal Data Protection Law, and Saudi/UAE data sovereignty regulations regarding data processing are not applicable to the device operation. Compliance with local electrical safety standards is subject to specific market requirements and must be verified by the importer.",
+          "market_access": "Market entry requirements vary by country. Importers are responsible for verifying compliance with local electrical safety and certification standards (such as SNI, TISI, or SASO) before distribution. No universal certification is claimed for this demo sample."
+        },
+        "faq": [
+          {
+            "topic": "deployment",
+            "question": "How is this product distributed?",
+            "answer": "This product is distributed through standard cross-border e-commerce channels, including online marketplaces and independent brand websites. It is a physical consumer good and does not involve software deployment."
+          },
+          {
+            "topic": "data",
+            "question": "Does the power station collect user data?",
+            "answer": "No. This is a standalone hardware device without internet connectivity or data collection features. It does not store or transmit personal information."
+          },
+          {
+            "topic": "certification",
+            "question": "What safety certifications does this product have?",
+            "answer": "Specific certification details (such as UL, CE, or PSE) are not provided in this demo sample. Importers and distributors must verify required local certifications for their respective markets before sale."
+          },
+          {
+            "topic": "languages",
+            "question": "Is the user manual available in local languages?",
+            "answer": "Roadmap — planned, not available for demonstration or delivery. Multi-language manual support is currently in the planning stage for future releases."
+          },
+          {
+            "topic": "training",
+            "question": "Is training required to use this product?",
+            "answer": "No specialized training is required. The device is designed for consumer use with straightforward plug-and-play functionality. Basic operating instructions are included in the packaging."
+          },
+          {
+            "topic": "support",
+            "question": "How is after-sales support handled?",
+            "answer": "Roadmap — planned, not available for demonstration or delivery. Localized after-sales support structures are currently being planned for key markets."
+          },
+          {
+            "topic": "price",
+            "question": "What is the price of this unit?",
+            "answer": "Pricing information is not provided in this demo sample. Please contact authorised distributors or check official retail channels for current pricing in your region."
+          },
+          {
+            "topic": "delivery",
+            "question": "What are the delivery times?",
+            "answer": "Delivery times depend on the specific e-commerce platform and shipping method selected at checkout. This demo sample does not provide specific logistics commitments."
+          }
+        ],
+        "cta": {
+          "label": "Contact Sales Team",
+          "next_step": "Reach out to our regional sales representatives for bulk order inquiries and distribution partnership opportunities."
+        },
+        "seo": {
+          "title": "600W Portable Power Station | LiFePO4 Solar Generator",
+          "description": "Discover the DEMO-BRAND 600W Portable Power Station. Features pure sine wave output, LiFePO4 battery, and solar charging. Ideal for outdoor camping and home backup.",
+          "keywords": [
+            "portable power station 600W",
+            "LiFePO4 battery generator",
+            "solar powered backup",
+            "outdoor camping power",
+            "pure sine wave inverter"
+          ]
+        },
+        "notices": [
+          "Fictional demonstration sample; not a real customer, sale or partnership."
+        ]
+      },
+      "compliance": {
+        "rounds": [
+          {
+            "sentences": [
+              {
+                "id": "s0",
+                "path": [
+                  "hero",
+                  "headline"
+                ],
+                "start": 0,
+                "end": 58,
+                "text": "Reliable 600W Portable Power for Outdoor and Emergency Use",
+                "signals": []
+              },
+              {
+                "id": "s1",
+                "path": [
+                  "hero",
+                  "subtitle"
+                ],
+                "start": 0,
+                "end": 54,
+                "text": "Pure sine wave output with LiFePO4 battery technology.",
+                "signals": []
+              },
+              {
+                "id": "s2",
+                "path": [
+                  "hero",
+                  "subtitle"
+                ],
+                "start": 54,
+                "end": 147,
+                "text": " Supports solar charging for sustainable energy access in Southeast Asia and the Middle East.",
+                "signals": []
+              },
+              {
+                "id": "s3",
+                "path": [
+                  "hero",
+                  "cta"
+                ],
+                "start": 0,
+                "end": 30,
+                "text": "Request Product Specifications",
+                "signals": []
+              },
+              {
+                "id": "s4",
+                "path": [
+                  "audiences",
+                  0,
+                  "buyer"
+                ],
+                "start": 0,
+                "end": 46,
+                "text": "Households in regions with unstable grid power",
+                "signals": []
+              },
+              {
+                "id": "s5",
+                "path": [
+                  "audiences",
+                  0,
+                  "pain"
+                ],
+                "start": 0,
+                "end": 89,
+                "text": "Need for reliable backup power during outages caused by weather or infrastructure issues.",
+                "signals": []
+              },
+              {
+                "id": "s6",
+                "path": [
+                  "audiences",
+                  1,
+                  "buyer"
+                ],
+                "start": 0,
+                "end": 31,
+                "text": "Outdoor enthusiasts and campers",
+                "signals": []
+              },
+              {
+                "id": "s7",
+                "path": [
+                  "audiences",
+                  1,
+                  "pain"
+                ],
+                "start": 0,
+                "end": 91,
+                "text": "Requirement for portable, clean energy to charge devices and run small appliances off-grid.",
+                "signals": []
+              },
+              {
+                "id": "s8",
+                "path": [
+                  "audiences",
+                  2,
+                  "buyer"
+                ],
+                "start": 0,
+                "end": 27,
+                "text": "Mobile micro-businesses (e.",
+                "signals": []
+              },
+              {
+                "id": "s9",
+                "path": [
+                  "audiences",
+                  2,
+                  "buyer"
+                ],
+                "start": 27,
+                "end": 29,
+                "text": "g.",
+                "signals": []
+              },
+              {
+                "id": "s10",
+                "path": [
+                  "audiences",
+                  2,
+                  "buyer"
+                ],
+                "start": 29,
+                "end": 52,
+                "text": ", night market vendors)",
+                "signals": []
+              },
+              {
+                "id": "s11",
+                "path": [
+                  "audiences",
+                  2,
+                  "pain"
+                ],
+                "start": 0,
+                "end": 106,
+                "text": "Need for consistent power supply for lighting and electronic payment systems where grid access is limited.",
+                "signals": []
+              },
+              {
+                "id": "s12",
+                "path": [
+                  "solution"
+                ],
+                "start": 0,
+                "end": 151,
+                "text": "The DEMO-BRAND 600W Portable Power Station provides a versatile energy solution featuring pure sine wave AC output, suitable for sensitive electronics.",
+                "signals": []
+              },
+              {
+                "id": "s13",
+                "path": [
+                  "solution"
+                ],
+                "start": 151,
+                "end": 271,
+                "text": " Its LiFePO4 battery chemistry offers enhanced cycle life characteristics compared to standard lithium-ion alternatives.",
+                "signals": []
+              },
+              {
+                "id": "s14",
+                "path": [
+                  "solution"
+                ],
+                "start": 271,
+                "end": 404,
+                "text": " With multi-port connectivity and solar input capability, it supports diverse usage scenarios from home backup to outdoor adventures.",
+                "signals": []
+              },
+              {
+                "id": "s15",
+                "path": [
+                  "capabilities",
+                  0,
+                  "text"
+                ],
+                "start": 0,
+                "end": 122,
+                "text": "Delivers 600W pure sine wave AC output, ensuring compatibility with sensitive household appliances and electronic devices.",
+                "signals": []
+              },
+              {
+                "id": "s16",
+                "path": [
+                  "capabilities",
+                  1,
+                  "text"
+                ],
+                "start": 0,
+                "end": 94,
+                "text": "Utilises LiFePO4 battery cells, designed for long cycle life and stable performance over time.",
+                "signals": []
+              },
+              {
+                "id": "s17",
+                "path": [
+                  "capabilities",
+                  2,
+                  "text"
+                ],
+                "start": 0,
+                "end": 109,
+                "text": "Supports external solar panel input, enabling renewable energy charging for off-grid and emergency scenarios.",
+                "signals": []
+              },
+              {
+                "id": "s18",
+                "path": [
+                  "capabilities",
+                  3,
+                  "text"
+                ],
+                "start": 0,
+                "end": 132,
+                "text": "Features multiple output interfaces including AC, USB-C, USB-A, and DC car port, allowing simultaneous charging of multiple devices.",
+                "signals": []
+              },
+              {
+                "id": "s19",
+                "path": [
+                  "capabilities",
+                  4,
+                  "text"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s20",
+                "path": [
+                  "capabilities",
+                  4,
+                  "text"
+                ],
+                "start": 63,
+                "end": 163,
+                "text": " Localised user manuals and after-sales support structures are under development for target markets.",
+                "signals": []
+              },
+              {
+                "id": "s21",
+                "path": [
+                  "evidence",
+                  0,
+                  "claim"
+                ],
+                "start": 0,
+                "end": 77,
+                "text": "Pure sine wave output protects sensitive electronics from power fluctuations.",
+                "signals": []
+              },
+              {
+                "id": "s22",
+                "path": [
+                  "evidence",
+                  0,
+                  "source"
+                ],
+                "start": 0,
+                "end": 61,
+                "text": "Product technical specification: PS-1 capability description.",
+                "signals": []
+              },
+              {
+                "id": "s23",
+                "path": [
+                  "evidence",
+                  1,
+                  "claim"
+                ],
+                "start": 0,
+                "end": 71,
+                "text": "LiFePO4 chemistry provides structural stability and longevity benefits.",
+                "signals": []
+              },
+              {
+                "id": "s24",
+                "path": [
+                  "evidence",
+                  1,
+                  "source"
+                ],
+                "start": 0,
+                "end": 61,
+                "text": "Product technical specification: PS-2 capability description.",
+                "signals": []
+              },
+              {
+                "id": "s25",
+                "path": [
+                  "compliance",
+                  "data_sovereignty"
+                ],
+                "start": 0,
+                "end": 106,
+                "text": "This product is a consumer electronic device and does not process personal data or store user information.",
+                "signals": []
+              },
+              {
+                "id": "s26",
+                "path": [
+                  "compliance",
+                  "data_sovereignty"
+                ],
+                "start": 106,
+                "end": 277,
+                "text": " Therefore, GDPR, Indonesian Personal Data Protection Law, and Saudi/UAE data sovereignty regulations regarding data processing are not applicable to the device operation.",
+                "signals": []
+              },
+              {
+                "id": "s27",
+                "path": [
+                  "compliance",
+                  "data_sovereignty"
+                ],
+                "start": 277,
+                "end": 408,
+                "text": " Compliance with local electrical safety standards is subject to specific market requirements and must be verified by the importer.",
+                "signals": []
+              },
+              {
+                "id": "s28",
+                "path": [
+                  "compliance",
+                  "market_access"
+                ],
+                "start": 0,
+                "end": 42,
+                "text": "Market entry requirements vary by country.",
+                "signals": []
+              },
+              {
+                "id": "s29",
+                "path": [
+                  "compliance",
+                  "market_access"
+                ],
+                "start": 42,
+                "end": 200,
+                "text": " Importers are responsible for verifying compliance with local electrical safety and certification standards (such as SNI, TISI, or SASO) before distribution.",
+                "signals": []
+              },
+              {
+                "id": "s30",
+                "path": [
+                  "compliance",
+                  "market_access"
+                ],
+                "start": 200,
+                "end": 260,
+                "text": " No universal certification is claimed for this demo sample.",
+                "signals": []
+              },
+              {
+                "id": "s31",
+                "path": [
+                  "faq",
+                  0,
+                  "question"
+                ],
+                "start": 0,
+                "end": 32,
+                "text": "How is this product distributed?",
+                "signals": []
+              },
+              {
+                "id": "s32",
+                "path": [
+                  "faq",
+                  0,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 140,
+                "text": "This product is distributed through standard cross-border e-commerce channels, including online marketplaces and independent brand websites.",
+                "signals": []
+              },
+              {
+                "id": "s33",
+                "path": [
+                  "faq",
+                  0,
+                  "answer"
+                ],
+                "start": 140,
+                "end": 213,
+                "text": " It is a physical consumer good and does not involve software deployment.",
+                "signals": []
+              },
+              {
+                "id": "s34",
+                "path": [
+                  "faq",
+                  1,
+                  "question"
+                ],
+                "start": 0,
+                "end": 41,
+                "text": "Does the power station collect user data?",
+                "signals": []
+              },
+              {
+                "id": "s35",
+                "path": [
+                  "faq",
+                  1,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 3,
+                "text": "No.",
+                "signals": []
+              },
+              {
+                "id": "s36",
+                "path": [
+                  "faq",
+                  1,
+                  "answer"
+                ],
+                "start": 3,
+                "end": 99,
+                "text": " This is a standalone hardware device without internet connectivity or data collection features.",
+                "signals": []
+              },
+              {
+                "id": "s37",
+                "path": [
+                  "faq",
+                  1,
+                  "answer"
+                ],
+                "start": 99,
+                "end": 151,
+                "text": " It does not store or transmit personal information.",
+                "signals": []
+              },
+              {
+                "id": "s38",
+                "path": [
+                  "faq",
+                  2,
+                  "question"
+                ],
+                "start": 0,
+                "end": 50,
+                "text": "What safety certifications does this product have?",
+                "signals": []
+              },
+              {
+                "id": "s39",
+                "path": [
+                  "faq",
+                  2,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 93,
+                "text": "Specific certification details (such as UL, CE, or PSE) are not provided in this demo sample.",
+                "signals": [
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s40",
+                "path": [
+                  "faq",
+                  2,
+                  "answer"
+                ],
+                "start": 93,
+                "end": 204,
+                "text": " Importers and distributors must verify required local certifications for their respective markets before sale.",
+                "signals": []
+              },
+              {
+                "id": "s41",
+                "path": [
+                  "faq",
+                  3,
+                  "question"
+                ],
+                "start": 0,
+                "end": 48,
+                "text": "Is the user manual available in local languages?",
+                "signals": []
+              },
+              {
+                "id": "s42",
+                "path": [
+                  "faq",
+                  3,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s43",
+                "path": [
+                  "faq",
+                  3,
+                  "answer"
+                ],
+                "start": 63,
+                "end": 149,
+                "text": " Multi-language manual support is currently in the planning stage for future releases.",
+                "signals": []
+              },
+              {
+                "id": "s44",
+                "path": [
+                  "faq",
+                  4,
+                  "question"
+                ],
+                "start": 0,
+                "end": 41,
+                "text": "Is training required to use this product?",
+                "signals": []
+              },
+              {
+                "id": "s45",
+                "path": [
+                  "faq",
+                  4,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 36,
+                "text": "No specialized training is required.",
+                "signals": []
+              },
+              {
+                "id": "s46",
+                "path": [
+                  "faq",
+                  4,
+                  "answer"
+                ],
+                "start": 36,
+                "end": 126,
+                "text": " The device is designed for consumer use with straightforward plug-and-play functionality.",
+                "signals": []
+              },
+              {
+                "id": "s47",
+                "path": [
+                  "faq",
+                  4,
+                  "answer"
+                ],
+                "start": 126,
+                "end": 186,
+                "text": " Basic operating instructions are included in the packaging.",
+                "signals": []
+              },
+              {
+                "id": "s48",
+                "path": [
+                  "faq",
+                  5,
+                  "question"
+                ],
+                "start": 0,
+                "end": 35,
+                "text": "How is after-sales support handled?",
+                "signals": []
+              },
+              {
+                "id": "s49",
+                "path": [
+                  "faq",
+                  5,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 63,
+                "text": "Roadmap — planned, not available for demonstration or delivery.",
+                "signals": []
+              },
+              {
+                "id": "s50",
+                "path": [
+                  "faq",
+                  5,
+                  "answer"
+                ],
+                "start": 63,
+                "end": 149,
+                "text": " Localized after-sales support structures are currently being planned for key markets.",
+                "signals": []
+              },
+              {
+                "id": "s51",
+                "path": [
+                  "faq",
+                  6,
+                  "question"
+                ],
+                "start": 0,
+                "end": 31,
+                "text": "What is the price of this unit?",
+                "signals": []
+              },
+              {
+                "id": "s52",
+                "path": [
+                  "faq",
+                  6,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 56,
+                "text": "Pricing information is not provided in this demo sample.",
+                "signals": []
+              },
+              {
+                "id": "s53",
+                "path": [
+                  "faq",
+                  6,
+                  "answer"
+                ],
+                "start": 56,
+                "end": 165,
+                "text": " Please contact authorised distributors or check official retail channels for current pricing in your region.",
+                "signals": []
+              },
+              {
+                "id": "s54",
+                "path": [
+                  "faq",
+                  7,
+                  "question"
+                ],
+                "start": 0,
+                "end": 28,
+                "text": "What are the delivery times?",
+                "signals": []
+              },
+              {
+                "id": "s55",
+                "path": [
+                  "faq",
+                  7,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 99,
+                "text": "Delivery times depend on the specific e-commerce platform and shipping method selected at checkout.",
+                "signals": []
+              },
+              {
+                "id": "s56",
+                "path": [
+                  "faq",
+                  7,
+                  "answer"
+                ],
+                "start": 99,
+                "end": 165,
+                "text": " This demo sample does not provide specific logistics commitments.",
+                "signals": []
+              },
+              {
+                "id": "s57",
+                "path": [
+                  "cta",
+                  "label"
+                ],
+                "start": 0,
+                "end": 18,
+                "text": "Contact Sales Team",
+                "signals": []
+              },
+              {
+                "id": "s58",
+                "path": [
+                  "cta",
+                  "next_step"
+                ],
+                "start": 0,
+                "end": 116,
+                "text": "Reach out to our regional sales representatives for bulk order inquiries and distribution partnership opportunities.",
+                "signals": []
+              },
+              {
+                "id": "s59",
+                "path": [
+                  "seo",
+                  "title"
+                ],
+                "start": 0,
+                "end": 53,
+                "text": "600W Portable Power Station | LiFePO4 Solar Generator",
+                "signals": []
+              },
+              {
+                "id": "s60",
+                "path": [
+                  "seo",
+                  "description"
+                ],
+                "start": 0,
+                "end": 52,
+                "text": "Discover the DEMO-BRAND 600W Portable Power Station.",
+                "signals": []
+              },
+              {
+                "id": "s61",
+                "path": [
+                  "seo",
+                  "description"
+                ],
+                "start": 52,
+                "end": 121,
+                "text": " Features pure sine wave output, LiFePO4 battery, and solar charging.",
+                "signals": []
+              },
+              {
+                "id": "s62",
+                "path": [
+                  "seo",
+                  "description"
+                ],
+                "start": 121,
+                "end": 164,
+                "text": " Ideal for outdoor camping and home backup.",
+                "signals": []
+              },
+              {
+                "id": "s63",
+                "path": [
+                  "seo",
+                  "keywords",
+                  0
+                ],
+                "start": 0,
+                "end": 27,
+                "text": "portable power station 600W",
+                "signals": []
+              },
+              {
+                "id": "s64",
+                "path": [
+                  "seo",
+                  "keywords",
+                  1
+                ],
+                "start": 0,
+                "end": 25,
+                "text": "LiFePO4 battery generator",
+                "signals": []
+              },
+              {
+                "id": "s65",
+                "path": [
+                  "seo",
+                  "keywords",
+                  2
+                ],
+                "start": 0,
+                "end": 20,
+                "text": "solar powered backup",
+                "signals": []
+              },
+              {
+                "id": "s66",
+                "path": [
+                  "seo",
+                  "keywords",
+                  3
+                ],
+                "start": 0,
+                "end": 21,
+                "text": "outdoor camping power",
+                "signals": []
+              },
+              {
+                "id": "s67",
+                "path": [
+                  "seo",
+                  "keywords",
+                  4
+                ],
+                "start": 0,
+                "end": 23,
+                "text": "pure sine wave inverter",
+                "signals": []
+              },
+              {
+                "id": "s68",
+                "path": [
+                  "notices",
+                  0
+                ],
+                "start": 0,
+                "end": 73,
+                "text": "Fictional demonstration sample; not a real customer, sale or partnership.",
+                "signals": []
+              }
+            ],
+            "checked_ids": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6",
+              "s7",
+              "s8",
+              "s9",
+              "s10",
+              "s11",
+              "s12",
+              "s13",
+              "s14",
+              "s15",
+              "s16",
+              "s17",
+              "s18",
+              "s19",
+              "s20",
+              "s21",
+              "s22",
+              "s23",
+              "s24",
+              "s25",
+              "s26",
+              "s27",
+              "s28",
+              "s29",
+              "s30",
+              "s31",
+              "s32",
+              "s33",
+              "s34",
+              "s35",
+              "s36",
+              "s37",
+              "s38",
+              "s39",
+              "s40",
+              "s41",
+              "s42",
+              "s43",
+              "s44",
+              "s45",
+              "s46",
+              "s47",
+              "s48",
+              "s49",
+              "s50",
+              "s51",
+              "s52",
+              "s53",
+              "s54",
+              "s55",
+              "s56",
+              "s57",
+              "s58",
+              "s59",
+              "s60",
+              "s61",
+              "s62",
+              "s63",
+              "s64",
+              "s65",
+              "s66",
+              "s67",
+              "s68"
+            ],
+            "findings": [
+              {
+                "id": "s39",
+                "verdict": "benign",
+                "reason": "句子提到UL、CE、PSE等认证名称，但明确说明这些具体认证细节未在示例中提供，没有声称拥有任何认证，属于事实性陈述而非违规。",
+                "replacement": "",
+                "risk_sentence": "Specific certification details (such as UL, CE, or PSE) are not provided in this demo sample.",
+                "path": [
+                  "faq",
+                  2,
+                  "answer"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "warnings": [
+        "SEO description 长度 164 超过 160 字符，需运营精简"
+      ],
+      "markets": [
+        "ID",
+        "TH",
+        "VN",
+        "MY",
+        "SA",
+        "AE"
+      ]
+    },
+    {
+      "platform": "site",
+      "module": "site",
+      "language": "ar",
+      "rtl": true,
+      "status": "review_blocked",
+      "error": "改写后仍有风险句，需人工复核",
+      "content": null,
+      "compliance": {
+        "rounds": [
+          {
+            "sentences": [
+              {
+                "id": "s0",
+                "path": [
+                  "hero",
+                  "headline"
+                ],
+                "start": 0,
+                "end": 59,
+                "text": "طاقة متنقلة موثوقة بقدرة 600 واط للاستخدام المنزلي والخارجي",
+                "signals": []
+              },
+              {
+                "id": "s1",
+                "path": [
+                  "hero",
+                  "subtitle"
+                ],
+                "start": 0,
+                "end": 119,
+                "text": "حل تخزين الطاقة المحمول المصمم لدعم الأجهزة الإلكترونية الصغيرة وتأمين الإمداد الكهربائي أثناء التنقل أو حالات الطوارئ.",
+                "signals": []
+              },
+              {
+                "id": "s2",
+                "path": [
+                  "hero",
+                  "cta"
+                ],
+                "start": 0,
+                "end": 30,
+                "text": "تواصل معنا للحصول على التفاصيل",
+                "signals": []
+              },
+              {
+                "id": "s3",
+                "path": [
+                  "audiences",
+                  0,
+                  "buyer"
+                ],
+                "start": 0,
+                "end": 25,
+                "text": "العائلات المستعدة للطوارئ",
+                "signals": []
+              },
+              {
+                "id": "s4",
+                "path": [
+                  "audiences",
+                  0,
+                  "pain"
+                ],
+                "start": 0,
+                "end": 95,
+                "text": "الحاجة إلى مصدر طاقة احتياطي موثوق أثناء انقطاع الكهرباء المفاجئ أو الظروف الجوية غير المستقرة.",
+                "signals": []
+              },
+              {
+                "id": "s5",
+                "path": [
+                  "audiences",
+                  1,
+                  "buyer"
+                ],
+                "start": 0,
+                "end": 25,
+                "text": "عشاق التخييم والسفر البري",
+                "signals": []
+              },
+              {
+                "id": "s6",
+                "path": [
+                  "audiences",
+                  1,
+                  "pain"
+                ],
+                "start": 0,
+                "end": 94,
+                "text": "صعوبة شحن الأجهزة الإلكترونية والضرورية في المناطق النائية بعيداً عن مقابس الكهرباء التقليدية.",
+                "signals": []
+              },
+              {
+                "id": "s7",
+                "path": [
+                  "audiences",
+                  2,
+                  "buyer"
+                ],
+                "start": 0,
+                "end": 40,
+                "text": "أصحاب المشاريع الصغيرة والباعة المتجولون",
+                "signals": []
+              },
+              {
+                "id": "s8",
+                "path": [
+                  "audiences",
+                  2,
+                  "pain"
+                ],
+                "start": 0,
+                "end": 98,
+                "text": "الحاجة إلى تشغيل معدات خفيفة في الأسواق الليلية أو المواقع الخارجية دون الاعتماد على مولدات صاخبة.",
+                "signals": []
+              },
+              {
+                "id": "s9",
+                "path": [
+                  "solution"
+                ],
+                "start": 0,
+                "end": 262,
+                "text": "توفر محطة الطاقة المحمولة هذه حلاً عملياً لتخزين الطاقة واستخدامها عند الحاجة، بفضل بطارية فوسفات الحديد الليثيوم الآمنة ومنافذ الشحن المتعددة التي تتيح تشغيل عدة أجهزة في وقت واحد، مع إمكانية إعادة الشحن عبر الألواح الشمسية لتعزيز الاستدامة في الأماكن المفتوحة.",
+                "signals": []
+              },
+              {
+                "id": "s10",
+                "path": [
+                  "capabilities",
+                  0,
+                  "text"
+                ],
+                "start": 0,
+                "end": 126,
+                "text": "مخرج تيار متردد بموجة جيبية نقية بقدرة 600 واط: يتيح تشغيل الأجهزة الإلكترونية الحساسة والأجهزة المنزلية الصغيرة بكفاءة وأمان.",
+                "signals": []
+              },
+              {
+                "id": "s11",
+                "path": [
+                  "capabilities",
+                  1,
+                  "text"
+                ],
+                "start": 0,
+                "end": 125,
+                "text": "بطارية فوسفات الحديد الليثيوم: تتميز بعمر دوري طويل مقارنة بتقنيات البطاريات الأخرى، مما يدعم الاستخدام المتكرر لفترات ممتدة.",
+                "signals": []
+              },
+              {
+                "id": "s12",
+                "path": [
+                  "capabilities",
+                  2,
+                  "text"
+                ],
+                "start": 0,
+                "end": 135,
+                "text": "دعم الشحن بالطاقة الشمسية: يتيح توصيل الألواح الشمسية الخارجية لإعادة شحن الوحدة، وهو خيار مثالي للأنشطة الخارجية وحالات انقطاع التيار.",
+                "signals": []
+              },
+              {
+                "id": "s13",
+                "path": [
+                  "capabilities",
+                  3,
+                  "text"
+                ],
+                "start": 0,
+                "end": 119,
+                "text": "واجهات متعددة (تيار متردد/USB-C/USB-A/شاحن سيارة): تسمح بتشغيل عدة أجهزة في آن واحد، مما يقلل الحاجة لحمل شواحن متعددة.",
+                "signals": []
+              },
+              {
+                "id": "s14",
+                "path": [
+                  "capabilities",
+                  4,
+                  "text"
+                ],
+                "start": 0,
+                "end": 57,
+                "text": "خارطة الطريق — مخطط له، غير متاح للعرض العملي أو التسليم.",
+                "signals": []
+              },
+              {
+                "id": "s15",
+                "path": [
+                  "capabilities",
+                  4,
+                  "text"
+                ],
+                "start": 57,
+                "end": 119,
+                "text": " دليل تعليمات متعدد اللغات ودعم ما بعد البيع عبر شركاء محليين.",
+                "signals": []
+              },
+              {
+                "id": "s16",
+                "path": [
+                  "evidence",
+                  0,
+                  "claim"
+                ],
+                "start": 0,
+                "end": 94,
+                "text": "تقنية الموجة الجيبية النقية تحمي الأجهزة الإلكترونية الدقيقة من التلف الناتج عن تقلبات الطاقة.",
+                "signals": []
+              },
+              {
+                "id": "s17",
+                "path": [
+                  "evidence",
+                  0,
+                  "source"
+                ],
+                "start": 0,
+                "end": 29,
+                "text": "مواصفات المنتج التقنية (PS-1)",
+                "signals": []
+              },
+              {
+                "id": "s18",
+                "path": [
+                  "evidence",
+                  1,
+                  "claim"
+                ],
+                "start": 0,
+                "end": 96,
+                "text": "كيمياء بطارية فوسفات الحديد الليثيوم توفر استقراراً حرارياً وعمراً افتراضياً أطول للدورات الشحن.",
+                "signals": []
+              },
+              {
+                "id": "s19",
+                "path": [
+                  "evidence",
+                  1,
+                  "source"
+                ],
+                "start": 0,
+                "end": 29,
+                "text": "مواصفات المنتج التقنية (PS-2)",
+                "signals": []
+              },
+              {
+                "id": "s20",
+                "path": [
+                  "compliance",
+                  "data_sovereignty"
+                ],
+                "start": 0,
+                "end": 68,
+                "text": "نموذج توضيحي خيالي؛ لا توجد معالجة لبيانات المستخدمين في هذا السياق.",
+                "signals": []
+              },
+              {
+                "id": "s21",
+                "path": [
+                  "compliance",
+                  "data_sovereignty"
+                ],
+                "start": 68,
+                "end": 250,
+                "text": " بالنسبة للمنتجات الفعلية، يجب التحقق من امتثال تخزين البيانات للقوانين المحلية في كل دولة على حدة، ولا يعتبر النشر في منطقة معينة امتثالاً تلقائياً لجميع لوائح السيادة الرقمية فيها.",
+                "signals": []
+              },
+              {
+                "id": "s22",
+                "path": [
+                  "compliance",
+                  "market_access"
+                ],
+                "start": 0,
+                "end": 65,
+                "text": "هذا المنتج إلكتروني استهلاكي ولا يخضع للمتطلبات التنظيمية الطبية.",
+                "signals": []
+              },
+              {
+                "id": "s23",
+                "path": [
+                  "compliance",
+                  "market_access"
+                ],
+                "start": 65,
+                "end": 232,
+                "text": " يجب على المستوردين التحقق من متطلبات الشهادات المحلية (مثل SASO في السعودية أو ECAS في الإمارات) بشكل مستقل، حيث أن هذا النموذج التوضيحي لا يتضمن شهادات مطابقة فعلية.",
+                "signals": []
+              },
+              {
+                "id": "s24",
+                "path": [
+                  "faq",
+                  0,
+                  "question"
+                ],
+                "start": 0,
+                "end": 21,
+                "text": "كيف يتم توزيع المنتج؟",
+                "signals": []
+              },
+              {
+                "id": "s25",
+                "path": [
+                  "faq",
+                  0,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 77,
+                "text": "يتم التوزيع عبر قنوات التجارة الإلكترونية التقليدية ومنصات التواصل الاجتماعي.",
+                "signals": []
+              },
+              {
+                "id": "s26",
+                "path": [
+                  "faq",
+                  0,
+                  "answer"
+                ],
+                "start": 77,
+                "end": 128,
+                "text": " هذا نموذج توضيحي ولا يمثل شبكة توزيع فعلية حالياً.",
+                "signals": []
+              },
+              {
+                "id": "s27",
+                "path": [
+                  "faq",
+                  1,
+                  "question"
+                ],
+                "start": 0,
+                "end": 31,
+                "text": "هل يجمع الجهاز بيانات المستخدم؟",
+                "signals": []
+              },
+              {
+                "id": "s28",
+                "path": [
+                  "faq",
+                  1,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 103,
+                "text": "الجهاز هو وحدة تخزين طاقة ولا يحتوي على ميزات اتصال ذكية تجمع البيانات الشخصية في هذا النموذج التوضيحي.",
+                "signals": []
+              },
+              {
+                "id": "s29",
+                "path": [
+                  "faq",
+                  2,
+                  "question"
+                ],
+                "start": 0,
+                "end": 31,
+                "text": "ما هي الشهادات المعتمدة للمنتج؟",
+                "signals": []
+              },
+              {
+                "id": "s30",
+                "path": [
+                  "faq",
+                  2,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 69,
+                "text": "هذا نموذج توضيحي خيالي ولا يحمل أي شهادات اعتماد حقيقية مثل UL أو CE.",
+                "signals": [
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s31",
+                "path": [
+                  "faq",
+                  2,
+                  "answer"
+                ],
+                "start": 69,
+                "end": 121,
+                "text": " يجب التحقق من الشهادات مع المورد الفعلي قبل الشراء.",
+                "signals": []
+              },
+              {
+                "id": "s32",
+                "path": [
+                  "faq",
+                  3,
+                  "question"
+                ],
+                "start": 0,
+                "end": 41,
+                "text": "هل تتوفر كتيبات التعليمات باللغة العربية؟",
+                "signals": []
+              },
+              {
+                "id": "s33",
+                "path": [
+                  "faq",
+                  3,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 94,
+                "text": "نعم، من المخطط توفير كتيبات تعليمات متعددة اللغات تشمل العربية كجزء من خدمات الدعم المستقبلية.",
+                "signals": []
+              },
+              {
+                "id": "s34",
+                "path": [
+                  "faq",
+                  4,
+                  "question"
+                ],
+                "start": 0,
+                "end": 40,
+                "text": "هل يتطلب الجهاز تدريباً خاصاً للاستخدام؟",
+                "signals": []
+              },
+              {
+                "id": "s35",
+                "path": [
+                  "faq",
+                  4,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 91,
+                "text": "لا، الجهاز مصمم ليكون سهل الاستخدام مع واجهة بسيطة، وتتوفر إرشادات أساسية في الدليل المرفق.",
+                "signals": []
+              },
+              {
+                "id": "s36",
+                "path": [
+                  "faq",
+                  5,
+                  "question"
+                ],
+                "start": 0,
+                "end": 32,
+                "text": "كيف يمكن الحصول على الدعم الفني؟",
+                "signals": []
+              },
+              {
+                "id": "s37",
+                "path": [
+                  "faq",
+                  5,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 117,
+                "text": "من المخطط تقديم الدعم الفني عبر شركاء محليين في المناطق المستهدفة، لكن هذه الخدمة لا تزال قيد التطوير في هذا النموذج.",
+                "signals": []
+              },
+              {
+                "id": "s38",
+                "path": [
+                  "faq",
+                  6,
+                  "question"
+                ],
+                "start": 0,
+                "end": 17,
+                "text": "ما هو سعر المنتج؟",
+                "signals": []
+              },
+              {
+                "id": "s39",
+                "path": [
+                  "faq",
+                  6,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 50,
+                "text": "لا تتوفر معلومات عن السعر في هذا النموذج التوضيحي.",
+                "signals": []
+              },
+              {
+                "id": "s40",
+                "path": [
+                  "faq",
+                  6,
+                  "answer"
+                ],
+                "start": 50,
+                "end": 111,
+                "text": " يرجى التواصل مع قنوات البيع الرسمية للحصول على أحدث الأسعار.",
+                "signals": []
+              },
+              {
+                "id": "s41",
+                "path": [
+                  "faq",
+                  7,
+                  "question"
+                ],
+                "start": 0,
+                "end": 24,
+                "text": "كم تستغرق عملية التوصيل؟",
+                "signals": []
+              },
+              {
+                "id": "s42",
+                "path": [
+                  "faq",
+                  7,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 55,
+                "text": "تعتمد أوقات التسليم على الموقع الجغرافي وسياسات البائع.",
+                "signals": []
+              },
+              {
+                "id": "s43",
+                "path": [
+                  "faq",
+                  7,
+                  "answer"
+                ],
+                "start": 55,
+                "end": 105,
+                "text": " هذا النموذج لا يقدم التزامات بتواريخ تسليم محددة.",
+                "signals": []
+              },
+              {
+                "id": "s44",
+                "path": [
+                  "cta",
+                  "label"
+                ],
+                "start": 0,
+                "end": 16,
+                "text": "طلب استشارة منتج",
+                "signals": []
+              },
+              {
+                "id": "s45",
+                "path": [
+                  "cta",
+                  "next_step"
+                ],
+                "start": 0,
+                "end": 90,
+                "text": "يرجى ملء نموذج الاتصال على موقعنا الإلكتروني ليتواصل معك فريق المبيعات بالمعلومات المتاحة.",
+                "signals": []
+              },
+              {
+                "id": "s46",
+                "path": [
+                  "seo",
+                  "title"
+                ],
+                "start": 0,
+                "end": 47,
+                "text": "محطة طاقة محمولة 600 واط | حل طاقة خارجي ومنزلي",
+                "signals": []
+              },
+              {
+                "id": "s47",
+                "path": [
+                  "seo",
+                  "description"
+                ],
+                "start": 0,
+                "end": 84,
+                "text": "اكتشف محطة الطاقة المحمولة بقدرة 600 واط مع بطارية فوسفات الحديد الليثيوم وشحن شمسي.",
+                "signals": []
+              },
+              {
+                "id": "s48",
+                "path": [
+                  "seo",
+                  "description"
+                ],
+                "start": 84,
+                "end": 111,
+                "text": " حل مثالي للتخييم والطوارئ.",
+                "signals": []
+              },
+              {
+                "id": "s49",
+                "path": [
+                  "seo",
+                  "keywords",
+                  0
+                ],
+                "start": 0,
+                "end": 16,
+                "text": "محطة طاقة محمولة",
+                "signals": []
+              },
+              {
+                "id": "s50",
+                "path": [
+                  "seo",
+                  "keywords",
+                  1
+                ],
+                "start": 0,
+                "end": 17,
+                "text": "طاقة شمسية متنقلة",
+                "signals": []
+              },
+              {
+                "id": "s51",
+                "path": [
+                  "seo",
+                  "keywords",
+                  2
+                ],
+                "start": 0,
+                "end": 21,
+                "text": "بطارية خارجية 600 واط",
+                "signals": []
+              },
+              {
+                "id": "s52",
+                "path": [
+                  "seo",
+                  "keywords",
+                  3
+                ],
+                "start": 0,
+                "end": 15,
+                "text": "تجهيزات التخييم",
+                "signals": []
+              },
+              {
+                "id": "s53",
+                "path": [
+                  "seo",
+                  "keywords",
+                  4
+                ],
+                "start": 0,
+                "end": 20,
+                "text": "طاقة احتياطية منزلية",
+                "signals": []
+              },
+              {
+                "id": "s54",
+                "path": [
+                  "notices",
+                  0
+                ],
+                "start": 0,
+                "end": 61,
+                "text": "نموذج توضيحي خيالي؛ لا يمثل عميلاً أو مبيعات أو شراكة حقيقية.",
+                "signals": []
+              }
+            ],
+            "checked_ids": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6",
+              "s7",
+              "s8",
+              "s9",
+              "s10",
+              "s11",
+              "s12",
+              "s13",
+              "s14",
+              "s15",
+              "s16",
+              "s17",
+              "s18",
+              "s19",
+              "s20",
+              "s21",
+              "s22",
+              "s23",
+              "s24",
+              "s25",
+              "s26",
+              "s27",
+              "s28",
+              "s29",
+              "s30",
+              "s31",
+              "s32",
+              "s33",
+              "s34",
+              "s35",
+              "s36",
+              "s37",
+              "s38",
+              "s39",
+              "s40",
+              "s41",
+              "s42",
+              "s43",
+              "s44",
+              "s45",
+              "s46",
+              "s47",
+              "s48",
+              "s49",
+              "s50",
+              "s51",
+              "s52",
+              "s53",
+              "s54"
+            ],
+            "findings": [
+              {
+                "id": "s16",
+                "verdict": "violation",
+                "reason": "句子声称纯正弦波技术“保护”电子设备免受损坏，属于未经证实的绝对安全保证，超出产品规格描述范围，存在误导风险。",
+                "replacement": "تقنية الموجة الجيبية النقية تساعد في تقليل مخاطر التلف الناتج عن تقلبات الطاقة وفقاً للمواصفات الفنية.",
+                "risk_sentence": "تقنية الموجة الجيبية النقية تحمي الأجهزة الإلكترونية الدقيقة من التلف الناتج عن تقلبات الطاقة.",
+                "path": [
+                  "evidence",
+                  0,
+                  "claim"
+                ]
+              },
+              {
+                "id": "s30",
+                "verdict": "benign",
+                "reason": "句子明确说明本样品不携带任何真实认证（如UL、CE），属于正确否定声明，不构成违规。",
+                "replacement": "",
+                "risk_sentence": "هذا نموذج توضيحي خيالي ولا يحمل أي شهادات اعتماد حقيقية مثل UL أو CE.",
+                "path": [
+                  "faq",
+                  2,
+                  "answer"
+                ]
+              }
+            ]
+          },
+          {
+            "sentences": [
+              {
+                "id": "s0",
+                "path": [
+                  "hero",
+                  "headline"
+                ],
+                "start": 0,
+                "end": 59,
+                "text": "طاقة متنقلة موثوقة بقدرة 600 واط للاستخدام المنزلي والخارجي",
+                "signals": []
+              },
+              {
+                "id": "s1",
+                "path": [
+                  "hero",
+                  "subtitle"
+                ],
+                "start": 0,
+                "end": 119,
+                "text": "حل تخزين الطاقة المحمول المصمم لدعم الأجهزة الإلكترونية الصغيرة وتأمين الإمداد الكهربائي أثناء التنقل أو حالات الطوارئ.",
+                "signals": []
+              },
+              {
+                "id": "s2",
+                "path": [
+                  "hero",
+                  "cta"
+                ],
+                "start": 0,
+                "end": 30,
+                "text": "تواصل معنا للحصول على التفاصيل",
+                "signals": []
+              },
+              {
+                "id": "s3",
+                "path": [
+                  "audiences",
+                  0,
+                  "buyer"
+                ],
+                "start": 0,
+                "end": 25,
+                "text": "العائلات المستعدة للطوارئ",
+                "signals": []
+              },
+              {
+                "id": "s4",
+                "path": [
+                  "audiences",
+                  0,
+                  "pain"
+                ],
+                "start": 0,
+                "end": 95,
+                "text": "الحاجة إلى مصدر طاقة احتياطي موثوق أثناء انقطاع الكهرباء المفاجئ أو الظروف الجوية غير المستقرة.",
+                "signals": []
+              },
+              {
+                "id": "s5",
+                "path": [
+                  "audiences",
+                  1,
+                  "buyer"
+                ],
+                "start": 0,
+                "end": 25,
+                "text": "عشاق التخييم والسفر البري",
+                "signals": []
+              },
+              {
+                "id": "s6",
+                "path": [
+                  "audiences",
+                  1,
+                  "pain"
+                ],
+                "start": 0,
+                "end": 94,
+                "text": "صعوبة شحن الأجهزة الإلكترونية والضرورية في المناطق النائية بعيداً عن مقابس الكهرباء التقليدية.",
+                "signals": []
+              },
+              {
+                "id": "s7",
+                "path": [
+                  "audiences",
+                  2,
+                  "buyer"
+                ],
+                "start": 0,
+                "end": 40,
+                "text": "أصحاب المشاريع الصغيرة والباعة المتجولون",
+                "signals": []
+              },
+              {
+                "id": "s8",
+                "path": [
+                  "audiences",
+                  2,
+                  "pain"
+                ],
+                "start": 0,
+                "end": 98,
+                "text": "الحاجة إلى تشغيل معدات خفيفة في الأسواق الليلية أو المواقع الخارجية دون الاعتماد على مولدات صاخبة.",
+                "signals": []
+              },
+              {
+                "id": "s9",
+                "path": [
+                  "solution"
+                ],
+                "start": 0,
+                "end": 262,
+                "text": "توفر محطة الطاقة المحمولة هذه حلاً عملياً لتخزين الطاقة واستخدامها عند الحاجة، بفضل بطارية فوسفات الحديد الليثيوم الآمنة ومنافذ الشحن المتعددة التي تتيح تشغيل عدة أجهزة في وقت واحد، مع إمكانية إعادة الشحن عبر الألواح الشمسية لتعزيز الاستدامة في الأماكن المفتوحة.",
+                "signals": []
+              },
+              {
+                "id": "s10",
+                "path": [
+                  "capabilities",
+                  0,
+                  "text"
+                ],
+                "start": 0,
+                "end": 126,
+                "text": "مخرج تيار متردد بموجة جيبية نقية بقدرة 600 واط: يتيح تشغيل الأجهزة الإلكترونية الحساسة والأجهزة المنزلية الصغيرة بكفاءة وأمان.",
+                "signals": []
+              },
+              {
+                "id": "s11",
+                "path": [
+                  "capabilities",
+                  1,
+                  "text"
+                ],
+                "start": 0,
+                "end": 125,
+                "text": "بطارية فوسفات الحديد الليثيوم: تتميز بعمر دوري طويل مقارنة بتقنيات البطاريات الأخرى، مما يدعم الاستخدام المتكرر لفترات ممتدة.",
+                "signals": []
+              },
+              {
+                "id": "s12",
+                "path": [
+                  "capabilities",
+                  2,
+                  "text"
+                ],
+                "start": 0,
+                "end": 135,
+                "text": "دعم الشحن بالطاقة الشمسية: يتيح توصيل الألواح الشمسية الخارجية لإعادة شحن الوحدة، وهو خيار مثالي للأنشطة الخارجية وحالات انقطاع التيار.",
+                "signals": []
+              },
+              {
+                "id": "s13",
+                "path": [
+                  "capabilities",
+                  3,
+                  "text"
+                ],
+                "start": 0,
+                "end": 119,
+                "text": "واجهات متعددة (تيار متردد/USB-C/USB-A/شاحن سيارة): تسمح بتشغيل عدة أجهزة في آن واحد، مما يقلل الحاجة لحمل شواحن متعددة.",
+                "signals": []
+              },
+              {
+                "id": "s14",
+                "path": [
+                  "capabilities",
+                  4,
+                  "text"
+                ],
+                "start": 0,
+                "end": 57,
+                "text": "خارطة الطريق — مخطط له، غير متاح للعرض العملي أو التسليم.",
+                "signals": []
+              },
+              {
+                "id": "s15",
+                "path": [
+                  "capabilities",
+                  4,
+                  "text"
+                ],
+                "start": 57,
+                "end": 119,
+                "text": " دليل تعليمات متعدد اللغات ودعم ما بعد البيع عبر شركاء محليين.",
+                "signals": []
+              },
+              {
+                "id": "s16",
+                "path": [
+                  "evidence",
+                  0,
+                  "claim"
+                ],
+                "start": 0,
+                "end": 102,
+                "text": "تقنية الموجة الجيبية النقية تساعد في تقليل مخاطر التلف الناتج عن تقلبات الطاقة وفقاً للمواصفات الفنية.",
+                "signals": []
+              },
+              {
+                "id": "s17",
+                "path": [
+                  "evidence",
+                  0,
+                  "source"
+                ],
+                "start": 0,
+                "end": 29,
+                "text": "مواصفات المنتج التقنية (PS-1)",
+                "signals": []
+              },
+              {
+                "id": "s18",
+                "path": [
+                  "evidence",
+                  1,
+                  "claim"
+                ],
+                "start": 0,
+                "end": 96,
+                "text": "كيمياء بطارية فوسفات الحديد الليثيوم توفر استقراراً حرارياً وعمراً افتراضياً أطول للدورات الشحن.",
+                "signals": []
+              },
+              {
+                "id": "s19",
+                "path": [
+                  "evidence",
+                  1,
+                  "source"
+                ],
+                "start": 0,
+                "end": 29,
+                "text": "مواصفات المنتج التقنية (PS-2)",
+                "signals": []
+              },
+              {
+                "id": "s20",
+                "path": [
+                  "compliance",
+                  "data_sovereignty"
+                ],
+                "start": 0,
+                "end": 68,
+                "text": "نموذج توضيحي خيالي؛ لا توجد معالجة لبيانات المستخدمين في هذا السياق.",
+                "signals": []
+              },
+              {
+                "id": "s21",
+                "path": [
+                  "compliance",
+                  "data_sovereignty"
+                ],
+                "start": 68,
+                "end": 250,
+                "text": " بالنسبة للمنتجات الفعلية، يجب التحقق من امتثال تخزين البيانات للقوانين المحلية في كل دولة على حدة، ولا يعتبر النشر في منطقة معينة امتثالاً تلقائياً لجميع لوائح السيادة الرقمية فيها.",
+                "signals": []
+              },
+              {
+                "id": "s22",
+                "path": [
+                  "compliance",
+                  "market_access"
+                ],
+                "start": 0,
+                "end": 65,
+                "text": "هذا المنتج إلكتروني استهلاكي ولا يخضع للمتطلبات التنظيمية الطبية.",
+                "signals": []
+              },
+              {
+                "id": "s23",
+                "path": [
+                  "compliance",
+                  "market_access"
+                ],
+                "start": 65,
+                "end": 232,
+                "text": " يجب على المستوردين التحقق من متطلبات الشهادات المحلية (مثل SASO في السعودية أو ECAS في الإمارات) بشكل مستقل، حيث أن هذا النموذج التوضيحي لا يتضمن شهادات مطابقة فعلية.",
+                "signals": []
+              },
+              {
+                "id": "s24",
+                "path": [
+                  "faq",
+                  0,
+                  "question"
+                ],
+                "start": 0,
+                "end": 21,
+                "text": "كيف يتم توزيع المنتج؟",
+                "signals": []
+              },
+              {
+                "id": "s25",
+                "path": [
+                  "faq",
+                  0,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 77,
+                "text": "يتم التوزيع عبر قنوات التجارة الإلكترونية التقليدية ومنصات التواصل الاجتماعي.",
+                "signals": []
+              },
+              {
+                "id": "s26",
+                "path": [
+                  "faq",
+                  0,
+                  "answer"
+                ],
+                "start": 77,
+                "end": 128,
+                "text": " هذا نموذج توضيحي ولا يمثل شبكة توزيع فعلية حالياً.",
+                "signals": []
+              },
+              {
+                "id": "s27",
+                "path": [
+                  "faq",
+                  1,
+                  "question"
+                ],
+                "start": 0,
+                "end": 31,
+                "text": "هل يجمع الجهاز بيانات المستخدم؟",
+                "signals": []
+              },
+              {
+                "id": "s28",
+                "path": [
+                  "faq",
+                  1,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 103,
+                "text": "الجهاز هو وحدة تخزين طاقة ولا يحتوي على ميزات اتصال ذكية تجمع البيانات الشخصية في هذا النموذج التوضيحي.",
+                "signals": []
+              },
+              {
+                "id": "s29",
+                "path": [
+                  "faq",
+                  2,
+                  "question"
+                ],
+                "start": 0,
+                "end": 31,
+                "text": "ما هي الشهادات المعتمدة للمنتج؟",
+                "signals": []
+              },
+              {
+                "id": "s30",
+                "path": [
+                  "faq",
+                  2,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 69,
+                "text": "هذا نموذج توضيحي خيالي ولا يحمل أي شهادات اعتماد حقيقية مثل UL أو CE.",
+                "signals": [
+                  {
+                    "term": "CE",
+                    "reason": "绝对化、疗效、安全或准入待核信号"
+                  }
+                ]
+              },
+              {
+                "id": "s31",
+                "path": [
+                  "faq",
+                  2,
+                  "answer"
+                ],
+                "start": 69,
+                "end": 121,
+                "text": " يجب التحقق من الشهادات مع المورد الفعلي قبل الشراء.",
+                "signals": []
+              },
+              {
+                "id": "s32",
+                "path": [
+                  "faq",
+                  3,
+                  "question"
+                ],
+                "start": 0,
+                "end": 41,
+                "text": "هل تتوفر كتيبات التعليمات باللغة العربية؟",
+                "signals": []
+              },
+              {
+                "id": "s33",
+                "path": [
+                  "faq",
+                  3,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 94,
+                "text": "نعم، من المخطط توفير كتيبات تعليمات متعددة اللغات تشمل العربية كجزء من خدمات الدعم المستقبلية.",
+                "signals": []
+              },
+              {
+                "id": "s34",
+                "path": [
+                  "faq",
+                  4,
+                  "question"
+                ],
+                "start": 0,
+                "end": 40,
+                "text": "هل يتطلب الجهاز تدريباً خاصاً للاستخدام؟",
+                "signals": []
+              },
+              {
+                "id": "s35",
+                "path": [
+                  "faq",
+                  4,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 91,
+                "text": "لا، الجهاز مصمم ليكون سهل الاستخدام مع واجهة بسيطة، وتتوفر إرشادات أساسية في الدليل المرفق.",
+                "signals": []
+              },
+              {
+                "id": "s36",
+                "path": [
+                  "faq",
+                  5,
+                  "question"
+                ],
+                "start": 0,
+                "end": 32,
+                "text": "كيف يمكن الحصول على الدعم الفني؟",
+                "signals": []
+              },
+              {
+                "id": "s37",
+                "path": [
+                  "faq",
+                  5,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 117,
+                "text": "من المخطط تقديم الدعم الفني عبر شركاء محليين في المناطق المستهدفة، لكن هذه الخدمة لا تزال قيد التطوير في هذا النموذج.",
+                "signals": []
+              },
+              {
+                "id": "s38",
+                "path": [
+                  "faq",
+                  6,
+                  "question"
+                ],
+                "start": 0,
+                "end": 17,
+                "text": "ما هو سعر المنتج؟",
+                "signals": []
+              },
+              {
+                "id": "s39",
+                "path": [
+                  "faq",
+                  6,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 50,
+                "text": "لا تتوفر معلومات عن السعر في هذا النموذج التوضيحي.",
+                "signals": []
+              },
+              {
+                "id": "s40",
+                "path": [
+                  "faq",
+                  6,
+                  "answer"
+                ],
+                "start": 50,
+                "end": 111,
+                "text": " يرجى التواصل مع قنوات البيع الرسمية للحصول على أحدث الأسعار.",
+                "signals": []
+              },
+              {
+                "id": "s41",
+                "path": [
+                  "faq",
+                  7,
+                  "question"
+                ],
+                "start": 0,
+                "end": 24,
+                "text": "كم تستغرق عملية التوصيل؟",
+                "signals": []
+              },
+              {
+                "id": "s42",
+                "path": [
+                  "faq",
+                  7,
+                  "answer"
+                ],
+                "start": 0,
+                "end": 55,
+                "text": "تعتمد أوقات التسليم على الموقع الجغرافي وسياسات البائع.",
+                "signals": []
+              },
+              {
+                "id": "s43",
+                "path": [
+                  "faq",
+                  7,
+                  "answer"
+                ],
+                "start": 55,
+                "end": 105,
+                "text": " هذا النموذج لا يقدم التزامات بتواريخ تسليم محددة.",
+                "signals": []
+              },
+              {
+                "id": "s44",
+                "path": [
+                  "cta",
+                  "label"
+                ],
+                "start": 0,
+                "end": 16,
+                "text": "طلب استشارة منتج",
+                "signals": []
+              },
+              {
+                "id": "s45",
+                "path": [
+                  "cta",
+                  "next_step"
+                ],
+                "start": 0,
+                "end": 90,
+                "text": "يرجى ملء نموذج الاتصال على موقعنا الإلكتروني ليتواصل معك فريق المبيعات بالمعلومات المتاحة.",
+                "signals": []
+              },
+              {
+                "id": "s46",
+                "path": [
+                  "seo",
+                  "title"
+                ],
+                "start": 0,
+                "end": 47,
+                "text": "محطة طاقة محمولة 600 واط | حل طاقة خارجي ومنزلي",
+                "signals": []
+              },
+              {
+                "id": "s47",
+                "path": [
+                  "seo",
+                  "description"
+                ],
+                "start": 0,
+                "end": 84,
+                "text": "اكتشف محطة الطاقة المحمولة بقدرة 600 واط مع بطارية فوسفات الحديد الليثيوم وشحن شمسي.",
+                "signals": []
+              },
+              {
+                "id": "s48",
+                "path": [
+                  "seo",
+                  "description"
+                ],
+                "start": 84,
+                "end": 111,
+                "text": " حل مثالي للتخييم والطوارئ.",
+                "signals": []
+              },
+              {
+                "id": "s49",
+                "path": [
+                  "seo",
+                  "keywords",
+                  0
+                ],
+                "start": 0,
+                "end": 16,
+                "text": "محطة طاقة محمولة",
+                "signals": []
+              },
+              {
+                "id": "s50",
+                "path": [
+                  "seo",
+                  "keywords",
+                  1
+                ],
+                "start": 0,
+                "end": 17,
+                "text": "طاقة شمسية متنقلة",
+                "signals": []
+              },
+              {
+                "id": "s51",
+                "path": [
+                  "seo",
+                  "keywords",
+                  2
+                ],
+                "start": 0,
+                "end": 21,
+                "text": "بطارية خارجية 600 واط",
+                "signals": []
+              },
+              {
+                "id": "s52",
+                "path": [
+                  "seo",
+                  "keywords",
+                  3
+                ],
+                "start": 0,
+                "end": 15,
+                "text": "تجهيزات التخييم",
+                "signals": []
+              },
+              {
+                "id": "s53",
+                "path": [
+                  "seo",
+                  "keywords",
+                  4
+                ],
+                "start": 0,
+                "end": 20,
+                "text": "طاقة احتياطية منزلية",
+                "signals": []
+              },
+              {
+                "id": "s54",
+                "path": [
+                  "notices",
+                  0
+                ],
+                "start": 0,
+                "end": 61,
+                "text": "نموذج توضيحي خيالي؛ لا يمثل عميلاً أو مبيعات أو شراكة حقيقية.",
+                "signals": []
+              }
+            ],
+            "checked_ids": [
+              "s0",
+              "s1",
+              "s2",
+              "s3",
+              "s4",
+              "s5",
+              "s6",
+              "s7",
+              "s8",
+              "s9",
+              "s10",
+              "s11",
+              "s12",
+              "s13",
+              "s14",
+              "s15",
+              "s16",
+              "s17",
+              "s18",
+              "s19",
+              "s20",
+              "s21",
+              "s22",
+              "s23",
+              "s24",
+              "s25",
+              "s26",
+              "s27",
+              "s28",
+              "s29",
+              "s30",
+              "s31",
+              "s32",
+              "s33",
+              "s34",
+              "s35",
+              "s36",
+              "s37",
+              "s38",
+              "s39",
+              "s40",
+              "s41",
+              "s42",
+              "s43",
+              "s44",
+              "s45",
+              "s46",
+              "s47",
+              "s48",
+              "s49",
+              "s50",
+              "s51",
+              "s52",
+              "s53",
+              "s54"
+            ],
+            "findings": [
+              {
+                "id": "s12",
+                "verdict": "violation",
+                "reason": "含有绝对化用语“مثالي”（理想），属于绝对化宣传，可能误导消费者。",
+                "replacement": "دعم الشحن بالطاقة الشمسية: يتيح توصيل الألواح الشمسية الخارجية لإعادة شحن الوحدة، وهو مناسب للأنشطة الخارجية وحالات انقطاع التيار.",
+                "risk_sentence": "دعم الشحن بالطاقة الشمسية: يتيح توصيل الألواح الشمسية الخارجية لإعادة شحن الوحدة، وهو خيار مثالي للأنشطة الخارجية وحالات انقطاع التيار.",
+                "path": [
+                  "capabilities",
+                  2,
+                  "text"
+                ]
+              },
+              {
+                "id": "s30",
+                "verdict": "benign",
+                "reason": "明确声明无真实认证，仅提及UL/CE作为反例，不构成虚假认证宣称。",
+                "replacement": "",
+                "risk_sentence": "هذا نموذج توضيحي خيالي ولا يحمل أي شهادات اعتماد حقيقية مثل UL أو CE.",
+                "path": [
+                  "faq",
+                  2,
+                  "answer"
+                ]
+              },
+              {
+                "id": "s48",
+                "verdict": "violation",
+                "reason": "含有绝对化用语“مثالي”（理想），属于绝对化宣传，可能误导消费者。",
+                "replacement": "حل مناسب للتخييم والطوارئ.",
+                "risk_sentence": " حل مثالي للتخييم والطوارئ.",
+                "path": [
+                  "seo",
+                  "description"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "warnings": [],
+      "markets": [
+        "ID",
+        "TH",
+        "VN",
+        "MY",
+        "SA",
+        "AE"
+      ]
+    }
+  ],
+  "counts": {
+    "delivered": 1,
+    "review_blocked": 1,
+    "failed": 0,
+    "skipped_deadline": 0
+  },
+  "usage": {
+    "total_calls": 5,
+    "total_tokens": 35939,
+    "prompt_tokens": 24265,
+    "completion_tokens": 11674,
+    "by_model": {
+      "qwen3.7-plus": {
+        "calls": 2,
+        "total_tokens": 7903,
+        "prompt_tokens": 4719,
+        "completion_tokens": 3184
+      },
+      "deepseek-v4-flash": {
+        "calls": 3,
+        "total_tokens": 28036,
+        "prompt_tokens": 19546,
+        "completion_tokens": 8490
+      }
+    },
+    "by_tag": {
+      "site__en": {
+        "calls": 2,
+        "total_tokens": 12803
+      },
+      "site__ar": {
+        "calls": 3,
+        "total_tokens": 23136
+      }
+    },
+    "cost_estimate_cny": 0.0438,
+    "wall_time_s": 184.7,
+    "price_note": "单价为可调估算值（元/百万token，混合输入输出），非实际成本，见 llm_client.PRICE_CNY_PER_MTOK"
+  },
+  "usage_records": [
+    {
+      "model": "qwen3.7-plus",
+      "prompt_tokens": 2328,
+      "completion_tokens": 1504,
+      "total_tokens": 3832,
+      "latency_s": 27.29,
+      "label": "site-generate",
+      "tag": "site__en"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "prompt_tokens": 6172,
+      "completion_tokens": 2799,
+      "total_tokens": 8971,
+      "latency_s": 29.05,
+      "label": "site-review",
+      "tag": "site__en"
+    },
+    {
+      "model": "qwen3.7-plus",
+      "prompt_tokens": 2391,
+      "completion_tokens": 1680,
+      "total_tokens": 4071,
+      "latency_s": 29.27,
+      "label": "site-generate",
+      "tag": "site__ar"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "prompt_tokens": 6684,
+      "completion_tokens": 2901,
+      "total_tokens": 9585,
+      "latency_s": 32.4,
+      "label": "site-review",
+      "tag": "site__ar"
+    },
+    {
+      "model": "deepseek-v4-flash",
+      "prompt_tokens": 6690,
+      "completion_tokens": 2790,
+      "total_tokens": 9480,
+      "latency_s": 30.53,
+      "label": "site-review",
+      "tag": "site__ar"
+    }
+  ],
+  "market_report": {
+    "ID": {
+      "name": "印度尼西亚",
+      "regulator": "BPOM / Kemenkes（卫生部）——待核",
+      "ad_rules_count": 2,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件在印尼的分类界定（风险等级）待核",
+        "AKD/AKL 注册路径与本地授权代表（nama dagang）要求待核",
+        "公立采购的 TKDN（本地含量）要求待核"
+      ],
+      "data_sovereignty_pending": [
+        "印尼 PDPA（个人数据保护法）对健康数据的处理与本地化要求待核",
+        "患者数据跨境传输限制与电子系统注册（PSE）要求待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "TH": {
+      "name": "泰国",
+      "regulator": "TFDA（泰国食品药品监督管理局）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件注册路径（通知/许可制分类）待核",
+        "广告预审许可（广告许可号）申请流程待核",
+        "本地进口商/经销商资质要求待核"
+      ],
+      "data_sovereignty_pending": [
+        "泰国 PDPA 对健康数据的合规要求待核",
+        "数据本地化义务（如适用）待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "VN": {
+      "name": "越南",
+      "regulator": "MOH（卫生部）/ 医疗器械管理部门——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械分类与注册申报路径（MD-13 等法令口径）待核",
+        "进口医疗器械本地授权代表要求待核",
+        "公立医院采购准入流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "越南《网络安全法》与个人数据法令（PDPD）的数据本地化/跨境要求待核",
+        "健康数据的存储与传输合规义务待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "MY": {
+      "name": "马来西亚",
+      "regulator": "MDA（医疗器械管理局）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件注册路径（CMDA 分类）待核",
+        "本地授权代表（ARR/ABR）要求待核",
+        "广告审批流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "马来西亚 PDPA 对健康数据的处理要求待核",
+        "公立部门数据驻留要求（如适用）待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "SA": {
+      "name": "沙特阿拉伯",
+      "regulator": "SFDA（沙特食品药品监督管理局）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件（含 AI 功能）分类界定与注册路径待核",
+        "授权代表（AR）与进口许可要求待核",
+        "促销材料 SFDA 事先批准流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "沙特 PDPL（个人数据保护法）及实施条例对健康数据的本地化/跨境要求待核",
+        "数据跨境传输评估（DTS）义务待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "AE": {
+      "name": "阿联酋",
+      "regulator": "MOHAP（卫生预防部）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械注册路径（MOHAP/TAWJEH 系统）待核",
+        "自由区 vs 大陆销售的许可差异待核",
+        "广告许可申请流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "阿联酋 PDPL 联邦法对健康数据的要求待核",
+        "健康数据跨境传输限制（含 DHA/DOH 特区要求）待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    }
+  },
+  "engine_notices": {
+    "deployment_clarification": "被营销的产品（301 儿科住院医师 AI 助手 + 智能胸卡）为院内全本地部署、患者数据不出院——这是产品卖点；本营销引擎自身会调用云端大模型生成文案，两件事不得混同。",
+    "privacy": "所有模型调用前经过本地敏感内容门禁：命中患者标识（姓名/床号/住院号/身份证/手机号等）即本地阻断，绝不外发云端脱敏。",
+    "legal": "本引擎输出的合规提示为工程化规则与模型辅助判断，不构成法律意见；准入与数据主权事项为待核清单。"
+  }
+}

@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;font-family:"Cascadia Mono","Consolas","Courier New",monospace;
+      color:#c9d1d9;font-size:15px;line-height:1.55;padding:0;direction:ltr}
+.bar{background:#161b22;border-bottom:1px solid #30363d;padding:8px 16px;
+      font-family:"Segoe UI",sans-serif;font-size:14px;color:#8b949e}
+.bar b{color:#e6edf3;font-weight:500}
+.wrap{padding:10px 16px}
+.ln{display:flex;white-space:pre;overflow:hidden}
+.no{color:#484f58;width:52px;flex:0 0 52px;text-align:right;margin-right:14px;user-select:none}
+.tx{white-space:pre;overflow:hidden;text-overflow:ellipsis}
+.ln.id .tx{color:#79c0ff}
+.ln.kw .tx{color:#ffd33d;font-weight:600}
+.ln.bad{background:rgba(248,81,73,.13)}
+.ln.bad .tx{color:#ffa198}
+.ln.good{background:rgba(63,185,80,.10)}
+.ln.good .tx{color:#7ee787}
+.ln.reason .tx{color:#d2a8ff}
+.ln.fix .tx{color:#56d364}
+.tag{font-family:"Segoe UI",sans-serif;position:absolute;right:22px;padding:2px 10px;
+      border-radius:4px;font-size:13px;font-weight:500}
+</style></head><body>
+<div class="bar"><b>delivery_site_medical.json</b> — compliance · rounds[0] · findings &nbsp;|&nbsp; 阿语（ar）同一文件内的双判</div>
+<div class="wrap">
+<div class="ln "><span class="no">1493</span><span class="tx">              "s77",</span></div><div class="ln "><span class="no">1494</span><span class="tx">              "s78",</span></div><div class="ln "><span class="no">1495</span><span class="tx">              "s79"</span></div><div class="ln "><span class="no">1496</span><span class="tx">            ],</span></div><div class="ln "><span class="no">1497</span><span class="tx">            "findings": [</span></div><div class="ln "><span class="no">1498</span><span class="tx">              {</span></div><div class="ln id"><span class="no">1499</span><span class="tx">                "id": "s9",</span></div><div class="ln bad"><span class="no">1500</span><span class="tx">                "verdict": "violation",</span></div><div class="ln kw"><span class="no">1501</span><span class="tx">                "reason": "使用“بنسبة 100%”绝对化表述声称患者数据隐私完全保持，无法保证绝对隐私，存在语义风险。",</span></div><div class="ln fix"><span class="no">1502</span><span class="tx">                "replacement": "مع الحفاظ على خصوصية بيانات المرضى عبر المعالجة المحلية داخل الشبكة المحلية.",</span></div><div class="ln kw"><span class="no">1503</span><span class="tx">                "risk_sentence": " يقوم النظام بفصل المتحدثين، وهيكلة نتائج المختبرات، وإدارة المتابعات عبر WeChat، مع الحفاظ على خصوصية بيانات المرضى بنسبة 100% داخل الشبكة المحلية.",</span></div><div class="ln "><span class="no">1504</span><span class="tx">                "path": [</span></div><div class="ln "><span class="no">1505</span><span class="tx">                  "solution"</span></div><div class="ln "><span class="no">1506</span><span class="tx">                ]</span></div><div class="ln "><span class="no">1507</span><span class="tx">              },</span></div><div class="ln "><span class="no">1508</span><span class="tx">              {</span></div><div class="ln id"><span class="no">1509</span><span class="tx">                "id": "s36",</span></div><div class="ln good"><span class="no">1510</span><span class="tx">                "verdict": "benign",</span></div><div class="ln kw"><span class="no">1511</span><span class="tx">                "reason": "描述事实（100%本地处理不上云），产品实际符合该描述，无绝对化安全承诺，不违规。",</span></div><div class="ln fix"><span class="no">1512</span><span class="tx">                "replacement": "",</span></div><div class="ln kw"><span class="no">1513</span><span class="tx">                "risk_sentence": "معالجة البيانات محلياً بنسبة 100% دون إرسال إلى السحابة",</span></div><div class="ln "><span class="no">1514</span><span class="tx">                "path": [</span></div><div class="ln "><span class="no">1515</span><span class="tx">                  "evidence",</span></div><div class="ln "><span class="no">1516</span><span class="tx">                  3,</span></div><div class="ln "><span class="no">1517</span><span class="tx">                  "claim"</span></div><div class="ln "><span class="no">1518</span><span class="tx">                ]</span></div><div class="ln "><span class="no">1519</span><span class="tx">              },</span></div><div class="ln "><span class="no">1520</span><span class="tx">              {</span></div><div class="ln id"><span class="no">1521</span><span class="tx">                "id": "s43",</span></div><div class="ln good"><span class="no">1522</span><span class="tx">                "verdict": "benign",</span></div><div class="ln reason"><span class="no">1523</span><span class="tx">                "reason": "明确否认认证宣称（FDA/CE/SFDA），仅提及名称作为示例，无违规。",</span></div><div class="ln fix"><span class="no">1524</span><span class="tx">                "replacement": "",</span></div><div class="ln "><span class="no">1525</span><span class="tx">                "risk_sentence": " لا توجد ادعاءات بشأن شهادات تنظيمية محددة (مثل FDA أو CE أو SFDA) في هذه المرحلة.",</span></div><div class="ln "><span class="no">1526</span><span class="tx">                "path": [</span></div>
+</div></body></html>

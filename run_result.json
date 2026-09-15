@@ -1,0 +1,1045 @@
+{
+  "meta": {
+    "engine": "copy-engine-v3.0",
+    "generated_at": "2026-09-09T18:12:29",
+    "compliance_level": "standard",
+    "models": {
+      "main": "qwen3.7-plus",
+      "fast": "qwen3.6-flash",
+      "review": "deepseek-v4-flash",
+      "image": "qwen-image-2.0"
+    },
+    "languages": [
+      "en",
+      "ar"
+    ],
+    "platforms": [
+      "tiktok",
+      "instagram"
+    ],
+    "target_markets": [
+      "ID",
+      "TH",
+      "VN",
+      "MY",
+      "SA",
+      "AE"
+    ],
+    "batch_deadline_s": 420.0,
+    "status_labels": {
+      "delivered": "可交付（通过合规与合同门禁）",
+      "review_blocked": "审核未通过（需人工处理后重跑）",
+      "failed": "生成失败",
+      "skipped_deadline": "超时未执行（整批 deadline 截止）"
+    },
+    "degraded_reason": null
+  },
+  "product": {
+    "schema_version": "3.0",
+    "product_name": "户外便携储能电源 600W（演示样例）",
+    "product_name_en": "Portable Power Station 600W (Demo Sample)",
+    "brand": "DEMO-BRAND（虚构，仅演示用）",
+    "form": "消费电子 / 户外储能：600W 输出、磷酸铁锂电池、支持太阳能板充电",
+    "deployment": "常规跨境电商：亚马逊 FBA + 独立站 + TikTok 社媒，无需本地部署",
+    "capabilities": [
+      {
+        "id": "PS-1",
+        "area": "product",
+        "name": "600W 纯正弦波交流输出",
+        "desc": "可驱动小型家电与电子设备，纯正弦波输出，适配敏感设备",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-2",
+        "area": "product",
+        "name": "磷酸铁锂电池，循环寿命长",
+        "desc": "磷酸铁锂电芯，标称循环次数高于普通三元锂（具体数字未在样例中提供，文案不得编造）",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-3",
+        "area": "product",
+        "name": "太阳能充电支持",
+        "desc": "支持外接太阳能板补电，适合户外与断电场景",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-4",
+        "area": "product",
+        "name": "多路接口（AC/USB-C/USB-A/车充）",
+        "desc": "多路输出接口，可同时为多台设备供电",
+        "status": "implemented",
+        "priority": null,
+        "evidence": "演示样例设定（虚构）"
+      },
+      {
+        "id": "PS-5",
+        "area": "service",
+        "name": "本地化说明书与售后",
+        "desc": "随附多语言说明书；售后由当地合作方承担（具体政策未在样例中提供）",
+        "status": "planned",
+        "priority": "P1",
+        "evidence": "演示样例设定（虚构）"
+      }
+    ],
+    "tech_stack": [
+      {
+        "layer": "品类",
+        "component": "消费电子 / 户外储能（跨境电商常规品类）"
+      },
+      {
+        "layer": "渠道",
+        "component": "亚马逊 + 独立站 + TikTok/Instagram 社媒"
+      }
+    ],
+    "red_lines": [
+      "不得宣称通过任何安全认证（样例未提供认证信息，文案不得出现 UL/CE/PSE 等认证宣称）",
+      "不得编造循环次数、容量保持率、充电时长等具体性能数字（样例未提供）",
+      "不得出现具体价格、折扣、限时促销承诺（定价未在样例中提供）",
+      "不得暗示真实客户、真实销量、真实评价或真实合作方"
+    ],
+    "selling_angles": [
+      "断电备用：应对东南亚部分区域的不稳定供电与台风季停电",
+      "户外场景：中东与东南亚露营、夜市摆摊、移动办公",
+      "太阳能补电：日照充足地区可日间补电，降低用电成本",
+      "一机多充：多路接口同时供电，减少携带多个充电宝"
+    ],
+    "target_buyers": [
+      "家庭应急备电用户",
+      "户外露营与自驾人群",
+      "夜市/地摊等移动用电小微商户"
+    ],
+    "target_markets": [
+      "ID",
+      "TH",
+      "VN",
+      "MY",
+      "SA",
+      "AE"
+    ],
+    "target_languages": [
+      "en",
+      "ar",
+      "id",
+      "th"
+    ],
+    "target_platforms": [
+      "tiktok",
+      "instagram",
+      "amazon",
+      "landing_page"
+    ],
+    "compliance_level": "standard",
+    "pricing_positioning": "中端价位（具体价格未提供，文案不得出现数字）",
+    "marketing_notes": "B2C 常规消费品，非医疗场景：不使用医疗合规等级，但仍受广告法约束（绝对化用语、虚假宣传、疗效/安全承诺）。所有能力以 capabilities 为准，status=planned 标注 roadmap；样例未提供认证、性能数字与价格，文案一律不得编造。本样例为虚构演示用途。"
+  },
+  "analysis": {
+    "selling_points": [
+      {
+        "point": "600W纯正弦波输出，安全驱动敏感电子设备",
+        "evidence": "PS-1"
+      },
+      {
+        "point": "采用磷酸铁锂电芯，具备更长循环寿命潜力",
+        "evidence": "PS-2"
+      },
+      {
+        "point": "支持太阳能板外接充电，适合日照充足地区补电",
+        "evidence": "PS-3"
+      },
+      {
+        "point": "配备AC/USB-C/USB-A/车充多路接口，可同时为多台设备供电",
+        "evidence": "PS-4"
+      }
+    ],
+    "audience": {
+      "who": "东南亚及中东地区的家庭应急用户、户外露营爱好者及移动小微商户",
+      "roles": [
+        "家庭采购决策者",
+        "户外装备消费者",
+        "夜市/地摊经营者"
+      ],
+      "pain_points": [
+        "应对台风季或电网不稳定导致的突发停电",
+        "户外活动缺乏稳定电源支持",
+        "移动经营场景下用电成本高且不便"
+      ]
+    },
+    "scenarios": [
+      {
+        "scene": "家庭应急备电",
+        "story": "台风季突发停电，迅速启动电源保障照明与通讯不断联。"
+      },
+      {
+        "scene": "户外露营娱乐",
+        "story": "野外露营时连接音响与投影，享受电力自由的惬意夜晚。"
+      },
+      {
+        "scene": "移动商户经营",
+        "story": "夜市摆摊无市电接入，轻松驱动照明与收款设备正常营业。"
+      }
+    ],
+    "keywords": [
+      "portable power station 600W",
+      "LiFePO4 battery generator",
+      "solar generator outdoor",
+      "pure sine wave inverter",
+      "emergency backup power",
+      "camping power supply",
+      "multi-output portable charger",
+      "off-grid power solution"
+    ]
+  },
+  "results": [
+    {
+      "combo_id": "tiktok__en",
+      "platform": "tiktok",
+      "language": "en",
+      "status": "delivered",
+      "error": null,
+      "stage_reached": "asset",
+      "markets": [
+        "GLOBAL"
+      ],
+      "copy": {
+        "titles": [
+          "停电不慌！600W纯净电，露营摆摊神器⚡️"
+        ],
+        "descriptions": [
+          "台风天突然黑屏？夜市摆摊没插座？😱\n\n别急，这台“移动电站”来救场！🔋\n\n✅ 600W纯正弦波：像家里插座一样稳，敏感电器放心插，不伤设备。\n✅ 磷酸铁锂电芯：寿命更长，耐用抗造，陪你更久。\n✅ 太阳能可接入：有太阳就能充，户外用电自由不是梦！☀️\n✅ 多口同时输出：AC/USB-C/车充全都有，手机、投影、小冰箱一起带飞。\n\n无论是家庭应急备电，还是周末露营搞气氛，甚至是路边摊创业，它都是你的靠谱搭档。💪\n\n👇想知道续航多久？评论区留言“求测评”，或戳主页链接看详情！",
+          "#MedTech #OutdoorLife #CampingGear #EmergencyPrep #东南亚生活"
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#MedTech",
+          "#OutdoorLife",
+          "#CampingGear",
+          "#EmergencyPrep",
+          "#东南亚生活"
+        ],
+        "extras": {},
+        "cta": "评论区留言“求测评”或戳主页链接",
+        "visual_suggestion": "竖屏9:16。前3秒画面：模拟台风天家中突然停电的黑暗瞬间，随即产品指示灯亮起，温暖灯光照亮房间（或切换至夜市摊位灯光亮起的对比）。随后快速剪辑展示连接投影仪露营、为手机和收款机同时充电的特写。字幕使用高对比度黄色/白色大字，强调“600W”、“纯净电”、“太阳能”。背景音使用轻快节奏感强的音乐。"
+      },
+      "localized": {
+        "titles": [
+          "Power Outage? 600W Pure Power for Camping & Markets ⚡️"
+        ],
+        "descriptions": [
+          "Sudden blackout during a typhoon? Night market stall with no sockets? 😱\n\nNo worries. This portable power station is here to save the day! 🔋\n\n✅ 600W Pure Sine Wave: Stable like home outlets. Safe for sensitive devices.\n✅ LiFePO4 Battery: Longer lifespan, durable, and built to last.\n✅ Solar Ready: Charge via sunlight. Enjoy freedom outdoors. ☀️\n✅ Multi-Port Output: AC, USB-C, and car ports. Run phones, projectors, and mini-fridges simultaneously.\n\nIdeal for home emergency backup, weekend camping vibes, or street vending startups. It is your reliable partner. 💪\n\n👇 Curious about battery life? Comment \"Review\" or click the link in bio for details!"
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#OutdoorLife",
+          "#CampingGear",
+          "#EmergencyPrep",
+          "#PortablePower",
+          "#BusinessTips"
+        ],
+        "extras": {},
+        "cta": "Comment 'Review' or check the link in bio",
+        "localization_notes": "Adapted to professional B2B English suitable for SEA/Middle East markets. Avoided American slang and sports metaphors. Used British spelling conventions (e.g., 'stabilise' if needed, though kept neutral). Ensured polite, non-accusatory tone ('No worries' instead of 'Don't panic'). Kept technical terms standard (LiFePO4, Pure Sine Wave). Adjusted hashtags to remove Chinese-specific tag '#东南亚生活' and replace with broader business/outdoor tags relevant to the target audience."
+      },
+      "compliance": {
+        "risk_level": "low",
+        "merged_risk_level": "low",
+        "signal_findings": [],
+        "signal_verdicts": [],
+        "confirmed_findings": [],
+        "unresolved_signals": [],
+        "benign_verdicts": [],
+        "llm_findings": [],
+        "safe_copy": {
+          "titles": [
+            "Power Outage? 600W Pure Power for Camping & Markets ⚡️"
+          ],
+          "descriptions": [
+            "Sudden blackout during a typhoon? Night market stall with no sockets? 😱\n\nNo worries. This portable power station is here to save the day! 🔋\n\n✅ 600W Pure Sine Wave: Stable like home outlets. Safe for sensitive devices.\n✅ LiFePO4 Battery: Longer lifespan, durable, and built to last.\n✅ Solar Ready: Charge via sunlight. Enjoy freedom outdoors. ☀️\n✅ Multi-Port Output: AC, USB-C, and car ports. Run phones, projectors, and mini-fridges simultaneously.\n\nIdeal for home emergency backup, weekend camping vibes, or street vending startups. It is your reliable partner. 💪\n\n👇 Curious about battery life? Comment \"Review\" or click the link in bio for details!"
+          ],
+          "bullets": [],
+          "hashtags": [
+            "#OutdoorLife",
+            "#CampingGear",
+            "#EmergencyPrep",
+            "#PortablePower",
+            "#BusinessTips"
+          ],
+          "extras": {}
+        },
+        "residual_findings": [],
+        "residual_benign": [],
+        "limit_findings": [],
+        "disclaimer": "AI-generated content is a draft and must be reviewed and approved by a physician before use. Product capabilities are limited to the scope of regulatory registration. Intended for healthcare professionals and institutional buyers."
+      },
+      "final_copy": {
+        "titles": [
+          "Power Outage? 600W Pure Power for Camping & Markets ⚡️"
+        ],
+        "descriptions": [
+          "Sudden blackout during a typhoon? Night market stall with no sockets? 😱\n\nNo worries. This portable power station is here to save the day! 🔋\n\n✅ 600W Pure Sine Wave: Stable like home outlets. Safe for sensitive devices.\n✅ LiFePO4 Battery: Longer lifespan, durable, and built to last.\n✅ Solar Ready: Charge via sunlight. Enjoy freedom outdoors. ☀️\n✅ Multi-Port Output: AC, USB-C, and car ports. Run phones, projectors, and mini-fridges simultaneously.\n\nIdeal for home emergency backup, weekend camping vibes, or street vending startups. It is your reliable partner. 💪\n\n👇 Curious about battery life? Comment \"Review\" or click the link in bio for details!\n\nAI-generated content is a draft and must be reviewed and approved by a physician before use. Product capabilities are limited to the scope of regulatory registration. Intended for healthcare professionals and institutional buyers."
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#OutdoorLife",
+          "#CampingGear",
+          "#EmergencyPrep",
+          "#PortablePower",
+          "#BusinessTips"
+        ],
+        "extras": {},
+        "cta": "Comment 'Review' or check the link in bio",
+        "disclaimer": "AI-generated content is a draft and must be reviewed and approved by a physician before use. Product capabilities are limited to the scope of regulatory registration. Intended for healthcare professionals and institutional buyers."
+      },
+      "asset_prompt": {
+        "prompt_en": "Cinematic vertical close-up of a sleek, futuristic portable power station glowing with soft cyan LED indicators. The device sits on a rugged outdoor camping table at twilight, surrounded by subtle mist and ambient warm lantern light. High-tech medical-grade aesthetic with smooth matte white casing and precise geometric lines. Shallow depth of field blurs the background forest. Professional studio lighting highlights the product's texture and premium build quality. 8k resolution, hyper-realistic, clean composition.",
+        "prompt_zh": "电影感竖屏特写，展示一款时尚的便携式储能电源，发出柔和的青色LED指示灯光芒。设备置于黄昏时分的户外露营桌上，周围环绕着薄雾和温暖的灯笼光。具有医疗科技感的质感，采用光滑的哑光白色外壳和精确的几何线条。浅景深模糊了背景的森林。专业的摄影棚灯光突出了产品的纹理和高端做工。8k分辨率，超写实，构图干净。",
+        "negative_prompt": "real patients, blood, pain, hospital logos, monitor screens, medical charts, numbers, text overlays, cluttered background, low resolution, blurry focus, distorted shapes, dark gloomy atmosphere without light sources",
+        "aspect_ratio": "9:16"
+      },
+      "asset_error": null,
+      "stats": {
+        "latency_s": 10.2,
+        "tokens": 3799,
+        "calls": 3
+      }
+    },
+    {
+      "combo_id": "tiktok__ar",
+      "platform": "tiktok",
+      "language": "ar",
+      "status": "delivered",
+      "error": null,
+      "stage_reached": "asset",
+      "markets": [
+        "SA",
+        "AE"
+      ],
+      "copy": {
+        "titles": [
+          "停电不慌！600W纯净电，露营摆摊神器⚡️"
+        ],
+        "descriptions": [
+          "台风天突然黑屏？夜市摆摊没插座？😱\n\n别急，这台“移动电站”来救场！🔋\n\n✅ 600W纯正弦波：像家里插座一样稳，敏感电器放心插，不伤设备。\n✅ 磷酸铁锂电芯：寿命更长，耐用抗造，陪你更久。\n✅ 太阳能可接入：有太阳就能充，户外用电自由不是梦！☀️\n✅ 多口同时输出：AC/USB-C/车充全都有，手机、投影、小冰箱一起带飞。\n\n无论是家庭应急备电，还是周末露营搞气氛，甚至是路边摊创业，它都是你的靠谱搭档。💪\n\n👇想知道续航多久？评论区留言“求测评”，或戳主页链接看详情！",
+          "#MedTech #OutdoorLife #CampingGear #EmergencyPrep #东南亚生活"
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#MedTech",
+          "#OutdoorLife",
+          "#CampingGear",
+          "#EmergencyPrep",
+          "#东南亚生活"
+        ],
+        "extras": {},
+        "cta": "评论区留言“求测评”或戳主页链接",
+        "visual_suggestion": "竖屏9:16。前3秒画面：模拟台风天家中突然停电的黑暗瞬间，随即产品指示灯亮起，温暖灯光照亮房间（或切换至夜市摊位灯光亮起的对比）。随后快速剪辑展示连接投影仪露营、为手机和收款机同时充电的特写。字幕使用高对比度黄色/白色大字，强调“600W”、“纯净电”、“太阳能”。背景音使用轻快节奏感强的音乐。"
+      },
+      "localized": {
+        "titles": [
+          "انقطاع الكهرباء؟ لا تقلق! طاقة نظيفة 600 واط للتخييم"
+        ],
+        "descriptions": [
+          "هل انقطعت الكهرباء فجأة بسبب العاصفة؟ أو تفتقد مقبساً في سوق الليل؟ 😱\n\nلا داعي للقلق، هذه \"المحطة الكهربائية المتنقلة\" جاهزة للإنقاذ! 🔋\n\n✅ موجة جيبية نقية بقدرة 600 واط: استقرار كمنزلك، آمن على الأجهزة الحساسة.\n✅ خلايا بطارية فوسفات حديد الليثيوم: عمر أطول، متانة عالية، تصاحبك طويلاً.\n✅ دعم الطاقة الشمسية: اشحنها بأشعة الشمس، وحقق حرية الطاقة في الهواء الطلق! ☀️\n✅ مخرجات متعددة في آن واحد: AC/USB-C/شاحن سيارة، شغل هاتفك، جهاز العرض، والثلاجة الصغيرة معاً.\n\nسواء للطوارئ المنزلية، تخييم نهاية الأسبوع، أو بدء مشروع كشك شارع، هو شريكك الموثوق. 💪\n\n👇想知道续航多久？评论区留言“求测评”，或戳主页链接看详情！",
+          "#MedTech #OutdoorLife #CampingGear #EmergencyPrep #حيوات_الخليج"
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#MedTech",
+          "#OutdoorLife",
+          "#CampingGear",
+          "#EmergencyPrep",
+          "#حيوات_الخليج"
+        ],
+        "extras": {},
+        "cta": "اكتب \"تقييم\" في التعليقات أو اضغط الرابط في البروفايل",
+        "localization_notes": "使用现代标准阿拉伯语（MSA）正式体，适配GCC市场。严格遵循RTL排版，标点符号方向正确。避免宗教敏感词，语气年轻化但保持专业度。将中文占位符描述中的最后一句翻译为符合平台互动的阿拉伯语口语化表达。标签#东南亚生活替换为更具本地相关性的#حيوات_الخليج（海湾生活）。数字和拉丁品牌名嵌入时注意LTR/RTR混合显示问题。"
+      },
+      "compliance": {
+        "risk_level": "low",
+        "merged_risk_level": "low",
+        "signal_findings": [],
+        "signal_verdicts": [],
+        "confirmed_findings": [],
+        "unresolved_signals": [],
+        "benign_verdicts": [],
+        "llm_findings": [],
+        "safe_copy": {
+          "titles": [
+            "انقطاع الكهرباء؟ لا تقلق! طاقة نظيفة 600 واط للتخييم"
+          ],
+          "descriptions": [
+            "هل انقطعت الكهرباء فجأة بسبب العاصفة؟ أو تفتقد مقبساً في سوق الليل؟ 😱\n\nلا داعي للقلق، هذه \"المحطة الكهربائية المتنقلة\" جاهزة للإنقاذ! 🔋\n\n✅ موجة جيبية نقية بقدرة 600 واط: استقرار كمنزلك، آمن على الأجهزة الحساسة.\n✅ خلايا بطارية فوسفات حديد الليثيوم: عمر أطول، متانة عالية، تصاحبك طويلاً.\n✅ دعم الطاقة الشمسية: اشحنها بأشعة الشمس، وحقق حرية الطاقة في الهواء الطلق! ☀️\n✅ مخرجات متعددة في آن واحد: AC/USB-C/شاحن سيارة، شغل هاتفك، جهاز العرض، والثلاجة الصغيرة معاً.\n\nسواء للطوارئ المنزلية، تخييم نهاية الأسبوع، أو بدء مشروع كشك شارع، هو شريكك الموثوق. 💪\n\n👇想知道续航多久？评论区留言“求测评”，或戳主页链接看详情！"
+          ],
+          "bullets": [],
+          "hashtags": [
+            "#MedTech",
+            "#OutdoorLife",
+            "#CampingGear",
+            "#EmergencyPrep",
+            "#حيوات_الخليج"
+          ],
+          "extras": {}
+        },
+        "residual_findings": [],
+        "residual_benign": [],
+        "limit_findings": [],
+        "disclaimer": "المحتوى الذي ينشئه الذكاء الاصطناعي مسودة ويتطلب مراجعة الطبيب واعتماده قبل الاستخدام. قدرات المنتج محدودة بنطاق التسجيل التنظيمي. موجه للمهنيين الصحيين والمشترين المؤسسيين."
+      },
+      "final_copy": {
+        "titles": [
+          "انقطاع الكهرباء؟ لا تقلق! طاقة نظيفة 600 واط للتخييم"
+        ],
+        "descriptions": [
+          "هل انقطعت الكهرباء فجأة بسبب العاصفة؟ أو تفتقد مقبساً في سوق الليل؟ 😱\n\nلا داعي للقلق، هذه \"المحطة الكهربائية المتنقلة\" جاهزة للإنقاذ! 🔋\n\n✅ موجة جيبية نقية بقدرة 600 واط: استقرار كمنزلك، آمن على الأجهزة الحساسة.\n✅ خلايا بطارية فوسفات حديد الليثيوم: عمر أطول، متانة عالية، تصاحبك طويلاً.\n✅ دعم الطاقة الشمسية: اشحنها بأشعة الشمس، وحقق حرية الطاقة في الهواء الطلق! ☀️\n✅ مخرجات متعددة في آن واحد: AC/USB-C/شاحن سيارة، شغل هاتفك، جهاز العرض، والثلاجة الصغيرة معاً.\n\nسواء للطوارئ المنزلية، تخييم نهاية الأسبوع، أو بدء مشروع كشك شارع، هو شريكك الموثوق. 💪\n\n👇想知道续航多久？评论区留言“求测评”，或戳主页链接看详情！\n\nالمحتوى الذي ينشئه الذكاء الاصطناعي مسودة ويتطلب مراجعة الطبيب واعتماده قبل الاستخدام. قدرات المنتج محدودة بنطاق التسجيل التنظيمي. موجه للمهنيين الصحيين والمشترين المؤسسيين."
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#MedTech",
+          "#OutdoorLife",
+          "#CampingGear",
+          "#EmergencyPrep",
+          "#حيوات_الخليج"
+        ],
+        "extras": {},
+        "cta": "اكتب \"تقييم\" في التعليقات أو اضغط الرابط في البروفايل",
+        "disclaimer": "المحتوى الذي ينشئه الذكاء الاصطناعي مسودة ويتطلب مراجعة الطبيب واعتماده قبل الاستخدام. قدرات المنتج محدودة بنطاق التسجيل التنظيمي. موجه للمهنيين الصحيين والمشترين المؤسسيين."
+      },
+      "asset_prompt": {
+        "prompt_en": "Cinematic close-up of a sleek, futuristic portable power station with glowing blue LED indicators and pure sine wave output ports. The device sits on a rugged outdoor camping table surrounded by subtle greenery and soft sunlight, implying off-grid freedom. High-tech medical-grade aesthetic with clean white and metallic surfaces, emphasizing reliability and safety. Shallow depth of field, bokeh background, 8k resolution, hyper-realistic, bright natural lighting, vertical composition.",
+        "prompt_zh": "电影感特写镜头，展示一款时尚、充满未来感的便携式电源站，带有发光的蓝色LED指示灯和纯正弦波输出口。设备放置在户外露营桌上，周围有柔和的绿植和阳光，暗示离网自由。具有医疗级科技质感，采用干净的白色和金属表面，强调可靠性和安全性。浅景深，背景虚化，8k分辨率，超写实，明亮的自然光，竖屏构图。",
+        "negative_prompt": "real patient faces, blood, gore, pain, hospital logos, recognizable brand names, messy cables, dark gloomy atmosphere, low resolution, blurry, distorted text, medical monitors with numbers, clinical setting, sterile white room only.",
+        "aspect_ratio": "9:16"
+      },
+      "asset_error": null,
+      "stats": {
+        "latency_s": 17.2,
+        "tokens": 4801,
+        "calls": 3
+      }
+    },
+    {
+      "combo_id": "instagram__en",
+      "platform": "instagram",
+      "language": "en",
+      "status": "delivered",
+      "error": null,
+      "stage_reached": "asset",
+      "markets": [
+        "GLOBAL"
+      ],
+      "copy": {
+        "titles": [
+          "无惧停电：600W纯净电力守护"
+        ],
+        "descriptions": [
+          "台风季突发断电，关键设备如何持续运转？🌪️\n\n💊 600W纯正弦波输出，稳定驱动敏感电子仪器，数据更安全。\n🏥 磷酸铁锂电芯加持，长循环寿命潜力，降低长期持有成本。\n🩺 AC/USB-C多路接口并发，同时满足照明、通讯与办公需求。\n☀️ 支持太阳能板外接，日照充足地区可实现绿色补电，离网更自由。\n\n*本产品为辅助供电设备，不替代专业医疗急救电源。具体配置请咨询专业人士。\n\n👇 Link in bio / DM 获取详细规格书"
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#PortablePower",
+          "#EmergencyPrep",
+          "#LiFePO4",
+          "#SolarGenerator",
+          "#OffGridLife",
+          "#HospitalIT",
+          "#MedDeviceSEA",
+          "#PowerBackup"
+        ],
+        "extras": {},
+        "cta": "Link in bio / DM 获取详细规格书",
+        "visual_suggestion": "1:1 或 4:5 卡片；蓝白医疗科技配色；3-5 张轮播（痛点→方案→架构→CTA）"
+      },
+      "localized": {
+        "titles": [
+          "Reliable Power Amidst Outages"
+        ],
+        "descriptions": [
+          "How to keep critical devices running during sudden typhoon-induced blackouts? 🌪️\n\n💊 600W pure sine wave output ensures stable operation for sensitive electronic instruments, safeguarding data integrity.\n🏥 Built with LiFePO4 cells for extended cycle life, reducing long-term total cost of ownership.\n🩺 Multiple AC and USB-C ports allow simultaneous use for lighting, communication, and office tasks.\n☀️ Compatible with external solar panels, enabling green energy supplementation in sunny regions for greater off-grid freedom.\n\n*This unit is an auxiliary power source and does not replace professional medical emergency power systems. Please consult a specialist for specific configurations.\n\n👇 Link in bio / DM for detailed specifications"
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#PortablePower",
+          "#EmergencyPrep",
+          "#LiFePO4",
+          "#SolarGenerator",
+          "#OffGridLife",
+          "#HospitalIT",
+          "#MedDeviceSEA",
+          "#PowerBackup"
+        ],
+        "extras": {},
+        "cta": "Link in bio / DM for detailed specifications",
+        "localization_notes": "采用国际商务英语，避免美式俚语。使用英式拼写（如 'programme' 若出现，此处未涉及但保持风格一致）。将中文隐喻转化为直白的功能描述，确保东南亚/中东B2B读者理解清晰。严格遵循无第二人称指责原则，语气专业克制。"
+      },
+      "compliance": {
+        "risk_level": "medium",
+        "merged_risk_level": "medium",
+        "signal_findings": [],
+        "signal_verdicts": [],
+        "confirmed_findings": [],
+        "unresolved_signals": [],
+        "benign_verdicts": [],
+        "llm_findings": [
+          {
+            "term": "医疗emoji (💊 🏥 🩺) in description",
+            "severity": "medium",
+            "suggestion": "Replace with neutral emojis (e.g., ⚡ 🔌 🔄) to avoid implying medical use"
+          },
+          {
+            "term": "hashtag #HospitalIT and #MedDeviceSEA",
+            "severity": "medium",
+            "suggestion": "Replace with non-medical tags like #TechInfrastructure and #PowerBackupSEA to avoid medical device connotation"
+          }
+        ],
+        "safe_copy": {
+          "titles": [
+            "Reliable Power Amidst Outages"
+          ],
+          "descriptions": [
+            "How to keep critical devices running during sudden typhoon-induced blackouts? 🌪️\n\n⚡ 600W pure sine wave output ensures stable operation for sensitive electronic instruments, safeguarding data integrity.\n🔌 Built with LiFePO4 cells for extended cycle life, reducing long-term total cost of ownership.\n🔄 Multiple AC and USB-C ports allow simultaneous use for lighting, communication, and office tasks.\n☀️ Compatible with external solar panels, enabling green energy supplementation in sunny regions for greater off-grid freedom.\n\n*This unit is an auxiliary power source and does not replace professional medical emergency power systems. Please consult a specialist for specific configurations.\n\n👇 Link in bio / DM for detailed specifications"
+          ],
+          "bullets": [],
+          "hashtags": [
+            "#PortablePower",
+            "#EmergencyPrep",
+            "#LiFePO4",
+            "#SolarGenerator",
+            "#OffGridLife",
+            "#TechInfrastructure",
+            "#PowerBackupSEA",
+            "#PowerBackup"
+          ],
+          "extras": {}
+        },
+        "residual_findings": [],
+        "residual_benign": [],
+        "limit_findings": [
+          {
+            "field": "descriptions[0]",
+            "issue": "长度 738 char 超上限 700 char",
+            "count": 738,
+            "max": 700,
+            "unit": "char"
+          }
+        ],
+        "disclaimer": "AI-generated content is a draft and must be reviewed and approved by a physician before use. Product capabilities are limited to the scope of regulatory registration. Intended for healthcare professionals and institutional buyers."
+      },
+      "final_copy": {
+        "titles": [
+          "Reliable Power Amidst Outages"
+        ],
+        "descriptions": [
+          "How to keep critical devices running during sudden typhoon-induced blackouts? 🌪️\n\n⚡ 600W pure sine wave output ensures stable operation for sensitive electronic instruments, safeguarding data integrity.\n🔌 Built with LiFePO4 cells for extended cycle life, reducing long-term total cost of ownership.\n🔄 Multiple AC and USB-C ports allow simultaneous use for lighting, communication, and office tasks.\n☀️ Compatible with external solar panels, enabling green energy supplementation in sunny regions for greater off-grid freedom.\n\n*This unit is an auxiliary power source and does not replace professional medical emergency power systems. Please consult a specialist for specific configurations.\n\n👇 Link in bio / DM for detailed specifications\n\nAI-generated content is a draft and must be reviewed and approved by a physician before use. Product capabilities are limited to the scope of regulatory registration. Intended for healthcare professionals and institutional buyers."
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#PortablePower",
+          "#EmergencyPrep",
+          "#LiFePO4",
+          "#SolarGenerator",
+          "#OffGridLife",
+          "#TechInfrastructure",
+          "#PowerBackupSEA",
+          "#PowerBackup"
+        ],
+        "extras": {},
+        "cta": "Link in bio / DM for detailed specifications",
+        "disclaimer": "AI-generated content is a draft and must be reviewed and approved by a physician before use. Product capabilities are limited to the scope of regulatory registration. Intended for healthcare professionals and institutional buyers."
+      },
+      "asset_prompt": {
+        "prompt_en": "High-tech medical portable power station, sleek white and blue minimalist design, floating in a clean abstract digital space. Soft cyan LED glow indicating stable pure sine wave output. LiFePO4 battery cells visible through transparent casing. Surrounding elements: subtle solar panel icon, USB-C port detail, storm clouds fading into calm blue sky. Professional product photography, 8k resolution, cinematic lighting, sharp focus, medical technology aesthetic, no text, no logos.",
+        "prompt_zh": "高科技医疗级便携式电源，简约的白色与蓝色设计，悬浮在干净的抽象数字空间中。柔和的青色LED指示灯显示稳定的纯正弦波输出。透过透明外壳可见LiFePO4电池组。周围元素：微弱的太阳能板图标、USB-C接口细节、风暴云层逐渐消散为平静的蓝天。专业产品摄影，8k分辨率，电影级布光，焦点清晰，医疗科技美学，无文字，无Logo。",
+        "negative_prompt": "real patients, blood, gore, pain, hospital logos, recognizable brand names, monitor screens with numbers, medical records, cluttered background, low resolution, blurry, dark gloomy atmosphere, messy cables, realistic human faces",
+        "aspect_ratio": "4:5"
+      },
+      "asset_error": null,
+      "stats": {
+        "latency_s": 16.8,
+        "tokens": 4198,
+        "calls": 3
+      },
+      "length_warnings": [
+        "descriptions[0] 长度 738 char 超上限 700 char（超出建议值，发布前请人工确认）"
+      ]
+    },
+    {
+      "combo_id": "instagram__ar",
+      "platform": "instagram",
+      "language": "ar",
+      "status": "review_blocked",
+      "error": "综合风险等级 high",
+      "stage_reached": "delivery_gate",
+      "markets": [
+        "SA",
+        "AE"
+      ],
+      "copy": {
+        "titles": [
+          "无惧停电：600W纯净电力守护"
+        ],
+        "descriptions": [
+          "台风季突发断电，关键设备如何持续运转？🌪️\n\n💊 600W纯正弦波输出，稳定驱动敏感电子仪器，数据更安全。\n🏥 磷酸铁锂电芯加持，长循环寿命潜力，降低长期持有成本。\n🩺 AC/USB-C多路接口并发，同时满足照明、通讯与办公需求。\n☀️ 支持太阳能板外接，日照充足地区可实现绿色补电，离网更自由。\n\n*本产品为辅助供电设备，不替代专业医疗急救电源。具体配置请咨询专业人士。\n\n👇 Link in bio / DM 获取详细规格书"
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#PortablePower",
+          "#EmergencyPrep",
+          "#LiFePO4",
+          "#SolarGenerator",
+          "#OffGridLife",
+          "#HospitalIT",
+          "#MedDeviceSEA",
+          "#PowerBackup"
+        ],
+        "extras": {},
+        "cta": "Link in bio / DM 获取详细规格书",
+        "visual_suggestion": "1:1 或 4:5 卡片；蓝白医疗科技配色；3-5 张轮播（痛点→方案→架构→CTA）"
+      },
+      "localized": {
+        "titles": [
+          "طاقة نظيفة 600 واط لحمايتك من انقطاع الكهرباء"
+        ],
+        "descriptions": [
+          "كيف تضمن استمرار عمل الأجهزة الحيوية أثناء انقطاع التيار المفاجئ؟ 🌪️\n\n💊 خرج موجة جيبية نقية بقدرة 600 واط، يضمن تشغيلاً مستقراً للأجهزة الإلكترونية الحساسة وحماية بياناتك.\n🏥 خلايا بطارية LiFePO4 لعمر افتراضي طويل ودورات شحن متكررة، مما يقلل التكلفة الإجمالية للملكية على المدى الطويل.\n🩺 منافذ متعددة (AC/USB-C) للعمل المتزامن، لتلبية احتياجات الإضاءة والاتصالات والمكتب في آن واحد.\n☀️ يدعم الألواح الشمسية الخارجية، مما يتيح الشحن الأخضر والاستقلالية عن الشبكة في المناطق المشمسة.\n\n*هذا الجهاز مخصص للطاقة المساعدة ولا يغني عن مصادر الطوارئ الطبية المتخصصة. يرجى استشارة المختصين للتفاصيل.\n\n👇 الرابط في البايو أو تواصل عبر الرسائل الخاصة للحصول على كتيب المواصفات."
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#PortablePower",
+          "#EmergencyPrep",
+          "#LiFePO4",
+          "#SolarGenerator",
+          "#OffGridLife",
+          "#HospitalIT",
+          "#MedDeviceSEA",
+          "#PowerBackup",
+          "#الطاقة_النظيفة",
+          "#الاستعداد_للطوارئ"
+        ],
+        "extras": {},
+        "cta": "الرابط في البايو أو تواصل عبر الرسائل الخاصة للحصول على كتيب المواصفات",
+        "localization_notes": "اعتمدت العربية الفصحى المعاصرة (MSA) الرسمية لتناسب سياق B2B الطبي والتقني في الخليج. التزمت باتجاه النص RTL وضبط علامات الترقيم مع الحفاظ على المصطلحات التقنية بالإنجليزية حيث هو شائع. تجنب استخدام رموز تعبيرية قد تفسر بشكل خاطئ ثقافياً، واستخدم نبرة مهنية تحترم الحساسيات الدينية والاجتماعية دون ذكر الدين صراحةً. تم توحييد الأرقام والرموز لضمان الوضوح البصري."
+      },
+      "compliance": {
+        "risk_level": "low",
+        "merged_risk_level": "high",
+        "signal_findings": [],
+        "signal_verdicts": [],
+        "confirmed_findings": [],
+        "unresolved_signals": [],
+        "benign_verdicts": [],
+        "llm_findings": [
+          {
+            "term": "使用医疗图标（💊🏥🩺）",
+            "severity": "medium",
+            "suggestion": "移除或替换为中性图标（如⚡🔌💡），避免暗示医疗器械"
+          },
+          {
+            "term": "Hashtags: #HospitalIT #MedDeviceSEA",
+            "severity": "medium",
+            "suggestion": "移除这两个标签，它们暗示医疗用途，产品为通用电源"
+          },
+          {
+            "term": "标题超长（45字符 > 40限制）",
+            "severity": "high",
+            "suggestion": "缩短标题至40字符以内，例如'طاقة نظيفة 600 واط ضد انقطاع الكهرباء'（40字符）"
+          }
+        ],
+        "safe_copy": {
+          "titles": [
+            "طاقة نظيفة 600 واط ضد انقطاع الكهرباء"
+          ],
+          "descriptions": [
+            "كيف تضمن استمرار عمل الأجهزة الحيوية أثناء انقطاع التيار المفاجئ؟ 🌪️\n\n⚡ خرج موجة جيبية نقية بقدرة 600 واط، يضمن تشغيلاً مستقراً للأجهزة الإلكترونية الحساسة وحماية بياناتك.\n🔌 خلايا بطارية LiFePO4 لعمر افتراضي طويل ودورات شحن متكررة، مما يقلل التكلفة الإجمالية للملكية على المدى الطويل.\n💡 منافذ متعددة (AC/USB-C) للعمل المتزامن، لتلبية احتياجات الإضاءة والاتصالات والمكتب في آن واحد.\n☀️ يدعم الألواح الشمسية الخارجية، مما يتيح الشحن الأخضر والاستقلالية عن الشبكة في المناطق المشمسة.\n\n*هذا الجهاز مخصص للطاقة المساعدة ولا يغني عن مصادر الطوارئ الطبية المتخصصة. يرجى استشارة المختصين للتفاصيل.\n\n👇 الرابط في البايو أو تواصل عبر الرسائل الخاصة للحصول على كتيب المواصفات."
+          ],
+          "bullets": [],
+          "hashtags": [
+            "#PortablePower",
+            "#EmergencyPrep",
+            "#LiFePO4",
+            "#SolarGenerator",
+            "#OffGridLife",
+            "#PowerBackup",
+            "#الطاقة_النظيفة",
+            "#الاستعداد_للطوارئ"
+          ],
+          "extras": {}
+        },
+        "residual_findings": [],
+        "residual_benign": [],
+        "limit_findings": []
+      },
+      "final_copy": null,
+      "asset_prompt": null,
+      "asset_error": null,
+      "stats": {
+        "latency_s": 45.8,
+        "tokens": 6869,
+        "calls": 2
+      }
+    }
+  ],
+  "usage": {
+    "total_calls": 14,
+    "total_tokens": 24702,
+    "prompt_tokens": 14050,
+    "completion_tokens": 10652,
+    "by_model": {
+      "qwen3.7-plus": {
+        "calls": 3,
+        "total_tokens": 5035,
+        "prompt_tokens": 3819,
+        "completion_tokens": 1216
+      },
+      "qwen3.6-flash": {
+        "calls": 7,
+        "total_tokens": 8213,
+        "prompt_tokens": 5678,
+        "completion_tokens": 2535
+      },
+      "deepseek-v4-flash": {
+        "calls": 4,
+        "total_tokens": 11454,
+        "prompt_tokens": 4553,
+        "completion_tokens": 6901
+      }
+    },
+    "by_tag": {
+      "stage:selling": {
+        "calls": 1,
+        "total_tokens": 1870
+      },
+      "stage:platform:instagram": {
+        "calls": 1,
+        "total_tokens": 1519
+      },
+      "stage:platform:tiktok": {
+        "calls": 1,
+        "total_tokens": 1646
+      },
+      "tiktok__en": {
+        "calls": 3,
+        "total_tokens": 3799
+      },
+      "instagram__en": {
+        "calls": 3,
+        "total_tokens": 4198
+      },
+      "tiktok__ar": {
+        "calls": 3,
+        "total_tokens": 4801
+      },
+      "instagram__ar": {
+        "calls": 2,
+        "total_tokens": 6869
+      }
+    },
+    "cost_estimate_cny": 0.0297,
+    "wall_time_s": 63.8,
+    "price_note": "单价为可调估算值（元/百万token，混合输入输出），非实际成本，见 llm_client.PRICE_CNY_PER_MTOK"
+  },
+  "market_report": {
+    "ID": {
+      "name": "印度尼西亚",
+      "regulator": "BPOM / Kemenkes（卫生部）——待核",
+      "ad_rules_count": 2,
+      "delivered_pieces": 0,
+      "access_pending": [
+        "医疗器械软件在印尼的分类界定（风险等级）待核",
+        "AKD/AKL 注册路径与本地授权代表（nama dagang）要求待核",
+        "公立采购的 TKDN（本地含量）要求待核"
+      ],
+      "data_sovereignty_pending": [
+        "印尼 PDPA（个人数据保护法）对健康数据的处理与本地化要求待核",
+        "患者数据跨境传输限制与电子系统注册（PSE）要求待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "TH": {
+      "name": "泰国",
+      "regulator": "TFDA（泰国食品药品监督管理局）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 0,
+      "access_pending": [
+        "医疗器械软件注册路径（通知/许可制分类）待核",
+        "广告预审许可（广告许可号）申请流程待核",
+        "本地进口商/经销商资质要求待核"
+      ],
+      "data_sovereignty_pending": [
+        "泰国 PDPA 对健康数据的合规要求待核",
+        "数据本地化义务（如适用）待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "VN": {
+      "name": "越南",
+      "regulator": "MOH（卫生部）/ 医疗器械管理部门——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 0,
+      "access_pending": [
+        "医疗器械分类与注册申报路径（MD-13 等法令口径）待核",
+        "进口医疗器械本地授权代表要求待核",
+        "公立医院采购准入流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "越南《网络安全法》与个人数据法令（PDPD）的数据本地化/跨境要求待核",
+        "健康数据的存储与传输合规义务待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "MY": {
+      "name": "马来西亚",
+      "regulator": "MDA（医疗器械管理局）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 0,
+      "access_pending": [
+        "医疗器械软件注册路径（CMDA 分类）待核",
+        "本地授权代表（ARR/ABR）要求待核",
+        "广告审批流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "马来西亚 PDPA 对健康数据的处理要求待核",
+        "公立部门数据驻留要求（如适用）待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "SA": {
+      "name": "沙特阿拉伯",
+      "regulator": "SFDA（沙特食品药品监督管理局）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械软件（含 AI 功能）分类界定与注册路径待核",
+        "授权代表（AR）与进口许可要求待核",
+        "促销材料 SFDA 事先批准流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "沙特 PDPL（个人数据保护法）及实施条例对健康数据的本地化/跨境要求待核",
+        "数据跨境传输评估（DTS）义务待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    },
+    "AE": {
+      "name": "阿联酋",
+      "regulator": "MOHAP（卫生预防部）——待核",
+      "ad_rules_count": 3,
+      "delivered_pieces": 1,
+      "access_pending": [
+        "医疗器械注册路径（MOHAP/TAWJEH 系统）待核",
+        "自由区 vs 大陆销售的许可差异待核",
+        "广告许可申请流程待核"
+      ],
+      "data_sovereignty_pending": [
+        "阿联酋 PDPL 联邦法对健康数据的要求待核",
+        "健康数据跨境传输限制（含 DHA/DOH 特区要求）待核"
+      ],
+      "status": "pending_verification",
+      "status_note": "准入与数据主权事项为待核清单，未联网核验监管原文，不构成法律意见，未知不视为通过"
+    }
+  },
+  "value": {
+    "counts": {
+      "delivered": 3,
+      "review_blocked": 1,
+      "failed": 0,
+      "total_combos": 4
+    },
+    "num_platforms": 2,
+    "num_languages": 2,
+    "engine_wall_seconds": 63.8,
+    "engine_cost_cny_estimate": 0.0297,
+    "markets_covered": [
+      "SA",
+      "AE"
+    ],
+    "markets_count": 2,
+    "params_used": {
+      "research_minutes": 60,
+      "write_minutes_per_platform": 45,
+      "l10n_minutes_per_piece": 30,
+      "review_minutes_per_piece": 15,
+      "prep_minutes": 20,
+      "rework_minutes_per_item": 10,
+      "hourly_rate_cny": 120,
+      "monthly_pieces": 120
+    },
+    "assumption_note": "口径说明：人工与 AI 侧参数均为可调假设（非实测基线、非行业估值）；API 费用为按单价表的估算值（非实际成本）；月度数字为假设性外推。人工侧=共享研究+各平台基础撰写(不按语言重复计)+增量本地化+逐条终审；AI 侧=资料准备人工+API费用+逐条复核人工+返修人工。",
+    "estimable": true,
+    "manual_side": {
+      "minutes_total": 330,
+      "hours_total": 5.5,
+      "cost_cny": 660.0
+    },
+    "ai_side": {
+      "manual_minutes_total": 90,
+      "manual_hours_total": 1.5,
+      "labor_cost_cny": 180.0,
+      "api_cost_cny_estimate": 0.0297,
+      "total_cost_cny": 180.0,
+      "engine_wall_seconds": 63.8
+    },
+    "savings": {
+      "hours_saved": 4.0,
+      "cost_saved_cny": 480.0,
+      "capacity_multiplier": 3.7
+    },
+    "monthly_projection": {
+      "monthly_pieces_assumed": 120,
+      "manual_cost_cny_per_month": 11100.0,
+      "ai_cost_cny_per_month": 4241.0,
+      "ai_api_cost_cny_per_month": 1.188,
+      "cost_saved_cny_per_month": 6859.0,
+      "note": "月度为假设性外推（可调参数），非实测"
+    }
+  },
+  "engine_notices": {
+    "deployment_clarification": "被营销的产品（301 儿科住院医师 AI 助手 + 智能胸卡）为院内全本地部署、患者数据不出院——这是产品卖点；本营销引擎自身会调用云端大模型生成文案，两件事不得混同。",
+    "privacy": "所有模型调用前经过本地敏感内容门禁：命中患者标识（姓名/床号/住院号/身份证/手机号等）即本地阻断，绝不外发云端脱敏。",
+    "legal": "本引擎输出的合规提示为工程化规则与模型辅助判断，不构成法律意见；准入与数据主权事项为待核清单。"
+  },
+  "context": {
+    "analysis": {
+      "selling_points": [
+        {
+          "point": "600W纯正弦波输出，安全驱动敏感电子设备",
+          "evidence": "PS-1"
+        },
+        {
+          "point": "采用磷酸铁锂电芯，具备更长循环寿命潜力",
+          "evidence": "PS-2"
+        },
+        {
+          "point": "支持太阳能板外接充电，适合日照充足地区补电",
+          "evidence": "PS-3"
+        },
+        {
+          "point": "配备AC/USB-C/USB-A/车充多路接口，可同时为多台设备供电",
+          "evidence": "PS-4"
+        }
+      ],
+      "audience": {
+        "who": "东南亚及中东地区的家庭应急用户、户外露营爱好者及移动小微商户",
+        "roles": [
+          "家庭采购决策者",
+          "户外装备消费者",
+          "夜市/地摊经营者"
+        ],
+        "pain_points": [
+          "应对台风季或电网不稳定导致的突发停电",
+          "户外活动缺乏稳定电源支持",
+          "移动经营场景下用电成本高且不便"
+        ]
+      },
+      "scenarios": [
+        {
+          "scene": "家庭应急备电",
+          "story": "台风季突发停电，迅速启动电源保障照明与通讯不断联。"
+        },
+        {
+          "scene": "户外露营娱乐",
+          "story": "野外露营时连接音响与投影，享受电力自由的惬意夜晚。"
+        },
+        {
+          "scene": "移动商户经营",
+          "story": "夜市摆摊无市电接入，轻松驱动照明与收款设备正常营业。"
+        }
+      ],
+      "keywords": [
+        "portable power station 600W",
+        "LiFePO4 battery generator",
+        "solar generator outdoor",
+        "pure sine wave inverter",
+        "emergency backup power",
+        "camping power supply",
+        "multi-output portable charger",
+        "off-grid power solution"
+      ]
+    },
+    "platform_copies": {
+      "instagram": {
+        "titles": [
+          "无惧停电：600W纯净电力守护"
+        ],
+        "descriptions": [
+          "台风季突发断电，关键设备如何持续运转？🌪️\n\n💊 600W纯正弦波输出，稳定驱动敏感电子仪器，数据更安全。\n🏥 磷酸铁锂电芯加持，长循环寿命潜力，降低长期持有成本。\n🩺 AC/USB-C多路接口并发，同时满足照明、通讯与办公需求。\n☀️ 支持太阳能板外接，日照充足地区可实现绿色补电，离网更自由。\n\n*本产品为辅助供电设备，不替代专业医疗急救电源。具体配置请咨询专业人士。\n\n👇 Link in bio / DM 获取详细规格书"
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#PortablePower",
+          "#EmergencyPrep",
+          "#LiFePO4",
+          "#SolarGenerator",
+          "#OffGridLife",
+          "#HospitalIT",
+          "#MedDeviceSEA",
+          "#PowerBackup"
+        ],
+        "extras": {},
+        "cta": "Link in bio / DM 获取详细规格书",
+        "visual_suggestion": "1:1 或 4:5 卡片；蓝白医疗科技配色；3-5 张轮播（痛点→方案→架构→CTA）"
+      },
+      "tiktok": {
+        "titles": [
+          "停电不慌！600W纯净电，露营摆摊神器⚡️"
+        ],
+        "descriptions": [
+          "台风天突然黑屏？夜市摆摊没插座？😱\n\n别急，这台“移动电站”来救场！🔋\n\n✅ 600W纯正弦波：像家里插座一样稳，敏感电器放心插，不伤设备。\n✅ 磷酸铁锂电芯：寿命更长，耐用抗造，陪你更久。\n✅ 太阳能可接入：有太阳就能充，户外用电自由不是梦！☀️\n✅ 多口同时输出：AC/USB-C/车充全都有，手机、投影、小冰箱一起带飞。\n\n无论是家庭应急备电，还是周末露营搞气氛，甚至是路边摊创业，它都是你的靠谱搭档。💪\n\n👇想知道续航多久？评论区留言“求测评”，或戳主页链接看详情！",
+          "#MedTech #OutdoorLife #CampingGear #EmergencyPrep #东南亚生活"
+        ],
+        "bullets": [],
+        "hashtags": [
+          "#MedTech",
+          "#OutdoorLife",
+          "#CampingGear",
+          "#EmergencyPrep",
+          "#东南亚生活"
+        ],
+        "extras": {},
+        "cta": "评论区留言“求测评”或戳主页链接",
+        "visual_suggestion": "竖屏9:16。前3秒画面：模拟台风天家中突然停电的黑暗瞬间，随即产品指示灯亮起，温暖灯光照亮房间（或切换至夜市摊位灯光亮起的对比）。随后快速剪辑展示连接投影仪露营、为手机和收款机同时充电的特写。字幕使用高对比度黄色/白色大字，强调“600W”、“纯净电”、“太阳能”。背景音使用轻快节奏感强的音乐。"
+      }
+    },
+    "combo_keys": [
+      [
+        "tiktok",
+        "en"
+      ],
+      [
+        "tiktok",
+        "ar"
+      ],
+      [
+        "instagram",
+        "en"
+      ],
+      [
+        "instagram",
+        "ar"
+      ]
+    ]
+  },
+  "counts": {
+    "total": 4,
+    "delivered": 3,
+    "review_blocked": 1,
+    "failed": 0,
+    "skipped_deadline": 0
+  },
+  "image": {
+    "attempted": false,
+    "ok": false,
+    "model": null,
+    "path": null,
+    "error": null
+  }
+}

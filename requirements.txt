@@ -1,0 +1,7 @@
+# 依赖清单（Python 3.14，C:/Python314/python.exe）
+# 安装：C:/Python314/python.exe -m pip install -r requirements.txt
+# 对应评审 P0-1：以真实 import 验证为准（见 _verify_all.py 第 0 步），不再用 find_spec 冒充可用
+pyyaml>=6.0
+openai>=2.0
+streamlit>=1.63,<2
+jsonschema>=4.26,<5

@@ -1,0 +1,11 @@
+languages: [en, ar, id, th, vi, ms]
+faq_topics: [deployment, data, certification, languages, training, support, price, delivery]
+seo_limits: {title: 60, description: 160}
+instructions: >-
+  生成获客型品牌官网内容包，不是购物车页面。包含 Hero、客户痛点、方案能力、证据、
+  合规与数据主权、8-10条 FAQ、预约演示/咨询 CTA 和 SEO。
+  FAQ 必须覆盖每个 faq_topics，正文使用目标语言。能力清单覆盖每个 capabilities ID。
+  医疗产品面向医院儿科/住院部、经销商及公立采购；消费品按其真实目标人群，不套医疗话术。
+  合规块覆盖 GDPR、印尼个人数据保护法及沙特/阿联酋数据主权待核问题，
+  不得声称本地部署自动满足法规，不得将中东视作统一法域。消费品须明确医疗要求不适用。
+  不要编造客户案例、认证、价格、交期或留资链接；CTA 仅提供可交接给网站运营方的文案。

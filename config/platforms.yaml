@@ -1,0 +1,168 @@
+# =========================================================================
+# 6 大平台内容规范 + 结构化产物契约（平台适配/本地化/合规三个 Agent 共用）
+# 每个平台必须在语气/结构/标签/禁忌上真实不同，禁止"同一段话换皮"
+#
+# 字段契约（对应评审 P1-8）：
+#   fields.titles/descriptions/bullets: {count: 条数, max: 上限, unit: 计数单位}
+#     - unit 统一用 char（Unicode 字符数，len），避免泰语等无空格语种的分词歧义；
+#     - 对最终内容（安全版）逐字段硬校验，无"超 30% 才告警"的容忍倍率；
+#   fields.hashtags: {count_min, count_max}
+#   fields.extras: 平台特有字段（backend_keywords 按总字节数，meta_description 按字符）
+# =========================================================================
+
+tiktok:
+  name: TikTok
+  category: 短视频
+  audience: 医院年轻医护个人号、器械经销商的短视频运营
+  tone: 年轻化、口语化、强钩子；节奏快；可用轻度幽默，但医疗话题保持分寸
+  structure:
+    - "0-3 秒钩子：提问式或冲突式开场（如：夜班写病历有多崩溃？）"
+    - "痛点场景：住院医师一天中的真实痛点"
+    - "卖点演示：只讲 1-2 个核心能力，给画面感"
+    - "行动号召：评论区/主页链接，动词开头"
+  fields:
+    titles:       {count: 1, max: 60, unit: char, desc: "视频标题/首屏钩子"}
+    descriptions: {count: 1, max: 750, unit: char, desc: "口播脚本+字幕总长度"}
+    bullets:      {count: 0, max: 0, unit: char}
+    hashtags:     {count_min: 3, count_max: 5}
+    extras: {}
+  hashtags:
+    style: "1 个大流量标签（#MedTech #Healthcare）+ 2-3 个垂直标签（#ClinicalDocumentation #HospitalTech）+ 1 个地区标签"
+  visual_suggestion: "竖屏 9:16；真医护出镜或产品界面特写；前 3 秒必须有画面冲击；字幕大号高对比"
+  cta_style: "动词开头，口语化（Comment / Link in bio）"
+  taboos:
+    - "禁止医疗恐吓式营销（如：不用就会出医疗事故）"
+    - "不得出现可识别的真实患者面容或病历内容"
+    - "不得做疗效承诺或暗示替代医生判断"
+
+instagram:
+  name: Instagram
+  category: 图文/Reels
+  audience: 医院 IT 决策者、医疗行业媒体、经销商市场部
+  tone: 视觉优先、生活方式感、专业而不冰冷；B2B 品牌种草向
+  structure:
+    - "首行钩子：一句话点中信息科主任的焦虑"
+    - "价值主张 2-3 行，每行一个利益点"
+    - "emoji 分隔要点（医疗主题用 💊🏥🩺 类，克制使用 3-5 个）"
+    - "CTA + 一行免责声明"
+  fields:
+    titles:       {count: 1, max: 40, unit: char, desc: "首图文案首行"}
+    descriptions: {count: 1, max: 700, unit: char, desc: "caption 黄金长度"}
+    bullets:      {count: 0, max: 0, unit: char}
+    hashtags:     {count_min: 5, count_max: 10}
+    extras: {}
+  hashtags:
+    style: "品牌标签 + 行业标签 + 地区标签组合（如 #HospitalIT #MedDeviceSEA）"
+  visual_suggestion: "1:1 或 4:5 卡片；蓝白医疗科技配色；3-5 张轮播（痛点→方案→架构→CTA）"
+  cta_style: "Link in bio / DM 咨询"
+  taboos:
+    - "避免血腥或真实病历画面"
+    - "不得使用滤镜过度美化医疗场景"
+    - "不得 tag 无关的大流量账号蹭流量"
+
+youtube_shorts:
+  name: YouTube Shorts
+  category: 短视频（搜索+推荐双引擎）
+  audience: 主动搜索医疗 AI 方案的人 + 推荐流量
+  tone: 信息密度高；标题面向搜索（含关键词）；内容面向推荐（节奏）
+  structure:
+    - "标题：提问式或数字式，含 'AI' 'hospital' 等搜索词"
+    - "描述前 2 行：核心卖点（搜索结果只显示前 2 行）"
+    - "描述正文：关键词自然埋入 + 标签"
+    - "置顶评论引导：官网链接/白皮书"
+  fields:
+    titles:       {count: 1, max: 100, unit: char, desc: "标题需含搜索关键词"}
+    descriptions: {count: 1, max: 1200, unit: char, desc: "描述区"}
+    bullets:      {count: 0, max: 0, unit: char}
+    hashtags:     {count_min: 2, count_max: 3}
+    extras: {}
+  hashtags:
+    style: "#Shorts 必带 + 行业词 1-2 个"
+  visual_suggestion: "竖屏 9:16，<=60 秒；开头大字标题；中段产品界面录屏；结尾定格 CTA 画面"
+  cta_style: "订阅 / 评论 / 官网链接"
+  taboos:
+    - "标题禁止全大写堆砌"
+    - "不得在描述里堆砌无关关键词（SEO 作弊）"
+    - "缩略图禁止误导性箭头/震惊体"
+
+google_ads:
+  name: Google Ads（响应式搜索广告）
+  category: 搜索广告
+  audience: 主动搜索医疗 AI 方案的医院/经销商（B2B 询盘）
+  tone: 严谨、直接、利益点前置；每字都要有出价成本意识
+  structure:
+    - "标题1：产品词 + 核心卖点（如 On-Prem AI for Hospitals）"
+    - "标题2：差异化（Data Stays In-Hospital）"
+    - "标题3：CTA（Book a Demo）"
+    - "描述1：痛点 + 方案一句话"
+    - "描述2：CTA + 资质背书"
+  fields:
+    titles:       {count: 3, max: 30, unit: char, desc: "3 个标题，每个 ≤30 字符"}
+    descriptions: {count: 2, max: 90, unit: char, desc: "2 条描述，每条 ≤90 字符"}
+    bullets:      {count: 0, max: 0, unit: char}
+    hashtags:     {count_min: 0, count_max: 0}
+    extras: {}
+  hashtags:
+    style: "无标签（广告位不展示标签）"
+  visual_suggestion: "展示广告素材 1200x628；文字占比 <=20%；蓝底白字产品渲染图"
+  cta_style: "申请演示 / 获取报价（Book a Demo / Get a Quote）"
+  taboos:
+    - "感叹号每条最多 1 个"
+    - "禁用全大写词（CTA 首字母缩写除外）"
+    - "不得使用无证据的最高级（best/No.1）——医疗广告红线"
+    - "不得使用 you/your 直接第二人称指责式表达（Google 政策）"
+
+amazon:
+  name: Amazon 商品页（B2B 采购/经销）
+  category: 电商平台
+  audience: 经销商比价采购、医院行政采购的搜索式购买
+  tone: 参数化、信任背书、关键词密度适中；像规格书而非广告
+  structure:
+    - "标题：品牌 + 品类 + 3 个核心卖点词（管道符分隔，非句子）"
+    - "五点描述：每点 = 卖点关键词开头 + 参数 + 客户利益"
+    - "后台搜索词：不含品牌名、不重复标题词"
+    - "A+ 内容建议：模块化图文（架构图/部署图/对比表）"
+  fields:
+    titles:       {count: 1, max: 200, unit: char, desc: "品牌+品类+核心卖点词"}
+    descriptions: {count: 1, max: 800, unit: char, desc: "A+ 模块正文"}
+    bullets:      {count: 5, max: 200, unit: char, desc: "五点描述，每点 ≤200 字符"}
+    hashtags:     {count_min: 0, count_max: 0}
+    extras:
+      backend_keywords: {max_total_bytes: 250, desc: "后台搜索词（总字节 ≤250）"}
+  hashtags:
+    style: "无标签；改为后台搜索关键词"
+  visual_suggestion: "主图白底 1600x1600；副图：部署架构图、接口示意、尺寸图、场景图；A+ 横幅 970x600"
+  cta_style: "Add to Cart / Request B2B Quote"
+  taboos:
+    - "标题不得堆砌促销词（Free Shipping 等）"
+    - "不得声明未持有的认证（认证信息须与实际证书一致，本产品未提供认证信息则一律不写）"
+    - "五点描述不得互相重复"
+    - "不得出现外链或引导站外交易"
+
+landing_page:
+  name: 独立站 Landing Page
+  category: 官网长文案
+  audience: 医院决策链（院长/信息科主任/医务科/科室主任）+ 经销商合作页
+  tone: 专业、结构化、信任驱动；面向采购决策周期长的 B2B 语境
+  structure:
+    - "Hero：一句话价值主张 + 副标题 + CTA 按钮"
+    - "痛点段：决策链角色各自的痛（信息科怕数据、医务科怕质控、主任怕漏指示）"
+    - "方案段：核心能力逐一带场景展开（规划中能力必须标注 roadmap）"
+    - "信任背书：部署架构（数据不出院）+ 安全说明"
+    - "FAQ：3 条高频疑问"
+    - "结尾 CTA：Book a Demo / 下载白皮书"
+  fields:
+    titles:       {count: 1, max: 70, unit: char, desc: "Hero 大标题"}
+    descriptions: {count: 1, max: 3500, unit: char, desc: "整页文案（保持分段）"}
+    bullets:      {count: 0, max: 0, unit: char}
+    hashtags:     {count_min: 0, count_max: 0}
+    extras:
+      meta_description: {max: 155, unit: char, desc: "SEO meta description"}
+  hashtags:
+    style: "无标签；改为 SEO meta description"
+  visual_suggestion: "首屏产品渲染图；第二屏部署拓扑图（数据不出院示意）；FAQ 折叠组件"
+  cta_style: "Book a Demo / Download Whitepaper"
+  taboos:
+    - "不得虚构客户 logo 或案例数字"
+    - "数据安全声明必须与实际部署形态一致"
+    - "不得使用未经伦理审批的患者数据故事"

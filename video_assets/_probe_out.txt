@@ -1,0 +1,12 @@
+ffmpeg: C:\Users\lishuaishuai\AppData\Local\Microsoft\WinGet\Links\ffmpeg.EXE
+ffprobe: C:\Users\lishuaishuai\AppData\Local\Microsoft\WinGet\Links\ffprobe.EXE
+VERSION: ffmpeg version 8.1.1-full_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers
+font msyh.ttc: True
+cwd: e:\AI新青年
+OK   video_assets/clips/clipA_opening_mute.mp4
+OK   video_assets/clips/clipA_langs_mute.mp4
+OK   video_assets/clips/clipE_outro_mute.mp4
+OK   video_assets/frames/shot_compliance.png
+OK   video_assets/frames/shot_site_ar.png
+OK   video_assets/frames/shot_site_en.png
+OK   video_assets/frames/shot_consumer_en.png

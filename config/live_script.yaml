@@ -1,0 +1,15 @@
+languages: [en, ar, id, th, vi, ms]
+stages: [opening, pain_points, solution, demo, case, compliance, qa, cta]
+objection_topics: [price, deployment, security, certification, languages, support]
+instructions: >-
+  生成可直接念的直播口播稿，严格按 stages 顺序。每段包括正整数 duration_seconds、
+  讲解要点 talking_points、可直接念的 spoken 及演示动作 action。
+  建议总时长8-15分钟，按实际口播长度安排时长。用 [pause] 标注停顿、**词语**标注重音。
+  医疗版是面向医院/经销商的 B2B 演示；消费品版面向样例目标受众，明确全为虚构演示。
+  实操只能演示 implemented 能力；planned 能力必须说清 roadmap、没有样机。
+  case 段只用明确标注的假设工作流，不得编造真实客户或效果。绝不能展示真实患者数据。
+  合规段须谈数据主权与准入待核，不得承诺 GDPR 或任何市场认证已通过。
+  所有提供的 notices 原文同时写入 notices 数组及 compliance 段 spoken，不能只放在旁注。
+  interaction 包含引导提问和全部 objection_topics 的口语化答复。
+  特别注意：每一段必须有 action 字段，即便是开场、痛点和 Q&A 也要写主持人动作。
+  所有 spoken 必须包含原样英文标记 [pause] 与 **重点词**，不要把 pause 翻译成目标语言。

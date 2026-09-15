@@ -1,0 +1,67 @@
+# ===== 凭证：绝不入库 =====
+.env
+.env.*
+*.env
+*.key
+*.pem
+*secret*
+*credential*
+*token*
+
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.venv/
+
+# ===== 大体积媒体（视频走网盘/平台单独交付，不进 git）=====
+*.mp4
+final/
+video_assets/raw/
+video_assets/clips/
+video_assets/qa*/
+_pwvideo/
+_recprofile/
+
+# ===== 日志与锁 =====
+*.log
+NIGHTWATCH.lock
+WATCHDOG.md
+
+# ===== 临时/调试脚本 =====
+_asm*.py
+_*_log.txt
+_*.py
+_*.log
+_*.json
+!samples/*.json
+
+# ===== 内部看板（本地协作用，不提交给评审）=====
+.trellis/
+NIGHTWATCH.md
+NIGHT_PROGRESS.md
+WATCHDOG.md
+TASK_ROUND2_V*.md
+TASK_REVIEW_CODEX.md
+TASK_VIDEO_H3.md
+REPORT_R2_05.md
+REPORT_VIDEO_GEN.md
+_codex_*.md
+RECORDING_CARD.md
+demo_video_storyboard.md
+NIGHTWATCH.lock
+
+# 注意：baseline_research.md 保留入库 —— 它是业务价值章节 8 个可核查数据来源的出处，评审会看
+
+# ===== 临时与备份 =====
+video_assets/_tmp2/
+video_assets/_tmp*/
+*.bak-*
+*.pdf.bak-*
+*.zip.new
+*.zip
+video_assets/_sub/
+*.ttc
+*.ttf

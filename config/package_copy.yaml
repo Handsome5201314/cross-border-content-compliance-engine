@@ -1,0 +1,43 @@
+medical_notice:
+  en: AI outputs are drafts and require physician review before use.
+  ar: مخرجات الذكاء الاصطناعي مسودات وتتطلب مراجعة الطبيب قبل الاستخدام.
+  id: Keluaran AI adalah draf dan harus ditinjau dokter sebelum digunakan.
+  th: ผลลัพธ์จาก AI เป็นฉบับร่างและต้องได้รับการตรวจทานโดยแพทย์ก่อนใช้งาน
+  vi: Đầu ra AI là bản nháp và cần được bác sĩ xem xét trước khi sử dụng.
+  ms: Output AI ialah draf dan memerlukan semakan doktor sebelum digunakan.
+demo_notice:
+  en: Fictional demonstration sample; not a real customer, sale or partnership.
+  ar: نموذج توضيحي خيالي؛ لا يمثل عميلاً أو مبيعات أو شراكة حقيقية.
+  id: Sampel demonstrasi fiktif; bukan pelanggan, penjualan, atau kemitraan nyata.
+  th: ตัวอย่างสาธิตสมมติ ไม่ใช่ลูกค้า ยอดขาย หรือความร่วมมือจริง
+  vi: Mẫu minh họa hư cấu; không phải khách hàng, doanh số hay đối tác thực tế.
+  ms: Sampel demonstrasi rekaan; bukan pelanggan, jualan atau perkongsian sebenar.
+roadmap:
+  en: Roadmap — planned, not available for demonstration or delivery.
+  ar: خارطة الطريق — مخطط له، غير متاح للعرض العملي أو التسليم.
+  id: Roadmap — direncanakan, belum tersedia untuk demonstrasi atau pengiriman.
+  th: แผนงานในอนาคต ยังไม่พร้อมสาธิตหรือส่งมอบ
+  vi: Lộ trình dự kiến — chưa có để trình diễn hoặc bàn giao.
+  ms: Pelan masa hadapan — belum tersedia untuk demonstrasi atau penghantaran.
+ui:
+  title: 独立站与跨境直播内容包
+  empty: 尚无内容包，请先运行 site_cli.py 或 live_cli.py。
+  select: 选择已生成的内容包
+  preview: 审核后阅读预览
+  audit: 逐句审查记录（含未发布的风险原句）
+  download: 下载完整审计 JSON
+  warning: 审核未通过的内容不提供发布预览；完整 JSON 含审计原句，不能直接发布。
+  error: 内容包读取失败
+  counts: 交付统计
+  usage: 调用用量
+  generated: 生成时间
+  risk_table: 风险句与安全改法（历史风险，不等于最终发布稿）
+  no_risks: 已记录的审查轮次未发现违规句。
+  round: 审查轮次
+  risk_sentence: 风险原句
+  reason: 原因
+  replacement: 安全改法
+  stale: 当前校验未通过，禁止发布预览，请重新生成审核
+engine_notice: 本营销引擎调用云端模型，仅允许经隐私门禁校验的公开产品资料；产品部署方式以输入事实为准。
+consumer_access_pending: 消费品安全认证、进口与广告要求需由目标市场专业人员核实；未提供证据不视为已准入。
+consumer_data_pending: 官网留资、直播受众信息与跨境数据处理义务待核，不适用医疗器械注册判断。

@@ -1,0 +1,82 @@
+{
+  "schema_version": "3.0",
+  "product_name": "户外便携储能电源 600W（演示样例）",
+  "product_name_en": "Portable Power Station 600W (Demo Sample)",
+  "brand": "DEMO-BRAND（虚构，仅演示用）",
+  "form": "消费电子 / 户外储能：600W 输出、磷酸铁锂电池、支持太阳能板充电",
+  "deployment": "常规跨境电商：亚马逊 FBA + 独立站 + TikTok 社媒，无需本地部署",
+  "capabilities": [
+    {
+      "id": "PS-1",
+      "area": "product",
+      "name": "600W 纯正弦波交流输出",
+      "desc": "可驱动小型家电与电子设备，纯正弦波输出，适配敏感设备",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "演示样例设定（虚构）"
+    },
+    {
+      "id": "PS-2",
+      "area": "product",
+      "name": "磷酸铁锂电池，循环寿命长",
+      "desc": "磷酸铁锂电芯，标称循环次数高于普通三元锂（具体数字未在样例中提供，文案不得编造）",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "演示样例设定（虚构）"
+    },
+    {
+      "id": "PS-3",
+      "area": "product",
+      "name": "太阳能充电支持",
+      "desc": "支持外接太阳能板补电，适合户外与断电场景",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "演示样例设定（虚构）"
+    },
+    {
+      "id": "PS-4",
+      "area": "product",
+      "name": "多路接口（AC/USB-C/USB-A/车充）",
+      "desc": "多路输出接口，可同时为多台设备供电",
+      "status": "implemented",
+      "priority": null,
+      "evidence": "演示样例设定（虚构）"
+    },
+    {
+      "id": "PS-5",
+      "area": "service",
+      "name": "本地化说明书与售后",
+      "desc": "随附多语言说明书；售后由当地合作方承担（具体政策未在样例中提供）",
+      "status": "planned",
+      "priority": "P1",
+      "evidence": "演示样例设定（虚构）"
+    }
+  ],
+  "tech_stack": [
+    {"layer": "品类", "component": "消费电子 / 户外储能（跨境电商常规品类）"},
+    {"layer": "渠道", "component": "亚马逊 + 独立站 + TikTok/Instagram 社媒"}
+  ],
+  "red_lines": [
+    "不得宣称通过任何安全认证（样例未提供认证信息，文案不得出现 UL/CE/PSE 等认证宣称）",
+    "不得编造循环次数、容量保持率、充电时长等具体性能数字（样例未提供）",
+    "不得出现具体价格、折扣、限时促销承诺（定价未在样例中提供）",
+    "不得暗示真实客户、真实销量、真实评价或真实合作方"
+  ],
+  "selling_angles": [
+    "断电备用：应对东南亚部分区域的不稳定供电与台风季停电",
+    "户外场景：中东与东南亚露营、夜市摆摊、移动办公",
+    "太阳能补电：日照充足地区可日间补电，降低用电成本",
+    "一机多充：多路接口同时供电，减少携带多个充电宝"
+  ],
+  "target_buyers": [
+    "家庭应急备电用户",
+    "户外露营与自驾人群",
+    "夜市/地摊等移动用电小微商户"
+  ],
+  "target_markets": ["ID", "TH", "VN", "MY", "SA", "AE"],
+  "target_languages": ["en", "ar", "id", "th"],
+  "target_platforms": ["tiktok", "instagram", "amazon", "landing_page"],
+  "compliance_level": "standard",
+  "pricing_positioning": "中端价位（具体价格未提供，文案不得出现数字）",
+  "marketing_notes": "B2C 常规消费品，非医疗场景：不使用医疗合规等级，但仍受广告法约束（绝对化用语、虚假宣传、疗效/安全承诺）。所有能力以 capabilities 为准，status=planned 标注 roadmap；样例未提供认证、性能数字与价格，文案一律不得编造。本样例为虚构演示用途。"
+}
