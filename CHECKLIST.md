@@ -11,7 +11,7 @@
 | 1 | **复赛作品说明（PDF）** | ✅ **已导出**（8 页，299.6 KB，已核验内容） | `破界AI_跨境内容合规引擎_复赛作品.pdf` |
 | 2 | **产品演示视频** | ✅ 已生成（178s），**待上传拿链接** | `final\破界AI_跨境内容合规引擎_演示视频.mp4` |
 | 3 | **代码仓库** | ✅ **GitHub + GitCode 双仓库已同步（均公开可匿名访问）** | GitCode：`https://gitcode.com/Handsome5201314/cross-border-content-compliance-engine`<br>GitHub：`https://github.com/Handsome5201314/cross-border-content-compliance-engine` |
-| 4 | **可运行 Demo** | ✅ Streamlit 本地可跑 | `streamlit run app.py` |
+| 4 | **可运行 Demo** | ✅ **已部署上线（公网可访问）** | **https://emrdoctor-cross-border-content-compliance-engine.ms.show**<br>（本地亦可 `start_demo.bat` 或 `streamlit run app.py`） |
 | 5 | **兜底 zip**（若链接走不通） | ✅ 已重建（含最新 PDF + 720p 视频） | `破界AI_跨境内容合规引擎_提交包.zip` |
 
 **PDF 命名规范**：`破界AI_跨境内容合规引擎_复赛作品.pdf` ✅ 已符合

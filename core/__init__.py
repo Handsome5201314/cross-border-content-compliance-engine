@@ -11,6 +11,7 @@
 - value_calc.py    业务价值计算器（两侧同验收标准口径；零成功不可估算）
 - exporter.py      导出：发布稿只消费审核后安全版（不回拼原始字段）；RTL 包裹
 """
+import os
 from pathlib import Path
 
 import yaml
@@ -28,19 +29,37 @@ ENV_PATH = PROJECT_ROOT / ".env"
 # 已加载配置的进程级缓存（避免每次调用重复读盘）
 _yaml_cache = {}
 
+# 凭证相关的键：环境变量优先级高于 .env（云端部署靠 secrets 注入环境变量）
+_CREDENTIAL_KEYS = (
+    "HACKATHON_API_KEY",
+    "HACKATHON_BASE_URL",
+)
+
 
 def load_env(env_path: Path = None) -> dict:
-    """极简 .env 解析（KEY=VALUE，忽略注释与空行）。凭证只允许来自这里。"""
+    """凭证解析：**环境变量优先，.env 兜底**。
+
+    优先级（高 → 低）：
+    1. os.environ —— 云端部署平台（如 ModelScope Studio secrets）注入，**密钥不落仓库**
+    2. .env 文件 —— 本地开发用，该文件已在 .gitignore 中排除
+
+    这样同一份代码在本地与云端都能运行，且密钥永不进入版本库。
+    """
     path = env_path or ENV_PATH
     data = {}
-    if not path.exists():
-        return data
-    for line in path.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        k, v = line.split("=", 1)
-        data[k.strip()] = v.strip()
+    if path.exists():
+        for line in path.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            k, v = line.split("=", 1)
+            data[k.strip()] = v.strip()
+
+    # 环境变量覆盖（含 .env 里没有、但由平台注入的键）
+    for k in _CREDENTIAL_KEYS:
+        v = os.environ.get(k)
+        if v and v.strip():
+            data[k] = v.strip()
     return data
 
 

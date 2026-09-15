@@ -226,9 +226,18 @@ def render_result(result: dict) -> None:
         st.caption(u.get("price_note", ""))
 
 
-def _get_client():
-    if "client" not in st.session_state:
-        st.session_state["client"] = LLMClient()
+def _get_client(base_url: str = None, api_key: str = None):
+    """获取 LLMClient。支持传入自定义凭证；凭证变化时自动重建。
+
+    优先级：显式传入的自定义凭证 > 平台默认（环境变量 secrets > 本地 .env）。
+    """
+    sig = ((base_url or "").strip(), (api_key or "").strip())
+    if st.session_state.get("_client_sig") != sig or "client" not in st.session_state:
+        st.session_state["client"] = LLMClient(
+            base_url=(base_url or "").strip() or None,
+            api_key=(api_key or "").strip() or None,
+        )
+        st.session_state["_client_sig"] = sig
     return st.session_state["client"]
 
 
@@ -293,11 +302,38 @@ with st.sidebar:
     deadline = st.slider("整批时间预算（秒）", 120, 1800, 600, 60,
                          help="超时未执行的组合标记为「超时跳过」并如实展示")
 
-    with st.expander("⚙️ 模型高级设置"):
-        m_main = st.selectbox("主力模型（拆解/适配）", MODEL_CANDIDATES, index=0)
-        m_fast = st.selectbox("快速模型（本地化/素材）", MODEL_CANDIDATES, index=4)
-        m_review = st.selectbox("合规审查模型（跨厂商交叉审）", MODEL_CANDIDATES, index=8)
-        m_image = st.selectbox("图像模型（显式生成时用）", IMAGE_MODEL_CANDIDATES, index=0)
+    with st.expander("⚙️ 模型与凭证高级设置", expanded=False):
+        st.caption("以下留空即用平台内置默认配置，**无需填写即可直接体验**。")
+
+        _CUSTOM = "✏️ 输入自定义模型名…"
+
+        def _model_picker(label: str, options: list, default_idx: int, key: str) -> str:
+            """模型选择器：候选列表 + 「自定义」入口。"""
+            sel = st.selectbox(label, list(options) + [_CUSTOM], index=default_idx, key=key)
+            if sel == _CUSTOM:
+                custom = st.text_input(f"{label} · 自定义名称", key=key + "_custom",
+                                       placeholder="填写模型标识，如 qwen3.7-max")
+                return custom.strip() or options[min(default_idx, len(options) - 1)]
+            return sel
+
+        m_main = _model_picker("主力模型（拆解/适配）", MODEL_CANDIDATES, 0, "m_main")
+        m_fast = _model_picker("快速模型（本地化/素材）", MODEL_CANDIDATES, 4, "m_fast")
+        m_review = _model_picker("合规审查模型（跨厂商交叉审）", MODEL_CANDIDATES, 8, "m_review")
+        m_image = _model_picker("图像模型（显式生成时用）", IMAGE_MODEL_CANDIDATES, 0, "m_image")
+
+        st.divider()
+        st.markdown("**自定义凭证（可选）**")
+        user_key = st.text_input("API Key", type="password", key="u_key",
+                                 placeholder="留空使用平台默认额度",
+                                 help="填你自己的阿里云百炼 Key，则消耗你自己的额度；留空则用平台内置默认 Key。")
+        user_base = st.text_input("网关地址", key="u_base",
+                                  placeholder="留空使用平台默认网关",
+                                  help="如 https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1")
+        use_custom = st.checkbox("强制使用以上自定义凭证", key="u_force",
+                                 help="勾选后必须同时填写 Key 与网关地址才会生效")
+        # 校验并给出即时反馈
+        if use_custom and not (user_key.strip() and user_base.strip()):
+            st.warning("已勾选自定义凭证，但 Key 或网关地址为空——将回退到平台默认配置。")
 
     st.caption("生成会调用云端大模型（引擎本身不是本地部署）；输入已过字段白名单与本地隐私门禁。")
 
@@ -348,7 +384,14 @@ if run_btn:
         st.error("配置校验失败，请检查 config/*.yaml")
         st.stop()
     try:
-        client = _get_client()
+        # 自定义凭证（可选）：勾选了「强制使用」且已填写时才覆盖平台默认
+        _use_custom = bool(st.session_state.get("u_force")) and \
+            bool((st.session_state.get("u_key") or "").strip()) and \
+            bool((st.session_state.get("u_base") or "").strip())
+        client = _get_client(
+            base_url=st.session_state.get("u_base") if _use_custom else None,
+            api_key=st.session_state.get("u_key") if _use_custom else None,
+        )
     except RuntimeError as e:
         st.error(str(e))
         st.stop()
