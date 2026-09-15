@@ -17,6 +17,7 @@ from fastapi.responses import StreamingResponse
 from api import generation
 from api.deps import get_current_user
 from api.schemas import GenerateIn
+from core import load_yaml_config
 from core.privacy_gate import PrivacyViolation, validate_product
 from credits import service as credits_service
 from dao import tasks_dao
@@ -145,7 +146,20 @@ def _build_product(body: GenerateIn, languages: list, platforms: list) -> dict:
                "target_platforms": platforms,
                "compliance_level": body.compliance_level}
     if body.target_markets:
-        product["target_markets"] = [m.strip() for m in body.target_markets if m.strip()]
+        # 防御性过滤：前端可能把展示文案当市场代码发来（V3 已知事故源）。
+        # 只保留配置中定义的合法市场代码；全部非法时不覆盖样例产品的合法值，
+        # 宁可回退默认市场也不让整个任务在 Pipeline 启动期炸掉。
+        wanted = [m.strip() for m in body.target_markets if m.strip()]
+        try:
+            known = set((load_yaml_config("compliance") or {}).get("markets", {}))
+        except Exception:
+            known = set()
+        valid = [m for m in wanted if m in known]
+        if valid:
+            product["target_markets"] = valid
+            if len(valid) < len(wanted):
+                logger.warning("target_markets 含非法值已过滤: 非法=%s 保留=%s",
+                               sorted(set(wanted) - set(valid)), valid)
     return product
 
 

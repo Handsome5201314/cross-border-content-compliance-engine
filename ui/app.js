@@ -442,9 +442,8 @@
     const plats = selectedPlatChips();
     if (!langs.length || !plats.length) { toast("请至少选择一个语种与一个平台", "err"); return; }
 
-    const marketRaw = ($("p-market") || {}).value || "";
-    const markets = marketRaw
-      .split(/[·/，、,]/).map((s) => s.trim()).filter(Boolean);
+    // 注意：不发 target_markets —— 市场代码由样例产品的合法值兜底
+    // （p-market 输入框是展示文案，拆出来的是「东南亚（印尼」这类非法代码，曾导致任务秒失败）
 
     const body = {
       product_name: ($("p-name") || {}).value || "",
@@ -452,7 +451,6 @@
       form: ($("p-form") || {}).value || "",
       deployment: "",
       marketing_notes: ($("p-notes") || {}).value || "",
-      target_markets: markets,
       languages: langs,
       platforms: plats,
       compliance_level: "strict",
