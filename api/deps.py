@@ -12,7 +12,11 @@ from dao import audit_dao, users_dao
 
 
 def _load_user(request: Request) -> dict:
-    token = request.cookies.get(cookie_session.COOKIE_NAME)
+    # 令牌来源优先级：X-Session-Token 头（iframe 第三方 Cookie 被浏览器屏蔽时的主通道）
+    # → token 查询参数（SSE 的 EventSource 无法带自定义头）→ cce_session Cookie（第一方场景）
+    token = (request.headers.get("x-session-token")
+             or request.query_params.get("token")
+             or request.cookies.get(cookie_session.COOKIE_NAME))
     if not token:
         raise HTTPException(status_code=401, detail="未登录")
     payload = cookie_session.verify_session(token)

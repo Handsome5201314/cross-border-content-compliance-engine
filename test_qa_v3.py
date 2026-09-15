@@ -224,9 +224,12 @@ class V3AdversarialTests(unittest.TestCase):
         self.assertEqual(c.get("/api/space/stats").status_code, 401)
 
     def test_tampered_cookie_401(self):
-        # 取 A 的合法 Cookie，篡改一个字符 → 签名失败 → 401
+        # 取 A 的合法 Cookie，篡改中间一个字符 → 签名失败 → 401
+        # （不能改末位：base64 末字符可能只承载部分比特，改了可能解码出同一签名）
         good = _session.issue_session(self.uidA, "user")
-        tampered = good[:-1] + ("A" if good[-1] != "A" else "B")
+        mid = len(good) // 2
+        tampered = good[:mid] + ("A" if good[mid] != "A" else "B") + good[mid + 1:]
+        assert tampered != good
         c = TestClient(_api_main.app)
         r = c.get("/api/tasks/recent", cookies={"cce_session": tampered})
         self.assertEqual(r.status_code, 401, r.text)

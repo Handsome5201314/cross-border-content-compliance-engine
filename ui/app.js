@@ -290,6 +290,7 @@
 
   async function logout() {
     try { await API.post("/api/auth/logout", {}); } catch (e) {}
+    API.clearToken(); // 清除 iframe 场景下的 localStorage 令牌
     State.user = null;
     State.es = null;
     enterGuest();

@@ -36,7 +36,9 @@ def _user_payload(user: dict) -> dict:
             "role": user["role"], "credits": int(user["credits"])}
 
 
-def _set_session_cookie(request: Request, response: Response, user: dict) -> None:
+def _issue_session(request: Request, response: Response, user: dict) -> str:
+    """签发会话：写 Cookie（第一方场景）+ 返回令牌（iframe 下浏览器拒存第三方 Cookie，
+    前端改用 localStorage + X-Session-Token 头，见 api/deps.py 的令牌来源优先级）。"""
     token = cookie_session.issue_session(user["user_id"], user["role"])
     # 跨站 iframe（ModelScope/预览面板内嵌 ms.show）需要 SameSite=None+Secure+Partitioned(CHIPS)，
     # 否则浏览器在第三方 Cookie 屏蔽策略下不存储/不回传 Cookie；本地 http 开发保留 Lax
@@ -47,6 +49,7 @@ def _set_session_cookie(request: Request, response: Response, user: dict) -> Non
         httponly=True, samesite="none" if secure else "lax", secure=secure,
         partitioned=secure,
     )
+    return token
 
 
 @router.post("/register", status_code=201)
@@ -59,8 +62,9 @@ def register(body: AuthIn, request: Request, response: Response):
     uid = users_dao.UserDAO.create(username, hash_password(body.password), role="user")
     credits_service.grant_signup(uid)
     user = users_dao.UserDAO.get_by_id(uid)
-    _set_session_cookie(request, response, user)
+    token = _issue_session(request, response, user)
     payload = _user_payload(user)
+    payload["session_token"] = token
     payload["session_insecure"] = cookie_session.insecure_secret()
     return payload
 
@@ -75,8 +79,9 @@ def login(body: AuthIn, request: Request, response: Response):
         audit_dao.AuditDAO.append(user["user_id"], "login_blocked", user["user_id"],
                                   detail={"reason": "disabled"})
         raise HTTPException(status_code=401, detail="该账号已被禁用，请联系管理员")
-    _set_session_cookie(request, response, user)
+    token = _issue_session(request, response, user)
     payload = _user_payload(user)
+    payload["session_token"] = token
     payload["session_insecure"] = cookie_session.insecure_secret()
     return payload
 
