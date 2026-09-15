@@ -38,13 +38,14 @@ def _user_payload(user: dict) -> dict:
 
 def _set_session_cookie(request: Request, response: Response, user: dict) -> None:
     token = cookie_session.issue_session(user["user_id"], user["role"])
-    # 跨站 iframe（ModelScope 页面内嵌 ms.show）需要 SameSite=None+Secure，否则浏览器不回传 Cookie；
-    # 本地 http 开发保留 Lax（Chrome 拒绝 http 下的 Secure Cookie）
+    # 跨站 iframe（ModelScope/预览面板内嵌 ms.show）需要 SameSite=None+Secure+Partitioned(CHIPS)，
+    # 否则浏览器在第三方 Cookie 屏蔽策略下不存储/不回传 Cookie；本地 http 开发保留 Lax
     secure = request.url.scheme == "https" or os.environ.get("SESSION_SECURE", "").strip().lower() in ("1", "true", "yes")
     response.set_cookie(
         cookie_session.COOKIE_NAME, token,
         max_age=cookie_session.cookie_max_age(), path="/",
         httponly=True, samesite="none" if secure else "lax", secure=secure,
+        partitioned=secure,
     )
 
 
@@ -88,9 +89,13 @@ def logout(request: Request, response: Response, user: dict = Depends(get_curren
         cookie_session.revoke_session(jti)
     # delete_cookie 需与 set_cookie 的 samesite/secure 属性一致才能让浏览器真正删除
     secure = request.url.scheme == "https" or os.environ.get("SESSION_SECURE", "").strip().lower() in ("1", "true", "yes")
-    response.delete_cookie(
-        cookie_session.COOKIE_NAME, path="/",
+    # starlette 的 delete_cookie 不支持 partitioned 参数，用 set_cookie(max_age=0) 等效删除
+    # （即使浏览器侧删除不完全也无碍：jti 已在服务端吊销，旧 Cookie 必然 401）
+    response.set_cookie(
+        cookie_session.COOKIE_NAME, "",
+        max_age=0, expires=0, path="/",
         httponly=True, samesite="none" if secure else "lax", secure=secure,
+        partitioned=secure,
     )
     return {}
 
