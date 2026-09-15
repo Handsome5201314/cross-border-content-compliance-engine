@@ -22,8 +22,9 @@ CONFIG_DIR = ENGINE_ROOT / "config"
 SAMPLES_DIR = ENGINE_ROOT / "samples"
 OUTPUT_DIR = ENGINE_ROOT / "output_runs"
 
-# 项目根（.env 所在）：E:/AI新青年/
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+# 项目根（.env 所在）：本地为 E:/AI新青年/；容器内层级不足时取仓库根（凭据走环境变量注入）
+_parents = Path(__file__).resolve().parents
+PROJECT_ROOT = _parents[3] if len(_parents) > 3 else _parents[0]
 ENV_PATH = PROJECT_ROOT / ".env"
 
 # 已加载配置的进程级缓存（避免每次调用重复读盘）
